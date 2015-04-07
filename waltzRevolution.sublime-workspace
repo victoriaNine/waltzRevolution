@@ -1,0 +1,662 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"va",
+				"value"
+			],
+			[
+				"is",
+				"isTransitioning"
+			],
+			[
+				"loaded",
+				"loadedFiles"
+			],
+			[
+				"gain",
+				"gainTransition"
+			],
+			[
+				"auto",
+				"autoMuteSound"
+			],
+			[
+				"audio",
+				"audioEngine"
+			],
+			[
+				"toggle",
+				"toggleMute"
+			],
+			[
+				"max",
+				"max-width"
+			],
+			[
+				"sw",
+				"soundSwitch"
+			],
+			[
+				"ease",
+				"ease-out"
+			],
+			[
+				"close",
+				"closeWindow"
+			],
+			[
+				"files",
+				"filesNb"
+			],
+			[
+				"file",
+				"filesLoaded"
+			],
+			[
+				"fi",
+				"filesLoaded"
+			],
+			[
+				"pa",
+				"padding"
+			],
+			[
+				"im",
+				"important"
+			],
+			[
+				"padding",
+				"padding-left"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"border",
+				"border-box"
+			],
+			[
+				"phone",
+				"phonecheck"
+			],
+			[
+				"chan",
+				"changeCanvas"
+			],
+			[
+				"new",
+				"newGain1"
+			],
+			[
+				"cancel",
+				"cancelMenu"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"mouse",
+				"mouseenter"
+			],
+			[
+				"open",
+				"openWindow"
+			],
+			[
+				"play",
+				"playCrossfade"
+			],
+			[
+				"BGM",
+				"BGMloaded"
+			],
+			[
+				"cur",
+				"currentGain2"
+			],
+			[
+				"current",
+				"currentGain1"
+			],
+			[
+				"source",
+				"sourceArray"
+			],
+			[
+				"buffe",
+				"bufferList"
+			],
+			[
+				"pr",
+				"primalTimbre"
+			],
+			[
+				"start",
+				"startDelay"
+			],
+			[
+				"planet",
+				"planet_rotate"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"mete",
+				"meteorFalling"
+			],
+			[
+				"meteor",
+				"meteorFalling"
+			],
+			[
+				"cra",
+				"craters_y"
+			],
+			[
+				"plan",
+				"planet_y"
+			],
+			[
+				"l",
+				"loadedImg"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"total",
+				"totalLength"
+			],
+			[
+				"line",
+				"lineLength"
+			],
+			[
+				"marg",
+				"margin-bottom"
+			],
+			[
+				"call",
+				"callback"
+			],
+			[
+				"autoCl",
+				"autoCloseDelay"
+			],
+			[
+				"re",
+				"registration"
+			],
+			[
+				"text-",
+				"text-align"
+			],
+			[
+				"on",
+				"onComplete"
+			],
+			[
+				"T",
+				"TimelineMax"
+			],
+			[
+				"text",
+				"text-transform"
+			],
+			[
+				"swit",
+				"switchDelay"
+			],
+			[
+				"min-",
+				"min-height"
+			],
+			[
+				"scre",
+				"screen_Play_In"
+			],
+			[
+				"tran",
+				"transition"
+			],
+			[
+				"bor",
+				"border-radius"
+			],
+			[
+				"mobile",
+				"mobilecheck"
+			],
+			[
+				"scree",
+				"screen_Menu"
+			],
+			[
+				"init",
+				"initWidth"
+			],
+			[
+				"mar",
+				"margin"
+			],
+			[
+				"men",
+				"menuLines"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"w",
+				"width"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app/js/score.json",
+			"settings":
+			{
+				"buffer_size": 202,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/index.html",
+			"settings":
+			{
+				"buffer_size": 1860,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/E/labs/rhythmGame",
+		"/E/labs/rhythmGame/node_modules/bower",
+		"/E/labs/rhythmGame/node_modules/grunt"
+	],
+	"file_history":
+	[
+		"/E/labs/rhythmGame/bower.json",
+		"/E/labs/rhythmGame/package.json",
+		"/E/labs/rhythmGame/index.html",
+		"/E/labs/rhythmGame/app/scripts/main.js",
+		"/E/labs/rhythmGame/app/styles/main.scss",
+		"/E/labs/rhythmGame/css/main.scss",
+		"/E/labs/rhythmGame/js/main.js",
+		"/E/labs/rhythmGame/main_.js",
+		"/E/labs/intertap/app/scripts/canvas.js",
+		"/E/labs/intertap/app/scripts/cloud_backup",
+		"/E/labs/intertap/app/scripts/canvas_backup.js",
+		"/E/labs/intertap/app/scripts/audio.js",
+		"/E/labs/intertap/app/styles/main.js",
+		"/E/labs/intertap/bower_components/jquery-ui/jquery-ui.js",
+		"/C/Users/Leivvi/Downloads/smartsprites-0.2.10/README.rdoc",
+		"/D/wamp/www/orion9/scripts/spriteAnim/spriteAnim.js",
+		"/E/labs/intertap/app/styles/main.scss",
+		"/E/labs/intertap/app/styles/main.css",
+		"/E/labs/intertap/app/scripts/main.js",
+		"/E/labs/intertap/app/index.html",
+		"/E/labs/intertap/app/scripts/FileSaver.js",
+		"/E/labs/intertap/app/scripts/canvas-toBlob.js",
+		"/E/labs/intertap/app/scripts/jquery.mCustomScrollbar.js",
+		"/E/labs/intertap/Gruntfile.js",
+		"/E/labs/intertap/app/scripts/pointer_events_polyfill.js",
+		"/E/labs/intertap/app/images/planet_mask.svg",
+		"/E/labs/intertap/app/images/moon.svg",
+		"/E/labs/intertap/elements.svg",
+		"/C/Users/Leivvi/Downloads/DragDropInteractions/js/dragdrop.js",
+		"/C/Users/Leivvi/Downloads/DragDropInteractions/modal.html",
+		"/C/Users/Leivvi/Downloads/ClickEffects/css/component.css",
+		"/C/Users/Leivvi/Downloads/ClickEffects/index.html",
+		"/C/Users/Leivvi/Downloads/ClickEffects/css/demo.css",
+		"/C/Users/Leivvi/Downloads/ClickEffects/js/modernizr.custom.js",
+		"/C/Users/Leivvi/Downloads/ClickEffects/js/classie.js",
+		"/E/labs/intertap/app/scripts/CSSRulePlugin.js",
+		"/E/labs/intertap/app/styles/main.css.map",
+		"/D/Program Files/Koala/app/locales/repositories.json",
+		"/D/Program Files/Koala/package.json",
+		"/E/labs/intertap/node_modules/grunt-sass/package.json",
+		"/E/labs/intertap/bower.json",
+		"/E/labs/intertap/css/style.css",
+		"/E/labs/intertap/index.html",
+		"/E/labs/intertap/scripts/canvas.js",
+		"/E/labs/intertap/css/reset.css",
+		"/E/labs/intertap/firefly.js",
+		"/E/labs/intertap/css/style",
+		"/D/wamp/www/orion9/inc/works.inc.php",
+		"/D/wamp/www/orion9/scripts/_custom/gallery.xml",
+		"/D/wamp/www/orion9/lang/ja.php",
+		"/D/wamp/www/orion9/lang/fr.php",
+		"/D/wamp/www/orion9/lang/en.php",
+		"/D/wamp/www/orion9/404.php",
+		"/D/wamp/www/orion9/css/default.css",
+		"/D/wamp/www/orion9/css/default.min.css",
+		"/D/wamp/www/orion9/scripts/_custom/scrollGrid.js",
+		"/H/_new/backup/wamp/www/orion9/scripts/_custom/canvas.js",
+		"/H/www/orion9/lang/ja.php",
+		"/C/Users/Leivvi/Desktop/ja.php",
+		"/H/Nero BackItUp/20150115_001002_7aeccc06-ab72-4a53-b764-5e5d03c7eb10/I/Victoria/Video/Films/The.Butterfly.Effect[2004]DvDrip.Director's.Cut[Eng][Multi-Sub]-Vex/The.Butterfly.Effect[2004]DvDrip.Director's.Cut[Eng][Multi-Sub]-Vex.srt",
+		"/H/Nero BackItUp/20150115_001002_7aeccc06-ab72-4a53-b764-5e5d03c7eb10/I/Victoria/Music/OSTs/Buffy The Vampire Slayer Once More With Feeling OST/00-va-buffy_the_vampire_slayer__once_more_with_feeling-ost-2002-xntp.nfo",
+		"/H/www/orion9/scripts/_custom/scrollGrid.js",
+		"/H/Nero BackItUp/20150115_001002_7aeccc06-ab72-4a53-b764-5e5d03c7eb10/I/Victoria/Video/Films/The.Butterfly.Effect[2004]DvDrip.Director's.Cut[Eng][Multi-Sub]-Vex/Swedish.srt"
+	],
+	"find":
+	{
+		"height": 43.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"keyfra",
+			"clearpro",
+			"maxPi",
+			"clouds",
+			"cloud",
+			"reset",
+			"initCanvas",
+			"init",
+			"gainTransition",
+			"isTR",
+			".btCance",
+			"window",
+			"isDone",
+			"invite",
+			"invi",
+			"div",
+			"-1\\)",
+			"animate",
+			"soundEngine",
+			"soundLoaded",
+			"#about",
+			"empty()",
+			"margin",
+			"padding",
+			"console",
+			"max-height: 568px",
+			"max-device-height",
+			"SFX",
+			"modal",
+			"\\)\\)\\)",
+			")))",
+			"mobilecheck()",
+			"480",
+			"canvas",
+			"switchSound",
+			"panel",
+			"limitBreakCharged",
+			"enterChat",
+			"spiral",
+			"callb",
+			"clear",
+			"whileScrolling",
+			");\n",
+			"mScroll",
+			"focus",
+			"input",
+			"max-width :",
+			"(max-width :",
+			"li",
+			"-webkit",
+			"transform",
+			"scrollbar",
+			"@media",
+			"h2",
+			"pointer-eve",
+			"webkit",
+			"inpu",
+			"Canvas",
+			"scale",
+			"isTransitioning",
+			"!$isTransitioning",
+			":not",
+			"start",
+			".cancel",
+			".start",
+			".invite",
+			".random",
+			"h1",
+			"modal",
+			"matchmaking",
+			");\n",
+			" .",
+			"}\n",
+			"onEnd",
+			"hr",
+			"{\n",
+			"#000, #257eb7",
+			"pen.js:36",
+			"pen.js:34 ",
+			"con",
+			"xdrif",
+			"stop",
+			"rint2",
+			"destr",
+			"setGallery("
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"init",
+			"crossfading",
+			"audioEngine",
+			"allSoundLoaded",
+			"#credits",
+			"max-width: 320px",
+			"max-height",
+			"soundSwitch",
+			"max-width:",
+			"(max-width:",
+			".btCancel",
+			".btStart",
+			".btInvite",
+			".btRandom",
+			"#000, #021522",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/js/score.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 202,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								202,
+								202
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1860,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								676,
+								613
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 612.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "waltzRevolution.sublime-project",
+	"replace":
+	{
+		"height": 80.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 411.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
