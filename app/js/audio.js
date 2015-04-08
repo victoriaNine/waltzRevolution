@@ -55,7 +55,7 @@ BufferLoader.prototype.load = function() {
 //===============================
 // AUDIOENGINE CLASS
 //
-function AudioEngine() {
+function AudioEngine(bgmFile) {
 //===============================
 	this.loadedFiles = 0;
 	this.audioFiles = 0;
@@ -63,7 +63,7 @@ function AudioEngine() {
 	this.ready = false;
 
 	this.init = function() {
-		BGM.init();
+		BGM.init(bgmFile);
 		SFX.init();
 
 		this.audioFiles = BGM.filesNb() + SFX.filesNb();
@@ -116,14 +116,14 @@ var BGM = (function() {
 	var sourceArray = new Array();
 	var crossfadeArray = new Array();
 
-	var files = ['assets/bgm/waltz.mp3'];
+	var files = new Array();
 	var filesLoaded = false;
 	var muted = false;
 	var crossfading = false;
 
 	var waltz;
 
-	function init() {
+	function init(url) {
 	  try {
 	    // Fix up for prefixing
 	    window.AudioContext = window.AudioContext||window.webkitAudioContext;
@@ -131,6 +131,8 @@ var BGM = (function() {
 	    currentPosition = function() {
 	    	return audioCtx.currentTime;
 	    };
+
+	    files.push(url);
 
 	    var bufferLoader = new BufferLoader(audioCtx, files, setSources);
 	  	bufferLoader.load();
@@ -179,7 +181,7 @@ var BGM = (function() {
 		crossfading = true;
 
 		if(gain != -1) {
-			TweenMax.to(waltz.gainNode.gain, 3, {value: gain1, ease: Circ.easeOut,
+			TweenMax.to(waltz.gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
 				onComplete:function() {
 					crossfading = false;
 				}
@@ -264,7 +266,7 @@ var SFX = (function() {
 	var audioCtx;
 	var bufferArray = new Array();
 
-	var files = ['assets/sfx/confirm.mp3'];
+	var files = ['audio/sfx/button.mp3'];
 	var filesLoaded = false;
 	var muted = false;
 
@@ -345,4 +347,4 @@ $(document).ready(function() {
 	/*$("#soundSwitch").on(eventtype, function() {
 		audioEngine.toggleMute();
 	});*/
-};
+});

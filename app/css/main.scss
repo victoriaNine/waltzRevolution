@@ -130,13 +130,7 @@ body {
 
 .note i { line-height: 1.4em; font-size:1.5em; }
 
-.note.up { top:0; }
-.note.right { top:40px; }
-.note.left { top:80px; }
-.note.down { top:120px; }
-.note.space { top:160px; }
-
-.heldNote { position: absolute; }
+.tiedNote { position: absolute; }
 .noteBridge {
   position: absolute;
   height: 10px;
@@ -144,3 +138,9 @@ body {
   margin-top: 12px;
   z-index: -1;
 }
+
+.note.up, .noteBridge.up { top:0; }
+.note.right, .noteBridge.right { top:40px; }
+.note.left, .noteBridge.left { top:80px; }
+.note.down, .noteBridge.down { top:120px; }
+.note.space, .noteBridge.space { top:160px; }
