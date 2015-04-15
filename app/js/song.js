@@ -213,9 +213,9 @@ function getStyle(selector, property, valueOnly) {
       if(rules) classes.push(rules);
     }
 
-    for (var i = 0; i < classes.length; i++) {
-      for (var j = 0; j < classes[i].length; j++) {
-          if (classes[i][j].selectorText.indexOf(selector) != -1) {
+    for(var i = 0; i < classes.length; i++) {
+      for(var j = 0; j < classes[i].length; j++) {
+          if(classes[i][j].selectorText.indexOf(selector) != -1) {
               if(property) {
                 if(valueOnly) return parseFloat(classes[i][j].style[property]);
                 else return classes[i][j].style[property];
