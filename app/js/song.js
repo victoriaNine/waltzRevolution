@@ -69,7 +69,20 @@ Song.prototype.loadSong = function(url) {
     };
 
     _staffLength = loader.score[loader.score.length - 1].staffPosition;
-    _drawInterval = setInterval(draw, 100);
+    //_drawInterval = setInterval(draw, 100);
+
+    TweenMax.ticker.addEventListener("tick", draw);
+    var test = $("<div>").css("left","0px");
+
+    TweenMax.to(test, 5, {left:_staffLength+"px", ease:Power0.easeNone,
+        onUpdate:function(tween, prop) {
+          console.log($(tween.target).css(prop));
+        },
+        onUpdateParams:["{self}", 'left'],
+        onComplete: function() {
+          TweenMax.ticker.removeEventListener("tick", draw);
+        }
+    });
 
     loader.callback();
   }
@@ -151,6 +164,8 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
     if(this.key == "down") charCode = "0xf063";
     if(this.key == "space") charCode = "0xf12a";
 
+    ctx.font = "24px FontAwesome";
+
     if(this.isTiedNote) {
       var noteStaffDistance = this.tnStaffPosition - this.staffPosition;
       var bridgeStaffPosition = this.staffPosition + _noteWidth/2;
@@ -163,7 +178,6 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
       ctx.fillStyle = "#F8F4F0";
       ctx.fill();
 
-      ctx.font = "24px FontAwesome";
       ctx.fillStyle = "#D55320";
       ctx.fillText(String.fromCharCode(charCode), (this.tnStaffPosition + 5) - _currentStaffPosition, top + 25);
     }
@@ -174,21 +188,20 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
     ctx.fillStyle = "#F8F4F0";
     ctx.fill();
 
-    ctx.font = "24px FontAwesome";
     ctx.fillStyle = "#D55320";
     ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + 5) - _currentStaffPosition, top + 25);
   }
 }
 
 function draw() {
-  _currentStaffPosition += 100;
+  //_currentStaffPosition += 100;
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
 
   for(var i = 0; i < $song.notes.length; i++) {
     $song.score[i].draw();
   }
 
-  if(_currentStaffPosition == _staffLength) clearInterval(_drawInterval);
+  //if(_currentStaffPosition == _staffLength) clearInterval(_drawInterval);
 }
 
 function getStyle(selector, property, valueOnly) {
