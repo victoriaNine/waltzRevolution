@@ -37,6 +37,8 @@ $(document).ready(function() {
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
 
+	$("#notes").attr("width", $("#staff").width()).attr("height", $("#staff").height());
+
 	// INTRO ANIMATIONS HERE
 	// TweenMax.from($("#loading img"), .75, {opacity:0});
 	// TweenMax.from($("#loading img+span"), .75, {opacity:0, repeat:-1, yoyo:true});
@@ -156,9 +158,7 @@ $(document).ready(function() {
 		if(e.which == 37) $("#keyLeft").addClass("pressed");
 		if(e.which == 40) $("#keyDown").addClass("pressed");
 		if(e.which == 32) $("#keySpace").addClass("pressed");
-	});
-
-	$(window).keyup(function(e) {
+	}).keyup(function(e) {
 		e.preventDefault();
 
 		if(e.which == 38) $("#keyUp").removeClass("pressed");
@@ -166,6 +166,8 @@ $(document).ready(function() {
 		if(e.which == 37) $("#keyLeft").removeClass("pressed");
 		if(e.which == 40) $("#keyDown").removeClass("pressed");
 		if(e.which == 32) $("#keySpace").removeClass("pressed");
+	}).resize(function() {
+		$("#notes").attr("width", $("#staff").width()).attr("height", $("#staff").height());
 	});
 });
 

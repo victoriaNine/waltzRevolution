@@ -3,7 +3,7 @@
     "artist":"Leivvi",
     "tempo":93,
     "timeSignature":[6,8],
-    "noteScale": 1,
+    "noteScale": 8,
     "startTime":0.056,
     "fileURL":"audio/bgm/waltz.mp3",
     "notes":[
