@@ -232,7 +232,7 @@ var BGM = (function() {
 		else if(state == "toggle") paused = !paused;
 
 		if(paused) {
-			waltz.source.stop(0);
+			waltz.source.stop();
 			console.log("paused at : "+currentPosition());
 		}
 		else {
@@ -283,6 +283,9 @@ var BGM = (function() {
 		},
 		isPaused:function() {
 			return paused;
+		},
+		test:function() {
+			return waltz;
 		}
 	};
 })();

@@ -120,19 +120,36 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
     // At what time is the note in said beat
     this.songPosition += _baseNoteLength * ($song.timeSignature[1] / beatDivision) * (beatPosition-1);
 
-    // Where on the staff should the note be
+    // Let's place the note on the staff
     this.staffPosition = (this.songPosition / _baseNoteLength) * _staffScale * _noteWidth;
+    this.note = $("<div>").attr("class", "note "+this.key).css("left", this.staffPosition+"px");
+
+    if(key == "up") this.note.append("<i class=\"fa fa-arrow-up\"></i>");
+    if(key == "right") this.note.append("<i class=\"fa fa-arrow-right\"></i>");
+    if(key == "left") this.note.append("<i class=\"fa fa-arrow-left\"></i>");
+    if(key == "down") this.note.append("<i class=\"fa fa-arrow-down\"></i>");
+    if(key == "space") this.note.append("<i class=\"fa fa-exclamation\"></i>");
+    $("#notes").append(this.note);
 
     if(isTiedNote) {
       this.tnSongPosition  = this.songPosition;
       this.tnSongPosition += _baseNoteLength * (tnBeat-1);
       this.tnSongPosition += _baseNoteLength * ($song.timeSignature[1] / tnBeatDivision) * (tnBeatPosition-1);
 
+      // Let's place the note on the staff
       this.tnStaffPosition = (this.tnSongPosition / _baseNoteLength) * _staffScale * _noteWidth;
+      this.tiedNote = $("<div>").attr("class", "tiedNote").css("left", this.tnStaffPosition+"px");
+
+      var noteStaffDistance = this.tnStaffPosition - this.staffPosition;
+      var bridge = $("<div>").attr("class", "noteBridge "+this.key).css({
+        width:noteStaffDistance+"px",
+        left:-1*(noteStaffDistance - _noteWidth/2)+"px"
+      });
+      var icon = $("<div>").attr("class", "note "+this.key).html(this.note.html());
+
+      this.tiedNote.append(bridge, icon);
+      $("#notes").append(this.tiedNote);
     }
-    
-    // Let's place the note on the staff
-    this.draw();
   }
 
   this.draw = function() {

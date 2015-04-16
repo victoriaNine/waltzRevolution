@@ -67,14 +67,14 @@ $(document).ready(function() {
 
 		$(window).on("blur", function() {
 			if(audioEngine.ready && initReady) {
-				TweenLite.lagSmoothing(0);
+				TweenMax.lagSmoothing(0);
 
 				if(audioEngine.isMuted()) autoMuteSound = true;
 				else audioEngine.mute();
 			}
 		}).on("focus", function() {
 			if(audioEngine.ready && initReady) {
-				TweenLite.lagSmoothing(1000, 16);
+				TweenMax.lagSmoothing(1000, 16);
 
 				if(autoMuteSound) autoMuteSound = false;
 				else audioEngine.unMute();
@@ -86,7 +86,7 @@ $(document).ready(function() {
 				loadedFiles++;
 				$(document).trigger("fileLoaded");
 			});
-		};
+		}
 
 		$(document).on("fileLoaded", function() {
 			// LOADING ANIMATION HERE
@@ -144,7 +144,7 @@ $(document).ready(function() {
         var agent = navigator.userAgent;
 
         if(agent.match(/MSIE ([0-9]{1,}[\.0-9]{0,})/) != null) {
-            var version = parseFloat( RegExp.$1 );
+            var version = parseFloat(RegExp.$1);
             $("html").addClass("ie"+version);
         }
     };
