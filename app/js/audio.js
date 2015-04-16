@@ -81,9 +81,9 @@ function AudioEngine(bgmFile) {
 		this.muted = true;
 	};
 
-	this.unmute = function() {
-		BGM.unmute();
-		SFX.unmute();
+	this.unMute = function() {
+		BGM.unMute();
+		SFX.unMute();
 
 		//$("#soundSwitch").attr("class","on");
 		this.muted = false;
@@ -119,6 +119,7 @@ var BGM = (function() {
 	var files = new Array();
 	var filesLoaded = false;
 	var muted = false;
+	var paused = false;
 	var crossfading = false;
 
 	var waltz;
@@ -202,12 +203,12 @@ var BGM = (function() {
 
 	function mute(state) {
 		if(state == true || state == false) {
-			if(state == mute) return;
+			if(state == muted) return;
 			muted = state;
 		}
 		else if(state == "toggle") muted = !muted;
 
-		if(muted == true) {
+		if(muted) {
 			if(!crossfading) {
 				crossfadeArray = [];
 				prepareCrossfade(waltz.gainNode.gain.value);
@@ -223,6 +224,23 @@ var BGM = (function() {
 		}
 	}
 
+	function pause(state) {
+		if(state == true || state == false) {
+			if(state == paused) return;
+			paused = state;
+		}
+		else if(state == "toggle") paused = !paused;
+
+		if(paused) {
+			waltz.source.stop(0);
+			console.log("paused at : "+currentPosition());
+		}
+		else {
+			waltz.source.start(currentPosition());
+			console.log("resumed at : "+currentPosition());
+		}
+	}
+
 	return {
 		init:init,
 		play:play,
@@ -232,7 +250,7 @@ var BGM = (function() {
 		mute:function() {
 			mute(true);
 		},
-		unmute:function() {
+		unMute:function() {
 			mute(false);
 		},
 		toggleMute:function() {
@@ -251,8 +269,20 @@ var BGM = (function() {
 			return crossfading;
 		},
 		getCurrentPosition:currentPosition,
-		getsongLength:function() {
+		getSongLength:function() {
 			return songLength;
+		},
+		pause:function() {
+			pause(true);
+		},
+		unPause:function() {
+			pause(false);
+		},
+		togglePause:function() {
+			pause("toggle");
+		},
+		isPaused:function() {
+			return paused;
 		}
 	};
 })();
@@ -325,7 +355,7 @@ var SFX = (function() {
 		mute:function() {
 			mute(true);
 		},
-		unmute:function() {
+		unMute:function() {
 			mute(false);
 		},
 		toggleMute:function() {

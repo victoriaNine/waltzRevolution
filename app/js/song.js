@@ -4,10 +4,10 @@ var _staffScale;
 var _noteWidth = 32; // Width of a note in the staff, in pixels
 var _currentStaffPosition = 0;
 var _staffLength;
-var _drawInterval;
+var _staffScroll;
 
 var canvas = document.getElementById("notes");
-var ctx = canvas.getContext("2d");
+var ctx = canvas.getContext("2d"); 
 
 //===============================
 // SONG CLASS
@@ -69,21 +69,6 @@ Song.prototype.loadSong = function(url) {
     };
 
     _staffLength = loader.score[loader.score.length - 1].staffPosition;
-    //_drawInterval = setInterval(draw, 100);
-
-    TweenMax.ticker.addEventListener("tick", draw);
-    var test = $("<div>").css("left","0px");
-
-    TweenMax.to(test, 5, {left:_staffLength+"px", ease:Power0.easeNone,
-        onUpdate:function(tween, prop) {
-          console.log($(tween.target).css(prop));
-        },
-        onUpdateParams:["{self}", 'left'],
-        onComplete: function() {
-          TweenMax.ticker.removeEventListener("tick", draw);
-        }
-    });
-
     loader.callback();
   }
 
@@ -96,6 +81,22 @@ Song.prototype.loadSong = function(url) {
 
 Song.prototype.load = function() {
   this.loadSong(this.url);
+}
+
+Song.prototype.start = function() {
+  BGM.play();
+
+  TweenMax.ticker.addEventListener("tick", draw);
+  _staffScroll = TweenMax.to($("<div>").css("left","0px"), BGM.getSongLength(), {left:_staffLength+"px", ease:Power0.easeNone,
+      onUpdate:function(tween, prop) {
+        _currentStaffPosition = parseFloat($(tween.target).css(prop));
+      },
+      onUpdateParams:["{self}", 'left'],
+      onComplete: function() {
+        TweenMax.ticker.removeEventListener("tick", draw);
+        $(document).trigger("songEnded");
+      }
+  });
 }
 
 function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tnBeatPosition, tnBeatDivision) {
@@ -194,37 +195,34 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
 }
 
 function draw() {
-  //_currentStaffPosition += 100;
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
 
   for(var i = 0; i < $song.notes.length; i++) {
     $song.score[i].draw();
   }
-
-  //if(_currentStaffPosition == _staffLength) clearInterval(_drawInterval);
 }
 
 function getStyle(selector, property, valueOnly) {
-    var styleSheets = document.styleSheets;
-    var classes = new Array();
+  var styleSheets = document.styleSheets;
+  var classes = new Array();
 
-    for(var i = 0; i < styleSheets.length; i++) {
-      var rules = document.styleSheets[i].rules || document.styleSheets[i].cssRules;
-      if(rules) classes.push(rules);
-    }
+  for(var i = 0; i < styleSheets.length; i++) {
+    var rules = document.styleSheets[i].rules || document.styleSheets[i].cssRules;
+    if(rules) classes.push(rules);
+  }
 
-    for(var i = 0; i < classes.length; i++) {
-      for(var j = 0; j < classes[i].length; j++) {
-          if(classes[i][j].selectorText.indexOf(selector) != -1) {
-              if(property) {
-                if(valueOnly) return parseFloat(classes[i][j].style[property]);
-                else return classes[i][j].style[property];
-              }
-              else {
-                if(classes[i][j].cssText) return classes[i][j].cssText
-                else return classes[i][j].style.cssText;
-              }
-          }
-      }
+  for(var i = 0; i < classes.length; i++) {
+    for(var j = 0; j < classes[i].length; j++) {
+        if(classes[i][j].selectorText.indexOf(selector) != -1) {
+            if(property) {
+              if(valueOnly) return parseFloat(classes[i][j].style[property]);
+              else return classes[i][j].style[property];
+            }
+            else {
+              if(classes[i][j].cssText) return classes[i][j].cssText
+              else return classes[i][j].style.cssText;
+            }
+        }
     }
+  }
 };

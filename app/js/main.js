@@ -30,7 +30,6 @@ var autoMuteSound = false;
 var initReady = false;
 
 var $song;
-var songLength;
 
 $(document).ready(function() {
 	if(mobilecheck()) $("html").addClass("isMobile");
@@ -78,7 +77,7 @@ $(document).ready(function() {
 				TweenLite.lagSmoothing(1000, 16);
 
 				if(autoMuteSound) autoMuteSound = false;
-				else audioEngine.unmute();
+				else audioEngine.unMute();
 			}
 		});
 		
@@ -101,7 +100,7 @@ $(document).ready(function() {
 				 $(window).off("focus", waitForFocus);
 			};
 
-			if(document["hasFocus"]()) mobilecheck() ? initBGM() : initSite();
+			if(document["hasFocus"]()) mobilecheck() ? initSong() : initSite();
 			else $(window).on("focus", waitForFocus);
 		});
 	}
@@ -116,27 +115,27 @@ $(document).ready(function() {
 				//$requestScreen = "Menu";
 				//switchScreen();
 
-				if(!mobilecheck()) BGM.play();
+				if(!mobilecheck()) $song.start();
 				initReady = true;
 			//}
 		//});
 	}
 
-	function initBGM() {
+	function initSong() {
 		// MOBILE DEVICES : BGM LAUNCH ANIMATION HERE
 		//TweenMax.to($("#loading img+span"), .75, {opacity:0, 
 			//onComplete: function() {
 				// $("#loading img+span").html("Tap to launch the experience");
 				// TweenMax.to($("#loading img+span"), .75, {opacity:1});
 
-				var playBGM = function() {
-					BGM.play();
-					$("body").off(eventtype, playBGM);
+				var startSong = function() {
+					$song.start();
+					$("body").off(eventtype, startSong);
 
 					initSite();
 				};
 
-				$("body").on(eventtype, playBGM);
+				$("body").on(eventtype, startSong);
 			//}
 		//});
 	}
@@ -168,6 +167,10 @@ $(document).ready(function() {
 		if(e.which == 32) $("#keySpace").removeClass("pressed");
 	}).resize(function() {
 		$("#notes").attr("width", $("#staff").width()).attr("height", $("#staff").height());
+	});
+
+	$(document).on("songEnded", function() {
+		console.log("I am SO done.");
 	});
 });
 
