@@ -119,7 +119,7 @@ body {
 #keys li.pressed { background:#d55320; color:#f8f4f0; }
 #keys i { line-height: 1.5em; font-size:1.5em; }
 
-#notes { width: 100%; height: 100%; position:absolute; z-index:2; }
+#notes { width: calc(100% - 16px); height: 100%; position:absolute; z-index:2; left: 16px; }
 .note {
   width:32px;
   height:32px;

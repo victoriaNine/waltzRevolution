@@ -9,6 +9,10 @@ var _staffScroll;
 var canvas = document.getElementById("notes");
 var ctx = canvas.getContext("2d"); 
 
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+
 //===============================
 // SONG CLASS
 //
@@ -25,8 +29,8 @@ function Song(url, callback) {
   this.startTime = 0;
   this.fileURL;
 
-  this.notes = new Array();
   this.score = new Array();
+  this.notes = new Array();
 }
 
 Song.prototype.loadSong = function(url) {
@@ -46,29 +50,29 @@ Song.prototype.loadSong = function(url) {
     loader.noteScale = song.noteScale;
     loader.startTime = song.startTime;
     loader.fileURL = song.fileURL;
-    loader.notes = song.notes;
+    loader.score = song.notes;
 
     _baseNoteLength = (60 / loader.tempo) * (4 / loader.timeSignature[1]);
     _barLength = _baseNoteLength * loader.timeSignature[0];
     _staffScale = loader.noteScale;
 
-    for(var i = 0; i < loader.notes.length; i++) {
-        loader.score[i] = new Note(
-          loader.notes[i].key,
-          loader.notes[i].bar,
-          loader.notes[i].beat,
-          loader.notes[i].beatPosition,
-          loader.notes[i].beatDivision,
-          loader.notes[i].isTiedNote,
-          loader.notes[i].tnBeat,
-          loader.notes[i].tnBeatPosition,
-          loader.notes[i].tnBeatDivision
+    for(var i = 0; i < loader.score.length; i++) {
+        loader.notes[i] = new Note(
+          loader.score[i].key,
+          loader.score[i].bar,
+          loader.score[i].beat,
+          loader.score[i].beatPosition,
+          loader.score[i].beatDivision,
+          loader.score[i].isTiedNote,
+          loader.score[i].tnBeat,
+          loader.score[i].tnBeatPosition,
+          loader.score[i].tnBeatDivision
         );
 
-        loader.score[i].init();
+        loader.notes[i].init();
     }
 
-    _staffLength = loader.score[loader.score.length - 1].staffPosition;
+    _staffLength = loader.notes[loader.notes.length - 1].staffPosition + _noteWidth;
     loader.callback();
   }
 
@@ -84,16 +88,22 @@ Song.prototype.load = function() {
 }
 
 Song.prototype.start = function() {
-  BGM.play();
+  var test = this.notes[this.notes.length - 1].songPosition;
+  var testFunction = function() {
+    requestAnimationFrame(draw);
+  }
 
-  TweenMax.ticker.addEventListener("tick", draw);
-  _staffScroll = TweenMax.to($("<div>").css("left","0px"), BGM.getSongLength(), {left:_staffLength+"px", ease:Power0.easeNone,
+  BGM.play();
+  draw();
+
+  TweenMax.ticker.addEventListener("tick", testFunction);
+  _staffScroll = TweenMax.to($("<div>").css("left","0px"), test, {left:_staffLength+"px", ease:Power0.easeNone,
       onUpdate:function(tween, prop) {
         _currentStaffPosition = parseFloat($(tween.target).css(prop));
       },
       onUpdateParams:["{self}", 'left'],
       onComplete: function() {
-        TweenMax.ticker.removeEventListener("tick", draw);
+        TweenMax.ticker.removeEventListener("tick", testFunction);
         $(document).trigger("songEnded");
       }
   });
@@ -177,8 +187,8 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
 function draw() {
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
 
-  for(var i = 0; i < $song.notes.length; i++) {
-    $song.score[i].draw();
+  for(var i = 0; i < $song.score.length; i++) {
+    $song.notes[i].draw();
   }
 }
 
@@ -187,8 +197,10 @@ function getStyle(selector, property, valueOnly) {
   var classes = new Array();
 
   for(var i = 0; i < styleSheets.length; i++) {
-    var rules = document.styleSheets[i].rules || document.styleSheets[i].cssRules;
-    if(rules) classes.push(rules);
+    if(styleSheets[i].ownerNode.attributes.href.value.indexOf("http") == -1 && styleSheets[i].ownerNode.attributes.href.value.indexOf("//") == -1) {
+      var rules = styleSheets[i].rules || styleSheets[i].cssRules;
+      if(rules) classes.push(rules);
+    }
   }
 
   for(var i = 0; i < classes.length; i++) {

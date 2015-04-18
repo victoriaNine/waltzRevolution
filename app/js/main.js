@@ -36,7 +36,7 @@ $(document).ready(function() {
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
 
-	$("#notes").attr("width", $("#staff").width()).attr("height", $("#staff").height());
+	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 
 	// INTRO ANIMATIONS HERE
 	// TweenMax.from($("#loading img"), .75, {opacity:0});
@@ -166,7 +166,7 @@ $(document).ready(function() {
 		if(e.which == 40) $("#keyDown").removeClass("pressed");
 		if(e.which == 32) $("#keySpace").removeClass("pressed");
 	}).resize(function() {
-		$("#notes").attr("width", $("#staff").width()).attr("height", $("#staff").height());
+		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	});
 
 	$(document).on("songEnded", function() {

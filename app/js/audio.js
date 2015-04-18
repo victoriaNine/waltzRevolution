@@ -11,6 +11,8 @@ function BufferLoader(context, urlList, callback) {
 }
 
 BufferLoader.prototype.loadBuffer = function(url, index) {
+  url += Modernizr.audio.ogg ? '.ogg' : '.mp3';
+
   // Load buffer asynchronously
   var request = new XMLHttpRequest();
   request.open("GET", url, true);
@@ -299,7 +301,7 @@ var SFX = (function() {
 	var audioCtx;
 	var bufferArray = new Array();
 
-	var files = ['audio/sfx/button.mp3'];
+	var files = [];//['audio/sfx/button.mp3'];
 	var filesLoaded = false;
 	var muted = false;
 
