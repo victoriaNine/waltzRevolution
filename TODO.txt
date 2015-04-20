@@ -1,4 +1,4 @@
-- pause/resume song
+! pause/resume song
 ! fix notes positioning
 - detect input accuracy ("perfect", "great", "missed", "cool")
 - clean code

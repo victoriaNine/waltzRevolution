@@ -11,7 +11,7 @@ function BufferLoader(context, urlList, callback) {
 }
 
 BufferLoader.prototype.loadBuffer = function(url, index) {
-  url += Modernizr.audio.ogg ? '.ogg' : '.mp3';
+  if(!url.match(".mp3|.ogg")) url += Modernizr.audio.ogg ? '.ogg' : '.mp3';
 
   // Load buffer asynchronously
   var request = new XMLHttpRequest();
@@ -43,9 +43,7 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
     );
   }
 
-  request.onerror = function() {
-    alert('BufferLoader: XHR error');
-  }
+  request.onerror = function() { alert('BufferLoader: XHR error'); }
 
   request.send();
 }
@@ -115,8 +113,6 @@ function AudioEngine(bgmFile) {
 var BGM = (function() {
 //===============================
 	var audioCtx;
-	var currentPosition;
-	var songLength;
 	var sourceArray = new Array();
 	var crossfadeArray = new Array();
 
@@ -126,15 +122,17 @@ var BGM = (function() {
 	var paused = false;
 	var crossfading = false;
 
+	var startedAt;
+	var pausedAt = 0;
+	var currentPosition = function() { return paused ? pausedAt / 1000 : ((new Date().getTime() - startedAt) + pausedAt) / 1000; };
+	var songLength;
+
 
 	function init(url) {
 	  try {
 	    // Fix up for prefixing
 	    window.AudioContext = window.AudioContext||window.webkitAudioContext;
 	    audioCtx = new AudioContext();
-	    currentPosition = function() {
-	    	return audioCtx.currentTime;
-	    };
 
 	    files.push(url);
 
@@ -165,6 +163,7 @@ var BGM = (function() {
 	function createSource(buffer, index) {
 		var index = index;
 		var source = audioCtx.createBufferSource();
+		var buffer = buffer;
 		var gainNode = audioCtx.createGain ? audioCtx.createGain() : audioCtx.createGainNode();
 	    source.buffer = buffer;
 
@@ -176,13 +175,15 @@ var BGM = (function() {
 	    return {
 	      source: source,
 	      gainNode: gainNode,
-	      name: (function() { return buffer.name; })()
+	      buffer: (function() { return buffer; })(),
+	      name: (function() { return buffer.name; })(),
 	      index: (function() { return index; })()
 	    };
 	}
 
 	function play() {
 		sourceArray["waltz"].source.start(0);
+		startedAt = new Date().getTime();
 	}
 
 	function setCrossfade(gain) {
@@ -239,12 +240,15 @@ var BGM = (function() {
 		else if(state == "toggle") paused = !paused;
 
 		if(paused) {
-			waltz.source.stop();
-			console.log("paused at : "+currentPosition());
+			sourceArray["waltz"].source.stop();
+			pausedAt += new Date().getTime() - startedAt;
 		}
 		else {
-			waltz.source.start(currentPosition());
-			console.log("resumed at : "+currentPosition());
+			var source = createSource(sourceArray["waltz"].buffer, sourceArray["waltz"].index);
+			sourceArray["waltz"] = source;
+
+			sourceArray["waltz"].source.start(0, pausedAt / 1000);
+			startedAt = new Date().getTime();
 		}
 	}
 
@@ -303,7 +307,7 @@ var SFX = (function() {
 	var audioCtx;
 	var bufferArray = new Array();
 
-	var files = [];//['audio/sfx/button.mp3'];
+	var files = ['audio/sfx/button.mp3'];
 	var filesLoaded = false;
 	var muted = false;
 

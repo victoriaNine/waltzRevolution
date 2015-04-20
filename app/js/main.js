@@ -67,19 +67,16 @@ $(document).ready(function() {
 
 		$(window).on("blur", function() {
 			if(audioEngine.ready && initReady) {
-				TweenMax.lagSmoothing(0);
 
-				if(audioEngine.isMuted()) autoMuteSound = true;
-				else audioEngine.mute();
+				if($song.paused) return;
+				else $song.pause();
 			}
-		}).on("focus", function() {
+		})/*.on("focus", function() {
 			if(audioEngine.ready && initReady) {
-				TweenMax.lagSmoothing(1000, 16);
-
 				if(autoMuteSound) autoMuteSound = false;
 				else audioEngine.unMute();
 			}
-		});
+		})*/;
 		
 		for(var i = 0; i < loadingArray.length; i++) {
 			$("<div>").load(loadingArray[i], function() {

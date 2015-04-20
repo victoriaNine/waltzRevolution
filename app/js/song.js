@@ -1,16 +1,8 @@
-var _baseNoteLength;
-var _barLength;
-var _staffScale;
-var _noteWidth = 32; // Width of a note in the staff, in pixels
-var _currentStaffPosition = 0;
-var _staffLength;
-var _staffScroll;
-
 var canvas = document.getElementById("notes");
 var ctx = canvas.getContext("2d"); 
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
 
 
 //===============================
@@ -31,6 +23,17 @@ function Song(url, callback) {
 
   this.score = new Array();
   this.notes = new Array();
+
+  this.baseNoteLength;
+  this.barLength;
+
+  this.noteWidth = 32; // Width of a note in the staff, in pixels
+  this.currentStaffPosition = 0;
+  this.staffLength;
+  this.staffScroll;
+  this.staffScrollDuration;
+
+  this.paused = false;
 }
 
 Song.prototype.loadSong = function(url) {
@@ -52,9 +55,8 @@ Song.prototype.loadSong = function(url) {
     loader.fileURL = song.fileURL;
     loader.score = song.notes;
 
-    _baseNoteLength = (60 / loader.tempo) * (4 / loader.timeSignature[1]);
-    _barLength = _baseNoteLength * loader.timeSignature[0];
-    _staffScale = loader.noteScale;
+    loader.baseNoteLength = (60 / loader.tempo) * (4 / loader.timeSignature[1]);
+    loader.barLength = loader.baseNoteLength * loader.timeSignature[0];
 
     for(var i = 0; i < loader.score.length; i++) {
         loader.notes[i] = new Note(
@@ -72,41 +74,58 @@ Song.prototype.loadSong = function(url) {
         loader.notes[i].init();
     }
 
-    _staffLength = loader.notes[loader.notes.length - 1].staffPosition + _noteWidth;
+    loader.staffLength = loader.notes[loader.notes.length - 1].staffPosition + loader.noteWidth;
+    loader.staffScrollDuration = loader.notes[loader.notes.length - 1].songPosition;
+
+    $("#songBlock h1").html(loader.title);
+    $("#songBlock h2").html(loader.artist);
     loader.callback();
   }
 
-  request.onerror = function() {
-    alert('Song: XHR error');
-  }
+  request.onerror = function() { alert('Song: XHR error'); }
 
   request.send();
 }
 
-Song.prototype.load = function() {
-  this.loadSong(this.url);
-}
+Song.prototype.load = function() { this.loadSong(this.url); }
 
 Song.prototype.start = function() {
-  var test = this.notes[this.notes.length - 1].songPosition;
-  var testFunction = function() {
-    requestAnimationFrame(draw);
-  }
+  var rAF = function() { requestAnimationFrame(draw); }
 
   BGM.play();
   draw();
 
-  TweenMax.ticker.addEventListener("tick", testFunction);
-  _staffScroll = TweenMax.to($("<div>").css("left","0px"), test, {left:_staffLength+"px", ease:Power0.easeNone,
+  var song = this;
+
+  TweenMax.ticker.addEventListener("tick", rAF);
+  this.staffScroll = TweenMax.to($("<div>").css("left","0px"), this.staffScrollDuration, {left:this.staffLength+"px", ease:Power0.easeNone,
       onUpdate:function(tween, prop) {
-        _currentStaffPosition = parseFloat($(tween.target).css(prop));
+        song.currentStaffPosition = parseFloat($(tween.target).css(prop));
       },
       onUpdateParams:["{self}", 'left'],
       onComplete: function() {
-        TweenMax.ticker.removeEventListener("tick", testFunction);
+        TweenMax.ticker.removeEventListener("tick", rAF);
         $(document).trigger("songEnded");
       }
   });
+}
+
+Song.prototype.pause = function() {
+  if(!this.paused) {
+    this.staffScroll.pause();
+    BGM.pause();
+
+    this.paused = true;
+  }
+}
+
+Song.prototype.resume = function() {
+  if(this.paused) {
+    this.staffScroll.resume();
+    BGM.unPause();
+
+    this.paused = false;
+  }
 }
 
 function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tnBeatPosition, tnBeatDivision) {
@@ -124,21 +143,21 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
   this.init = function() {
     this.songPosition = $song.startTime;
     // At what time is the bar
-    this.songPosition  = _barLength * (bar-1);
+    this.songPosition  = $song.barLength * (bar-1);
     // At what time is the beat in said bar
-    this.songPosition += _baseNoteLength * (beat-1);
+    this.songPosition += $song.baseNoteLength * (beat-1);
     // At what time is the note in said beat
-    this.songPosition += _baseNoteLength * ($song.timeSignature[1] / beatDivision) * (beatPosition-1);
+    this.songPosition += $song.baseNoteLength * ($song.timeSignature[1] / beatDivision) * (beatPosition-1);
 
     // Where on the staff should the note be
-    this.staffPosition = (this.songPosition / _baseNoteLength) * _staffScale * _noteWidth;
+    this.staffPosition = (this.songPosition / $song.baseNoteLength) * $song.noteScale * $song.noteWidth;
 
     if(isTiedNote) {
       this.tnSongPosition  = this.songPosition;
-      this.tnSongPosition += _baseNoteLength * (tnBeat-1);
-      this.tnSongPosition += _baseNoteLength * ($song.timeSignature[1] / tnBeatDivision) * (tnBeatPosition-1);
+      this.tnSongPosition += $song.baseNoteLength * (tnBeat-1);
+      this.tnSongPosition += $song.baseNoteLength * ($song.timeSignature[1] / tnBeatDivision) * (tnBeatPosition-1);
 
-      this.tnStaffPosition = (this.tnSongPosition / _baseNoteLength) * _staffScale * _noteWidth;
+      this.tnStaffPosition = (this.tnSongPosition / $song.baseNoteLength) * $song.noteScale * $song.noteWidth;
     }
     
     // Let's place the note on the staff
@@ -159,28 +178,28 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
 
     if(this.isTiedNote) {
       var noteStaffDistance = this.tnStaffPosition - this.staffPosition;
-      var bridgeStaffPosition = this.staffPosition + _noteWidth/2;
+      var bridgeStaffPosition = this.staffPosition + $song.noteWidth/2;
       ctx.fillStyle = "#F8F4F0";
-      ctx.fillRect(bridgeStaffPosition - _currentStaffPosition, top + 10, noteStaffDistance, 10);
+      ctx.fillRect(bridgeStaffPosition - $song.currentStaffPosition, top + 10, noteStaffDistance, 10);
 
       ctx.beginPath();
-      ctx.arc((this.tnStaffPosition + 16) - _currentStaffPosition, top + 16, 16, 0, Math.PI*2);
+      ctx.arc((this.tnStaffPosition + 16) - $song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
       ctx.closePath();
       ctx.fillStyle = "#F8F4F0";
       ctx.fill();
 
       ctx.fillStyle = "#D55320";
-      ctx.fillText(String.fromCharCode(charCode), (this.tnStaffPosition + 5) - _currentStaffPosition, top + 25);
+      ctx.fillText(String.fromCharCode(charCode), (this.tnStaffPosition + 5) - $song.currentStaffPosition, top + 25);
     }
 
     ctx.beginPath();
-    ctx.arc((this.staffPosition + 16) - _currentStaffPosition, top + 16, 16, 0, Math.PI*2);
+    ctx.arc((this.staffPosition + 16) - $song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
     ctx.closePath();
     ctx.fillStyle = "#F8F4F0";
     ctx.fill();
 
     ctx.fillStyle = "#D55320";
-    ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + 5) - _currentStaffPosition, top + 25);
+    ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + 5) - $song.currentStaffPosition, top + 25);
   }
 }
 
@@ -197,7 +216,7 @@ function getStyle(selector, property, valueOnly) {
   var classes = new Array();
 
   for(var i = 0; i < styleSheets.length; i++) {
-    if(styleSheets[i].ownerNode.attributes.href.value.indexOf("http") == -1 && styleSheets[i].ownerNode.attributes.href.value.indexOf("//") == -1) {
+    if(!styleSheets[i].ownerNode.attributes.href.value.match("http|//")) {
       var rules = styleSheets[i].rules || styleSheets[i].cssRules;
       if(rules) classes.push(rules);
     }
