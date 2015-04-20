@@ -29,6 +29,8 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
           alert('error decoding file data: ' + url);
           return;
         }
+
+        buffer.name = url.slice(url.lastIndexOf("/")+1, url.lastIndexOf("."));
         loader.bufferList[index] = buffer;
         if (++loader.loadCount == loader.urlList.length) 
           loader.onload(loader.bufferList);
@@ -124,7 +126,6 @@ var BGM = (function() {
 	var paused = false;
 	var crossfading = false;
 
-	var waltz;
 
 	function init(url) {
 	  try {
@@ -147,11 +148,12 @@ var BGM = (function() {
 
 	function setSources(bufferList) {
 		for(var i = 0; i < bufferList.length; i++) {
-			sourceArray[i] = createSource(bufferList[i]);
-		}
+			var source = createSource(bufferList[i], i);
+			sourceArray[source.name] = source;
 
-		waltz = sourceArray[0];
-		waltz.gainNode.gain.value = .8;
+			if(source.name == "waltz")
+				sourceArray[source.name].gainNode.gain.value = .8;
+		}
 
 		filesLoaded = true;
 		if(SFX.filesLoaded()) {
@@ -160,7 +162,8 @@ var BGM = (function() {
 		}
 	}
 
-	function createSource(buffer) {
+	function createSource(buffer, index) {
+		var index = index;
 		var source = audioCtx.createBufferSource();
 		var gainNode = audioCtx.createGain ? audioCtx.createGain() : audioCtx.createGainNode();
 	    source.buffer = buffer;
@@ -172,19 +175,21 @@ var BGM = (function() {
 
 	    return {
 	      source: source,
-	      gainNode: gainNode
+	      gainNode: gainNode,
+	      name: (function() { return buffer.name; })()
+	      index: (function() { return index; })()
 	    };
 	}
 
 	function play() {
-		waltz.source.start(0);
+		sourceArray["waltz"].source.start(0);
 	}
 
 	function setCrossfade(gain) {
 		crossfading = true;
 
 		if(gain != -1) {
-			TweenMax.to(waltz.gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
+			TweenMax.to(sourceArray["waltz"].gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
 				onComplete:function() {
 					crossfading = false;
 				}
@@ -213,7 +218,7 @@ var BGM = (function() {
 		if(muted) {
 			if(!crossfading) {
 				crossfadeArray = [];
-				prepareCrossfade(waltz.gainNode.gain.value);
+				prepareCrossfade(sourceArray["waltz"].gainNode.gain.value);
 			}
 
 			setCrossfade(0, 0);
@@ -285,9 +290,6 @@ var BGM = (function() {
 		},
 		isPaused:function() {
 			return paused;
-		},
-		test:function() {
-			return waltz;
 		}
 	};
 })();
