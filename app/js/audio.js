@@ -6,7 +6,7 @@ function BufferLoader(context, urlList, callback) {
   this.context = context;
   this.urlList = urlList;
   this.onload = callback;
-  this.bufferList = new Array();
+  this.bufferList = [];
   this.loadCount = 0;
 }
 
@@ -111,10 +111,10 @@ function AudioEngine(bgmFile) {
 var BGM = (function() {
 //===============================
 	var audioCtx;
-	var sourceArray = new Array();
-	var crossfadeArray = new Array();
+	var sourceArray = [];
+	var crossfadeArray = [];
 
-	var files = new Array();
+	var files = [];
 	var filesLoaded = false;
 	var muted = false;
 	var paused = false;
@@ -285,7 +285,7 @@ var BGM = (function() {
 var SFX = (function() {
 //===============================
 	var audioCtx;
-	var bufferArray = new Array();
+	var bufferArray = [];
 
 	var files = ['audio/sfx/button.mp3'];
 	var filesLoaded = false;

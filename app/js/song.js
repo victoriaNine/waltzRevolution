@@ -21,8 +21,8 @@ function Song(url, callback) {
   this.startTime = 0;
   this.fileURL;
 
-  this.score = new Array();
-  this.notes = new Array();
+  this.score = [];
+  this.notes = [];
 
   this.baseNoteLength;
   this.barLength;
@@ -213,7 +213,7 @@ function draw() {
 
 function getStyle(selector, property, valueOnly) {
   var styleSheets = document.styleSheets;
-  var classes = new Array();
+  var classes = [];
 
   for(var i = 0; i < styleSheets.length; i++) {
     if(!styleSheets[i].ownerNode.attributes.href.value.match("http|//")) {
