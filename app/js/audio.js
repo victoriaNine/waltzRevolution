@@ -124,8 +124,13 @@ var BGM = (function() {
 
 	var startedAt;
 	var pausedAt = 0;
-	var currentPosition = function() { return paused ? pausedAt / 1000 : ((new Date().getTime() - startedAt) + pausedAt) / 1000; };
+	var currentPosition = (function() { 
+		var position = paused ? pausedAt / 1000 : ((new Date().getTime() - startedAt) + pausedAt) / 1000;
+		if(position > songLength) position = songLength;
+		return position;
+	})();
 	var songLength;
+	var hasEnded = false;
 
 
 	function init(url) {
@@ -148,9 +153,6 @@ var BGM = (function() {
 		for(var i = 0; i < bufferList.length; i++) {
 			var source = createSource(bufferList[i], i);
 			sourceArray[source.name] = source;
-
-			if(source.name == "waltz")
-				sourceArray[source.name].gainNode.gain.value = .8;
 		}
 
 		filesLoaded = true;
@@ -171,6 +173,8 @@ var BGM = (function() {
 
 		source.connect(gainNode);
 	    gainNode.connect(audioCtx.destination);
+
+	    if(source.name == "waltz") source.gainNode.gain.value = .8;
 
 	    return {
 	      source: source,
@@ -233,6 +237,7 @@ var BGM = (function() {
 	}
 
 	function pause(state) {
+		if(hasEnded) return;
 		if(state == true || state == false) {
 			if(state == paused) return;
 			paused = state;
@@ -258,43 +263,20 @@ var BGM = (function() {
 		setCrossfade:setCrossfade,
 		prepareCrossfade:prepareCrossfade,
 		playCrossfade:playCrossfade,
-		mute:function() {
-			mute(true);
-		},
-		unMute:function() {
-			mute(false);
-		},
-		toggleMute:function() {
-			mute("toggle");
-		},
-		isMuted:function() {
-			return muted;
-		},
-		filesLoaded:function() {
-			return filesLoaded;
-		},
-		filesNb:function() {
-			return files.length;
-		},
-		isCrossfading:function() {
-			return crossfading;
-		},
-		getCurrentPosition:currentPosition,
-		getSongLength:function() {
-			return songLength;
-		},
-		pause:function() {
-			pause(true);
-		},
-		unPause:function() {
-			pause(false);
-		},
-		togglePause:function() {
-			pause("toggle");
-		},
-		isPaused:function() {
-			return paused;
-		}
+		mute:function() { mute(true); },
+		unMute:function() { mute(false); },
+		toggleMute:function() { mute("toggle"); },
+		isMuted:function() { return muted; },
+		filesLoaded:function() { return filesLoaded; },
+		filesNb:function() { return files.length; },
+		isCrossfading:function() { return crossfading; },
+		getCurrentPosition:function() { return currentPosition; },
+		getSongLength:function() { return songLength; },
+		pause:function() { pause(true); },
+		unPause:function() { pause(false); },
+		togglePause:function() { pause("toggle"); },
+		isPaused:function() { return paused; },
+		hasEnded:function() { hasEnded = true; }
 	};
 })();
 

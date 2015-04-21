@@ -93,7 +93,7 @@ $(document).ready(function() {
 
 		$(document).on("allFilesLoaded", function() {
 			var waitForFocus = function() {
-				mobilecheck() ? initBGM() : initSite();
+				mobilecheck() ? initSong() : initSite();
 				 $(window).off("focus", waitForFocus);
 			};
 
@@ -154,6 +154,8 @@ $(document).ready(function() {
 		if(e.which == 37) $("#keyLeft").addClass("pressed");
 		if(e.which == 40) $("#keyDown").addClass("pressed");
 		if(e.which == 32) $("#keySpace").addClass("pressed");
+
+		console.log(e);
 	}).keyup(function(e) {
 		e.preventDefault();
 
@@ -162,12 +164,65 @@ $(document).ready(function() {
 		if(e.which == 37) $("#keyLeft").removeClass("pressed");
 		if(e.which == 40) $("#keyDown").removeClass("pressed");
 		if(e.which == 32) $("#keySpace").removeClass("pressed");
+
+		console.log(e);
 	}).resize(function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	});
 
 	$(document).on("songEnded", function() {
+		BGM.hasEnded();
 		console.log("I am SO done.");
+	});
+
+	$("#keyUp").on('touchstart touchend', function(e) {
+		var type;
+		if(e.type == 'touchstart') type = 'keydown';
+		if(e.type == 'touchend') type = 'keyup';
+
+		var _e = $.Event(type);
+		_e.which = _e.keyCode = 38;
+		$(window).trigger(_e);
+	});
+
+	$("#keyRight").on('touchstart touchend', function(e) {
+		var type;
+		if(e.type == 'touchstart') type = 'keydown';
+		if(e.type == 'touchend') type = 'keyup';
+
+		var _e = $.Event(type);
+		_e.which = _e.keyCode = 39;
+		$(window).trigger(_e);
+	});
+
+	$("#keyLeft").on('touchstart touchend', function(e) {
+		var type;
+		if(e.type == 'touchstart') type = 'keydown';
+		if(e.type == 'touchend') type = 'keyup';
+
+		var _e = $.Event(type);
+		_e.which = _e.keyCode = 37;
+		$(window).trigger(_e);
+	});
+
+	$("#keyDown").on('touchstart touchend', function(e) {
+		var type;
+		if(e.type == 'touchstart') type = 'keydown';
+		if(e.type == 'touchend') type = 'keyup';
+
+		var _e = $.Event(type);
+		_e.which = _e.keyCode = 40;
+		$(window).trigger(_e);
+	});
+
+	$("#keySpace").on('touchstart touchend', function(e) {
+		var type;
+		if(e.type == 'touchstart') type = 'keydown';
+		if(e.type == 'touchend') type = 'keyup';
+
+		var _e = $.Event(type);
+		_e.which = _e.keyCode = 32;
+		$(window).trigger(_e);
 	});
 });
 
