@@ -99,9 +99,7 @@ function AudioEngine(bgmFile) {
 		this.muted = !this.muted;
 	};
 
-	this.isMuted = function() {
-		return this.muted;
-	};
+	this.isMuted = function() { return this.muted; };
 
 	this.init();
 };
@@ -345,24 +343,12 @@ var SFX = (function() {
 	return {
 		init:init,
 		play:play,
-		mute:function() {
-			mute(true);
-		},
-		unMute:function() {
-			mute(false);
-		},
-		toggleMute:function() {
-			mute("toggle");
-		},
-		isMuted:function() {
-			return muted;
-		},
-		filesLoaded:function() {
-			return filesLoaded;
-		},
-		filesNb:function() {
-			return files.length;
-		}
+		mute:function() { mute(true); },
+		unMute:function() { mute(false); },
+		toggleMute:function() { mute("toggle"); },
+		isMuted:function() { return muted; },
+		filesLoaded:function() { return filesLoaded; },
+		filesNb:function() { return files.length; }
 	};
 })();
 
