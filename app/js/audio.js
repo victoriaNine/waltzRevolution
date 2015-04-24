@@ -37,9 +37,7 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
 
       	$(document).trigger("soundLoaded");
       },
-      function(error) {
-        console.error('decodeAudioData error', error);
-      }
+      function(error) { console.error('decodeAudioData error', error); }
     );
   }
 
@@ -122,11 +120,12 @@ var BGM = (function() {
 
 	var startedAt;
 	var pausedAt = 0;
-	var currentPosition = (function() { 
+	var currentPosition = function() { 
 		var position = paused ? pausedAt / 1000 : ((new Date().getTime() - startedAt) + pausedAt) / 1000;
 		if(position > songLength) position = songLength;
+
 		return position;
-	})();
+	};
 	var songLength;
 	var hasEnded = false;
 
@@ -200,9 +199,7 @@ var BGM = (function() {
 		}
 	}
 
-	function prepareCrossfade(gain) {
-		crossfadeArray.unshift(gain);
-	}
+	function prepareCrossfade(gain) { crossfadeArray.unshift(gain); }
 
 	function playCrossfade() {
 		if(!muted && crossfadeArray.length > 0) {
@@ -228,9 +225,7 @@ var BGM = (function() {
 		}
 		else {
 			playCrossfade();
-			if(!crossfading) {
-				crossfadeArray = [];
-			}
+			if(!crossfading) crossfadeArray = [];
 		}
 	}
 
@@ -268,7 +263,7 @@ var BGM = (function() {
 		filesLoaded:function() { return filesLoaded; },
 		filesNb:function() { return files.length; },
 		isCrossfading:function() { return crossfading; },
-		getCurrentPosition:function() { return currentPosition; },
+		getCurrentPosition:function() { return currentPosition(); },
 		getSongLength:function() { return songLength; },
 		pause:function() { pause(true); },
 		unPause:function() { pause(false); },

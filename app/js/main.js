@@ -155,7 +155,15 @@ $(document).ready(function() {
 		if(e.which == 40) $("#keyDown").addClass("pressed");
 		if(e.which == 32) $("#keySpace").addClass("pressed");
 
-		console.log(e);
+		var test = function(note) {
+			var min = BGM.getCurrentPosition() - $song.baseNoteLength;
+			var max = BGM.getCurrentPosition() + $song.baseNoteLength;
+
+			if(note.songPosition > min && note.songPosition < max)
+				return true;
+		}
+
+		console.log($song.notes.filter(test));
 	}).keyup(function(e) {
 		e.preventDefault();
 
