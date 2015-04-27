@@ -30,11 +30,14 @@ var autoMuteSound = false;
 var initReady = false;
 
 var $song;
+var $score = 0;
 
 $(document).ready(function() {
 	if(mobilecheck()) $("html").addClass("isMobile");
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
+
+	updateScore();
 
 	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 
@@ -149,21 +152,8 @@ $(document).ready(function() {
 	$(window).keydown(function(e) {
 		e.preventDefault();
 
-		if(e.which == 38) $("#keyUp").addClass("pressed");
-		if(e.which == 39) $("#keyRight").addClass("pressed");
-		if(e.which == 37) $("#keyLeft").addClass("pressed");
-		if(e.which == 40) $("#keyDown").addClass("pressed");
-		if(e.which == 32) $("#keySpace").addClass("pressed");
-
-		var test = function(note) {
-			var min = BGM.getCurrentPosition() - $song.baseNoteLength;
-			var max = BGM.getCurrentPosition() + $song.baseNoteLength;
-
-			if(note.songPosition > min && note.songPosition < max)
-				return true;
-		}
-
-		console.log($song.notes.filter(test));
+		keyMap[e.which].pressed = true;
+		for(var key in keyMap) if(keyMap[key].pressed) detectInput(keyMap[key]);
 	}).keyup(function(e) {
 		e.preventDefault();
 
@@ -173,7 +163,7 @@ $(document).ready(function() {
 		if(e.which == 40) $("#keyDown").removeClass("pressed");
 		if(e.which == 32) $("#keySpace").removeClass("pressed");
 
-		console.log(e);
+		keyMap[e.which].pressed = false;
 	}).resize(function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	});
@@ -183,56 +173,38 @@ $(document).ready(function() {
 		console.log("I am SO done.");
 	});
 
-	$("#keyUp").on('touchstart touchend', function(e) {
+	$("#keyUp, #keyRight, #keyLeft, #keyDown, #keySpace").on('touchstart touchend', function(e) {
 		var type;
 		if(e.type == 'touchstart') type = 'keydown';
 		if(e.type == 'touchend') type = 'keyup';
 
-		var _e = $.Event(type);
-		_e.which = _e.keyCode = 38;
-		$(window).trigger(_e);
-	});
-
-	$("#keyRight").on('touchstart touchend', function(e) {
-		var type;
-		if(e.type == 'touchstart') type = 'keydown';
-		if(e.type == 'touchend') type = 'keyup';
+		var code;
+		if(e.target.id == "keyUp") code = 38;
+		if(e.target.id == "keyRight") code = 39;
+		if(e.target.id == "keyLeft") code = 37;
+		if(e.target.id == "keyDown") code = 40;
+		if(e.target.id == "keySpace") code = 32;
 
 		var _e = $.Event(type);
-		_e.which = _e.keyCode = 39;
-		$(window).trigger(_e);
-	});
-
-	$("#keyLeft").on('touchstart touchend', function(e) {
-		var type;
-		if(e.type == 'touchstart') type = 'keydown';
-		if(e.type == 'touchend') type = 'keyup';
-
-		var _e = $.Event(type);
-		_e.which = _e.keyCode = 37;
-		$(window).trigger(_e);
-	});
-
-	$("#keyDown").on('touchstart touchend', function(e) {
-		var type;
-		if(e.type == 'touchstart') type = 'keydown';
-		if(e.type == 'touchend') type = 'keyup';
-
-		var _e = $.Event(type);
-		_e.which = _e.keyCode = 40;
-		$(window).trigger(_e);
-	});
-
-	$("#keySpace").on('touchstart touchend', function(e) {
-		var type;
-		if(e.type == 'touchstart') type = 'keydown';
-		if(e.type == 'touchend') type = 'keyup';
-
-		var _e = $.Event(type);
-		_e.which = _e.keyCode = 32;
+		_e.which = _e.keyCode = code;
 		$(window).trigger(_e);
 	});
 });
+
+function setScore(value, update) { $score = value; if(update) updateScore(); }
+function incrementScore(value, update) { $score += value; if(update) updateScore(); }
+function decrementScore(value, update) { if($score -= value >= 0) $score -= value; if(update) updateScore(); }
+
+function updateScore() {
+	var currentValue = $("#scoreValue").html() || 0;
+
+	TweenMax.to($({someValue: currentValue}), .4, {someValue: $score, ease:Power3.easeInOut,
+		onUpdate:function(tween, prop) {
+			$("#scoreValue").html(Math.ceil(tween.target[0].someValue));
+		},
+		onUpdateParams:["{self}", 'someValue']
+	});
+}
 
 // http://stackoverflow.com/a/11381730/989439
 function mobilecheck() {

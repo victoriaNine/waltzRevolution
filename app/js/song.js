@@ -71,6 +71,7 @@ Song.prototype.loadSong = function(url) {
           loader.score[i].tnBeatDivision
         );
 
+        loader.notes[i].index = i;
         loader.notes[i].init();
     }
 
@@ -128,7 +129,12 @@ Song.prototype.resume = function() {
   }
 }
 
+Song.prototype.triggerPause = function() {
+  this.paused ? this.resume() : this.pause();
+}
+
 function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tnBeatPosition, tnBeatDivision) {
+  this.index;
   this.key = key;
   this.bar = bar;
   this.beat = beat;
@@ -139,6 +145,10 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
   this.tnBeat = tnBeat;
   this.tnBeatPosition = tnBeatPosition;
   this.tnBeatDivision = tnBeatDivision;
+
+  this.pressed = false;
+  this.score = 0;
+  this.accuracy = "fail";
 
   this.init = function() {
     this.songPosition = $song.startTime;

@@ -1,6 +1,6 @@
 ! pause/resume song
 ! fix notes positioning
-- detect input accuracy ("perfect", "great", "missed", "cool")
+! detect input accuracy ("perfect", "great", "missed", "cool")
 - clean code
 - score (increment score depending on accuracy, save best score, grades)
 - clean code
