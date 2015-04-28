@@ -12,6 +12,7 @@
  ! save best score
 - recheck input accuracy (tune difficulty)
 - clean code
+- design checkup
 - menus :
  - pause
  - credits
