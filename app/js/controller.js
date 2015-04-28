@@ -57,20 +57,35 @@ function detectInput(key) {
 
 	if(closestNote.score >= 90 && closestNote.score <= 100) {
 		closestNote.accuracy = "perfect";
+		$accuracy[0]++;
 	}
 	else if(closestNote.score >= 60 && closestNote.score <= 89) {
 		closestNote.accuracy = "great";
+		$accuracy[1]++;
 	}
 	else if(closestNote.score >= 30 && closestNote.score <= 59) {
 		closestNote.accuracy = "cool";
+		$accuracy[2]++;
 	}
 	else if(closestNote.score >= 10 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
+		$accuracy[3]++;
 	}
 	else if(closestNote.score >= 1 && closestNote.score <= 9) {
 		closestNote.accuracy = "miss";
+		$accuracy[4]++;
+		closestNote.score *= -1;
 	}
 
 	if(closestNote.accuracy != "miss") incrementScore(closestNote.score, true);
+	else decrementScore(10 - Math.abs(closestNote.score), true);
 	closestNote.pressed = true;
+}
+
+function failedNote(note) {
+	note.accuracy = "fail";
+	$accuracy[5]++;
+	note.score = -10;
+	
+	decrementScore(Math.abs(note.score), true);
 }

@@ -91,12 +91,11 @@ Song.prototype.loadSong = function(url) {
 Song.prototype.load = function() { this.loadSong(this.url); }
 
 Song.prototype.start = function() {
-  var rAF = function() { requestAnimationFrame(draw); }
+  var song = this;
+  var rAF = function() { if(!song.paused) requestAnimationFrame(draw); }
 
   BGM.play();
   draw();
-
-  var song = this;
 
   TweenMax.ticker.addEventListener("tick", rAF);
   this.staffScroll = TweenMax.to($("<div>").css("left","0px"), this.staffScrollDuration, {left:this.staffLength+"px", ease:Power0.easeNone,
@@ -148,7 +147,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
 
   this.pressed = false;
   this.score = 0;
-  this.accuracy = "fail";
+  this.accuracy;
 
   this.init = function() {
     this.songPosition = $song.startTime;
@@ -210,6 +209,8 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
 
     ctx.fillStyle = "#D55320";
     ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + 5) - $song.currentStaffPosition, top + 25);
+
+    if($song.currentStaffPosition > this.staffPosition && !this.accuracy && !this.pressed) failedNote(this);
   }
 }
 

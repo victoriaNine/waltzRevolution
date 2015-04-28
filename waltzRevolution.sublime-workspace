@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"get",
+				"getLocalStorage"
+			],
+			[
 				"_",
 				"_currentStaffPosition"
 			],
@@ -279,7 +283,7 @@
 			"file": "app/index.html",
 			"settings":
 			{
-				"buffer_size": 1989,
+				"buffer_size": 2088,
 				"line_ending": "Windows"
 			}
 		},
@@ -287,7 +291,32 @@
 			"file": "app/js/main.js",
 			"settings":
 			{
-				"buffer_size": 10922,
+				"buffer_size": 11208,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "$(function(){\n  \n  function set(key, value) { localStorage.setItem(key, value); }\n  function get(key)        { return localStorage.getItem(key); }\n  function increase(el)    { set(el, parseInt( get(el) ) + 1); }\n  function decrease(el)    { set(el, parseInt( get(el) ) - 1); }\n\n  var toTime = function(nr){\n    if(nr == '-:-') return nr;\n    else { var n = ' '+nr/1000+' '; return n.substr(0, n.length-1)+'s'; }\n  };\n\n  function updateStats(){\n    $('#stats').html('<div class=\"padded\"><h2>Figures: <span>'+\n      '<b>'+get('flip_won')+'</b><i>Won</i>'+\n      '<b>'+get('flip_lost')+'</b><i>Lost</i>'+\n      '<b>'+get('flip_abandoned')+'</b><i>Aborted</i></span></h2>'+\n      '<ul><li><b>Best Casual:</b> <span>'+toTime( get('flip_casual') )+'</span></li>'+\n      '<li><b>Best Medium:</b> <span>'+toTime( get('flip_medium') )+'</span></li>'+\n      '<li><b>Best Hard:</b> <span>'+toTime( get('flip_hard') )+'</span></li></ul>'+\n      '<ul><li><b>Total Flips:</b> <span>'+parseInt( ( parseInt(get('flip_matched')) + parseInt(get('flip_wrong')) ) * 2)+'</span></li>'+\n      '<li><b>Matched Flips:</b> <span>'+get('flip_matched')+'</span></li>'+\n      '<li><b>Wrong Flips:</b> <span>'+get('flip_wrong')+'</span></li></ul></div>');\n  };\n\n  function shuffle(array) {\n    var currentIndex = array.length, temporaryValue, randomIndex;\n    while (0 !== currentIndex) {\n        randomIndex = Math.floor(Math.random() * currentIndex);\n        currentIndex -= 1;\n        temporaryValue = array[currentIndex];\n        array[currentIndex] = array[randomIndex];\n        array[randomIndex] = temporaryValue;\n    }\n    return array;\n  };\n\n  function startScreen(text){\n    $('#g').removeAttr('class').empty();\n    $('.logo').fadeIn(250);\n\n    $('.c1').text(text.substring(0, 1));\n    $('.c2').text(text.substring(1, 2));\n    $('.c3').text(text.substring(2, 3));\n    $('.c4').text(text.substring(3, 4));\n\n    // If won game\n    if(text == 'nice'){\n      increase('flip_won');\n      decrease('flip_abandoned');\n    }\n\n    // If lost game\n    else if(text == 'fail'){\n      increase('flip_lost');\n      decrease('flip_abandoned');\n    }\n\n    // Update stats\n    updateStats();\n  };\n\n  /* LOAD GAME ACTIONS */\n\n  // Init localStorage\n  if( !get('flip_won') && !get('flip_lost') && !get('flip_abandoned') ){\n    //Overall Game stats\n    set('flip_won', 0);\n    set('flip_lost', 0);\n    set('flip_abandoned', 0);\n    //Best times\n    set('flip_casual', '-:-');\n    set('flip_medium', '-:-');\n    set('flip_hard', '-:-');\n    //Cards stats\n    set('flip_matched', 0);\n    set('flip_wrong', 0);\n  }\n\n  // Fill stats\n  if( get('flip_won') > 0 || get('flip_lost') > 0 || get('flip_abandoned') > 0) {updateStats();}\n\n  // Toggle start screen cards\n  $('.logo .card:not(\".twist\")').on('click', function(e){\n    $(this).toggleClass('active').siblings().not('.twist').removeClass('active');\n    if( $(e.target).is('.playnow') ) { $('.logo .card').last().addClass('active'); }\n  });\n\n  // Start game\n  $('.play').on('click', function(){\n    increase('flip_abandoned');\n\n    var difficulty = '',\n        timer      = 1000,\n        level      = $(this).data('level');\n\n    // Set game timer and difficulty   \n    if     (level ==  8) { difficulty = 'casual'; timer *= level * 4; }\n    else if(level == 18) { difficulty = 'medium'; timer *= level * 5; }\n    else if(level == 32) { difficulty = 'hard';   timer *= level * 6; }	    \n\n    $('#g').addClass(difficulty);\n\n    $('.logo').fadeOut(250, function(){\n      var startGame  = $.now(),\n          obj = [];\n\n      // Create and add shuffled cards to game\n      for(i = 0; i < level; i++) { obj.push(i); }\n\n      var shu      = shuffle( $.merge(obj, obj) ),\n          cardSize = 100/Math.sqrt(shu.length);\n\n      for(i = 0; i < shu.length; i++){\n        var code = shu[i];\n        if(code < 10) code = \"0\" + code;\n        if(code == 30) code = 10;\n        if(code == 31) code = 21;\n        $('<div class=\"card\" style=\"width:'+cardSize+'%;height:'+cardSize+'%;\">'+\n            '<div class=\"flipper\"><div class=\"f\"></div><div class=\"b\" data-f=\"&#xf0'+code+';\"></div></div>'+\n          '</div>').appendTo('#g');\n      }\n\n      // Set card actions\n      $('#g .card').on({\n        'mousedown' : function(){\n          if($('#g').attr('data-paused') == 1) {return;}\n          var data = $(this).addClass('active').find('.b').attr('data-f');\n\n          if( $('#g').find('.card.active').length > 1){\n            setTimeout(function(){\n              var thisCard = $('#g .active .b[data-f='+data+']');\n\n              if( thisCard.length > 1 ) {\n                thisCard.parents('.card').toggleClass('active card found').empty(); //yey\n                increase('flip_matched');\n\n                // Win game\n                if( !$('#g .card').length ){\n                  var time = $.now() - startGame;\n                  if( get('flip_'+difficulty) == '-:-' || get('flip_'+difficulty) > time ){\n                    set('flip_'+difficulty, time); // increase best score\n                  }\n\n                  startScreen('nice');\n                }\n              }\n              else {\n                $('#g .card.active').removeClass('active'); // fail\n                increase('flip_wrong');\n              }\n            }, 401);\n          }\n        }\n      });\n\n      // Add timer bar\n      $('<i class=\"timer\"></i>')\n        .prependTo('#g')\n        .css({\n          'animation' : 'timer '+timer+'ms linear'\n        })\n        .one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(e) {\n          startScreen('fail'); // fail game\n        });\n\n      // Set keyboard (p)ause and [esc] actions\n      $(window).off().on('keyup', function(e){\n        // Pause game. (p)\n        if(e.keyCode == 80){\n          if( $('#g').attr('data-paused') == 1 ) { //was paused, now resume\n            $('#g').attr('data-paused', '0');\n            $('.timer').css('animation-play-state', 'running');\n            $('.pause').remove();\n          }\n          else {\n            $('#g').attr('data-paused', '1');\n            $('.timer').css('animation-play-state', 'paused');\n            $('<div class=\"pause\"></div>').appendTo('body');\n          }\n        }\n        // Abandon game. (ESC)\n        if(e.keyCode == 27){\n          startScreen('flip');\n          // If game was paused\n          if( $('#g').attr('data-paused') == 1 ){\n            $('#g').attr('data-paused', '0');\n            $('.pause').remove();\n          }\n          $(window).off();\n        }\n      });\n    });\n  });\n  \n});",
+			"settings":
+			{
+				"buffer_size": 6497,
+				"line_ending": "Windows",
+				"name": "$(function(){"
+			}
+		},
+		{
+			"file": "app/js/song.js",
+			"settings":
+			{
+				"buffer_size": 7494,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/js/controller.js",
+			"settings":
+			{
+				"buffer_size": 2840,
 				"line_ending": "Windows"
 			}
 		},
@@ -295,23 +324,7 @@
 			"file": "TODO.txt",
 			"settings":
 			{
-				"buffer_size": 289,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/js/song.js",
-			"settings":
-			{
-				"buffer_size": 7167,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "app/js/audio.js",
-			"settings":
-			{
-				"buffer_size": 8339,
+				"buffer_size": 541,
 				"line_ending": "Windows"
 			}
 		}
@@ -349,10 +362,12 @@
 	"expanded_folders":
 	[
 		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution",
-		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app"
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js"
 	],
 	"file_history":
 	[
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/audio.js",
 		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/lacoste/mFlow/css/style.scss",
 		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/lacoste/mFlow/js/main.js",
 		"/E/VictoriaBackup/Documents/_campagnes/IMPACT/2013/10/wacom/custom/js/main.js",
@@ -446,6 +461,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"localStorage",
 			"\",",
 			"songLength",
 			"getSongLength",
@@ -571,7 +587,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -580,15 +596,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1989,
+						"buffer_size": 2088,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1564,
-								1564
+								867,
+								867
 							]
 						],
 						"settings":
@@ -601,7 +617,7 @@
 						"translation.y": 42.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -610,15 +626,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 10922,
+						"buffer_size": 11208,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4711,
-								4711
+								5887,
+								5887
 							]
 						],
 						"settings":
@@ -627,27 +643,116 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1848.0,
+						"translation.y": 2617.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "TODO.txt",
-					"semi_transient": true,
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 289,
+						"buffer_size": 6497,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								289,
-								289
+								2200,
+								2212
+							]
+						],
+						"settings":
+						{
+							"auto_name": "$(function(){",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 579.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/js/song.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7494,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5858,
+								5858
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2769.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/js/controller.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2840,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								940,
+								940
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 252.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "TODO.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 541,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								470,
+								470
 							]
 						],
 						"settings":
@@ -658,66 +763,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "app/js/song.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 7167,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1029,
-								1029
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1722.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "app/js/audio.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8339,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								268,
-								268
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 168.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
+					"stack_index": 4,
 					"type": "text"
 				}
 			]
