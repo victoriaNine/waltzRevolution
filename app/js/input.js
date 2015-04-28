@@ -7,7 +7,7 @@ var keyMap = {
 	80: {name: "P", pressed: false, when:0}
 };
 
-function detectInput(key) {
+function detectInputAccuracy(key) {
 	var keyName = key.name;
 	var keyNameFirstLetterUppercase = keyName.replace(keyName.charAt(0), keyName.charAt(0).toUpperCase());
 	var gamePad = key.gamePad;
@@ -83,6 +83,7 @@ function detectInput(key) {
 }
 
 function failedNote(note) {
+	// FAILED TO INPUT IN TIME
 	note.accuracy = "fail";
 	$accuracy[5]++;
 	note.score = -10;

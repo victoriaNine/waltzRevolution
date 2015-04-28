@@ -2,6 +2,7 @@
 ! fix notes positioning
 ! detect input accuracy ("perfect", "great", "cool", "poor", "miss")
 ! clean code
+
 ! score :
  ! increment score depending on accuracy
  ! decrement score when keys are constantly pressed (but not when playing a tied note)
@@ -11,17 +12,24 @@
  ! grades (S, A, B, C, D, E)
  ! save best score
  ! take tied notes bonuses in account
-- recheck input accuracy (tune difficulty)
-- clean code
+! clean code
+
 - design checkup
-- sreens :
+- sreens & UI :
  - pause
  - credits
  - results
  - start game
 - clean code
+
 - sfx
 - music visualizer
 - clean code
+
 - responsive
+- clean code
+
+- tune difficulty :
+ - recheck input accuracy
+ - score tuning
 - clean code

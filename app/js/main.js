@@ -175,7 +175,7 @@ function addListeners() {
 			if(!keyMap[e.which].pressed) keyMap[e.which].when = new Date().getTime();
 			keyMap[e.which].pressed = true;
 
-			for(var key in keyMap) if(keyMap[key].pressed) detectInput(keyMap[key]);
+			for(var key in keyMap) if(keyMap[key].pressed) detectInputAccuracy(keyMap[key]);
 		}
 	})).keyup(function(e) {
 		e.preventDefault();
