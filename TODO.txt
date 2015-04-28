@@ -1,10 +1,23 @@
 ! pause/resume song
 ! fix notes positioning
-! detect input accuracy ("perfect", "great", "missed", "cool")
+! detect input accuracy ("perfect", "great", "cool", "poor", "miss")
 ! clean code
-- score (increment score depending on accuracy, save best score, grades)
+~ score :
+ ! increment score depending on accuracy
+ ~ decrement score when keys are constantly pressed (but not when playing a tied note)
+ - decrement score when note isn't played
+ - set minimum score to 0
+ - game over (@score = 0)
+ - grades (S, A, B, C, D)
+ - save best score
 - clean code
-- menus (credits, results, start game)
+- menus :
+ - credits
+ - results
+ - start game
+ - best scores
 - clean code
 - music visualizer
+- clean code
+- responsive
 - clean code
