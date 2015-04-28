@@ -12,6 +12,7 @@
  - save best score
 - clean code
 - menus :
+ - pause
  - credits
  - results
  - start game
