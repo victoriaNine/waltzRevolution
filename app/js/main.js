@@ -30,7 +30,7 @@ var autoMuteSound = false;
 var initReady = false;
 
 var $song;
-var $grade;
+var $rank;
 var $score = 1000;
 var $perfectScore;
 var $accuracy = [0, 0, 0, 0, 0, 0] // perfect, great, cool, poor, miss, fail
@@ -42,7 +42,7 @@ $(document).ready(function() {
 	if(tabletcheck()) $("html").addClass("isTablet");
 
 	updateScore();
-	$("#bestScore .right").html(getLocalStorage("bestScore") ? getLocalStorage("bestScore")[0]+" ("+getLocalStorage("bestScore")[1]+")" : "-");
+	$("#bestScore .right").html(getLocalStorage("bestScore") ? getLocalStorage("bestScore")[0] : "-");
 
 	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 
@@ -61,7 +61,16 @@ $(document).ready(function() {
 		audioEngine = new AudioEngine($song.fileURL);
 		totalFiles += audioEngine.audioFiles;
 
-		$perfectScore = 100 * $song.notes.length;
+		var tiedNotesBonus = 0;
+		$song.notes.filter(function(note) {
+			if(note.hasTiedNote) {
+				var tnLength = note.tnSongPosition - note.songPosition;
+				tiedNotesBonus += Math.ceil((tnLength / $song.baseNoteLength) * 100);
+
+				return true;
+			}
+		});
+		$perfectScore = 100 * $song.notes.length + tiedNotesBonus;
 
 		loadGame();
 	});
@@ -162,10 +171,12 @@ function addListeners() {
 	$(window).keydown($.throttle($song.baseNoteLength, true, function(e) {
 		e.preventDefault();
 
-		if(!keyMap[e.which].pressed) keyMap[e.which].when = new Date().getTime();
-		keyMap[e.which].pressed = true;
+		if(keyMap[e.which]) {
+			if(!keyMap[e.which].pressed) keyMap[e.which].when = new Date().getTime();
+			keyMap[e.which].pressed = true;
 
-		for(var key in keyMap) if(keyMap[key].pressed) detectInput(keyMap[key]);
+			for(var key in keyMap) if(keyMap[key].pressed) detectInput(keyMap[key]);
+		}
 	})).keyup(function(e) {
 		e.preventDefault();
 
@@ -175,13 +186,15 @@ function addListeners() {
 		if(e.which == 40) $("#keyDown").removeClass("pressed");
 		if(e.which == 32) $("#keySpace").removeClass("pressed");
 
-		keyMap[e.which].pressed = false;
-		keyMap[e.which].when = 0;
+		if(keyMap[e.which]) {
+			keyMap[e.which].pressed = false;
+			keyMap[e.which].when = 0;
+		}
 	}).resize(function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	});
 
-	$(document).on("songEnded", songEnded);
+	$(document).on("songEnded", gameComplete);
 
 	$("#keyUp, #keyRight, #keyLeft, #keyDown, #keySpace").on('touchstart touchend', function(e) {
 		var type;
@@ -189,11 +202,11 @@ function addListeners() {
 		if(e.type == 'touchend') type = 'keyup';
 
 		var code;
-		if(e.target.id == "keyUp") code = 38;
-		if(e.target.id == "keyRight") code = 39;
-		if(e.target.id == "keyLeft") code = 37;
-		if(e.target.id == "keyDown") code = 40;
-		if(e.target.id == "keySpace") code = 32;
+		if(e.currentTarget.id == "keyUp") code = 38;
+		if(e.currentTarget.id == "keyRight") code = 39;
+		if(e.currentTarget.id == "keyLeft") code = 37;
+		if(e.currentTarget.id == "keyDown") code = 40;
+		if(e.currentTarget.id == "keySpace") code = 32;
 
 		var _e = $.Event(type);
 		_e.which = _e.keyCode = code;
@@ -228,41 +241,48 @@ function updateScore() {
 function setLocalStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
 function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(key)); }
 
-function gameOver() {
-	console.log("game over");
-
-	$accuracyPerc = "-";
-	$grade = "E"; // fail
-
-	endParty();
-}
-
-function songEnded() {
+function gameComplete() {
 	console.log("I am SO done.");
 
 	$accuracyPerc = Math.ceil($score * 100 / $perfectScore);
 
 	if($accuracyPerc >= 90 && $accuracyPerc <= 100)
-		$grade = "S"; // perfect
+		$rank = "S"; // perfect
 	else if($accuracyPerc >= 60 && $accuracyPerc <= 89)
-		$grade = "A"; // great
+		$rank = "A"; // great
 	else if($accuracyPerc >= 30 && $accuracyPerc <= 59)
-		$grade = "B"; // cool
+		$rank = "B"; // cool
 	else if($accuracyPerc >= 10 && $accuracyPerc <= 29)
-		$grade = "C"; // poor
+		$rank = "C"; // poor
 	else if($accuracyPerc >= 1 && $accuracyPerc <= 9)
-		$grade = "D"; // miss
+		$rank = "D"; // miss
 
-	endParty();
+	partyEnd();
 }
 
-function endParty() {
-	if($score > getLocalStorage("bestScore")) {
-		setLocalStorage("bestScore", [$score, $grade, $accuracyPerc]);
-		console.log("New best score! -- "+$grade+" : "+$score+" - "+$accuracyPerc);
-	}
+function gameOver() {
+	console.log("game over");
 
+	BGM.setCrossfade(0);
+	TweenMax.to($song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
+		onComplete:function() {
+			partyEnd();
+		}
+	});
+
+	$accuracyPerc = "-";
+	$rank = "E"; // fail
+}
+
+function partyEnd() {
+	$song.pause();
 	BGM.hasEnded();
+
+	console.log("Rank "+$rank+" : "+$score+"pts - "+$accuracyPerc+"%");
+	if($score > getLocalStorage("bestScore")[0] || !getLocalStorage("bestScore")) {
+		setLocalStorage("bestScore", [$score, $rank, $accuracyPerc]);
+		console.log("New best score!");
+	}
 }
 
 // http://stackoverflow.com/a/11381730/989439

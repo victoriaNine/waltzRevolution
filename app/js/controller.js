@@ -19,7 +19,7 @@ function detectInput(key) {
 	var okPerc = [], okNotes = [], okIndex = [], okTiedNotes = [];
 
 	var tiedNote = function(note) {
-		if(note.isTiedNote && note.pressed && note.tnSongPosition >= BGM.getCurrentPosition() && note.key == keyName) {
+		if(note.hasTiedNote && note.pressed && note.tnSongPosition >= BGM.getCurrentPosition() && note.key == keyName) {
 			incrementScore(note.score, true);
 			return true;
 		}
@@ -27,14 +27,14 @@ function detectInput(key) {
 
 	okTiedNotes = $song.notes.filter(tiedNote);
 	if(okTiedNotes.length > 0) return;
-	// IT ISN'T A TIED NOTE, MAYBE A REGULAR ONE THEN?
+	// IT DOESN'T HAVE A TIED NOTE, MAYBE IT'S A REGULAR ONE THEN?
 
 	var regularNote = function(note) {
 		var min = BGM.getCurrentPosition() - $song.baseNoteLength;
 		var max = BGM.getCurrentPosition() + $song.baseNoteLength;
 		var inputDelay = (new Date().getTime() - key.when) / 1000;
 
-		if(!note.isTiedNote && note.songPosition >= min && note.songPosition <= max && note.key == keyName && inputDelay <= $song.baseNoteLength) {
+		if(note.songPosition >= min && note.songPosition <= max && note.key == keyName && inputDelay <= $song.baseNoteLength) {
 			var delta = Math.abs(BGM.getCurrentPosition() - note.songPosition);
 			var percentage = Math.ceil(delta * 100 / $song.baseNoteLength);
 			okPerc.push(percentage);

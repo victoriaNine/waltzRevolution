@@ -12,35 +12,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":1,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":1,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":1,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":1,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -49,35 +49,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":2,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":2,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":2,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":2,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -86,35 +86,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":3,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":3,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":3,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":3,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -123,35 +123,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":4,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":4,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":4,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":4,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -160,28 +160,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":5,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":5,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":5,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -190,28 +190,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":6,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":6,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":6,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -220,28 +220,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":7,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":7,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":7,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -250,28 +250,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":8,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":8,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":8,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -280,42 +280,42 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":9,
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":9,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":9,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":9,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":9,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -324,35 +324,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":10,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":10,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":10,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":10,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -361,35 +361,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":11,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":11,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":11,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":11,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -398,35 +398,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":12,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":12,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":12,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":12,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -435,28 +435,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":13,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":13,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":13,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -465,28 +465,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":14,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":14,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":14,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -495,28 +495,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":15,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":15,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":15,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -525,28 +525,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":16,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":16,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":16,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -555,7 +555,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":5,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -565,7 +565,7 @@
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -574,7 +574,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -583,21 +583,21 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":19,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":19,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -606,7 +606,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -616,7 +616,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -626,7 +626,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -636,7 +636,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -648,7 +648,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -658,7 +658,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -668,7 +668,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -678,7 +678,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -690,7 +690,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":6,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -700,7 +700,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":6,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -712,21 +712,21 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": false
+         "hasTiedNote": false
         },
         {"key":"right",
          "bar":23,
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": false
+         "hasTiedNote": false
         },
         {"key":"space",
          "bar":23,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": false
+         "hasTiedNote": false
         },
 
 
@@ -737,35 +737,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":24,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":24,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":24,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":24,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -774,35 +774,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":25,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":25,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":25,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":25,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -811,35 +811,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":26,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":26,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":26,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":26,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -848,35 +848,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":27,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":27,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":27,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":27,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -885,28 +885,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":28,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":28,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":28,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -915,28 +915,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":29,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":29,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":29,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -945,28 +945,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":30,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":30,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":30,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -975,28 +975,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":31,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":31,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":31,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1005,42 +1005,42 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":32,
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":32,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":32,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":32,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":32,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1049,35 +1049,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":33,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":33,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":33,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":33,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1086,35 +1086,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":34,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":34,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":34,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":34,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1123,35 +1123,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":35,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":35,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":35,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":35,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1160,28 +1160,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":36,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":36,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":36,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1190,28 +1190,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":37,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":37,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":37,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1220,28 +1220,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":38,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":38,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":38,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1250,28 +1250,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":39,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":39,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":39,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1280,7 +1280,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":5,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1290,7 +1290,7 @@
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1299,7 +1299,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1308,21 +1308,21 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":42,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":42,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1331,7 +1331,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1341,7 +1341,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1351,7 +1351,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1361,7 +1361,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1373,7 +1373,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1383,7 +1383,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1393,7 +1393,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1403,7 +1403,7 @@
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":3,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1415,7 +1415,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":6,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1425,7 +1425,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": true,
+         "hasTiedNote": true,
          "tnBeat":6,
          "tnBeatPosition":1,
          "tnBeatDivision":8
@@ -1437,21 +1437,21 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": false
+         "hasTiedNote": false
         },
         {"key":"right",
          "bar":46,
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": false
+         "hasTiedNote": false
         },
         {"key":"space",
          "bar":46,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote": false
+         "hasTiedNote": false
         },
 
 
@@ -1462,35 +1462,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":47,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":47,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":47,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":47,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1499,35 +1499,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":48,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":48,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":48,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":48,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1536,35 +1536,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"right",
          "bar":49,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":49,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":49,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":49,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1573,35 +1573,35 @@
          "beat":2,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         }, 
         {"key":"up",
          "bar":50,
          "beat":2,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":50,
          "beat":3,
          "beatPosition":1,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":50,
          "beat":3,
          "beatPosition":2,
          "beatDivision":16,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":50,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1610,28 +1610,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":51,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":51,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":51,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1640,28 +1640,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":52,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":52,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":52,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1670,28 +1670,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":53,
          "beat":3,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"right",
          "bar":53,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":53,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1700,28 +1700,28 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"left",
          "bar":54,
          "beat":4,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"up",
          "bar":54,
          "beat":5,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
         {"key":"down",
          "bar":54,
          "beat":6,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         },
 
 
@@ -1730,7 +1730,7 @@
          "beat":1,
          "beatPosition":1,
          "beatDivision":8,
-         "isTiedNote":false
+         "hasTiedNote":false
         }
     ]
 }

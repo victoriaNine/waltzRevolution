@@ -65,7 +65,7 @@ Song.prototype.loadSong = function(url) {
           loader.score[i].beat,
           loader.score[i].beatPosition,
           loader.score[i].beatDivision,
-          loader.score[i].isTiedNote,
+          loader.score[i].hasTiedNote,
           loader.score[i].tnBeat,
           loader.score[i].tnBeatPosition,
           loader.score[i].tnBeatDivision
@@ -132,7 +132,7 @@ Song.prototype.triggerPause = function() {
   this.paused ? this.resume() : this.pause();
 }
 
-function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tnBeatPosition, tnBeatDivision) {
+function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, tnBeatPosition, tnBeatDivision) {
   this.index;
   this.key = key;
   this.bar = bar;
@@ -140,7 +140,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
   this.beatPosition = beatPosition;
   this.beatDivision = beatDivision;
 
-  this.isTiedNote = isTiedNote || false;
+  this.hasTiedNote = hasTiedNote || false;
   this.tnBeat = tnBeat;
   this.tnBeatPosition = tnBeatPosition;
   this.tnBeatDivision = tnBeatDivision;
@@ -161,7 +161,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
     // Where on the staff should the note be
     this.staffPosition = (this.songPosition / $song.baseNoteLength) * $song.noteScale * $song.noteWidth;
 
-    if(isTiedNote) {
+    if(hasTiedNote) {
       this.tnSongPosition  = this.songPosition;
       this.tnSongPosition += $song.baseNoteLength * (tnBeat-1);
       this.tnSongPosition += $song.baseNoteLength * ($song.timeSignature[1] / tnBeatDivision) * (tnBeatPosition-1);
@@ -185,7 +185,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, isTiedNote, tnBeat, tn
 
     ctx.font = "24px FontAwesome";
 
-    if(this.isTiedNote) {
+    if(this.hasTiedNote) {
       var noteStaffDistance = this.tnStaffPosition - this.staffPosition;
       var bridgeStaffPosition = this.staffPosition + $song.noteWidth/2;
       ctx.fillStyle = "#F8F4F0";
