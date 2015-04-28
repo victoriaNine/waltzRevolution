@@ -192,6 +192,7 @@ function addListeners() {
 		}
 	}).resize(function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
+		requestAnimationFrame(draw);
 	});
 
 	$(document).on("songEnded", gameComplete);
