@@ -1,10 +1,10 @@
 var keyMap = {
-	32: {name: "space", pressed: false, gamePad : true},
-	37: {name: "left", pressed: false, gamePad : true},
-	38: {name: "up", pressed: false, gamePad : true},
-	39: {name: "right", pressed: false, gamePad : true},
-	40: {name: "down", pressed: false, gamePad : true},
-	80: {name: "P", pressed: false}
+	32: {name: "space", pressed: false, when:0, gamePad : true},
+	37: {name: "left", pressed: false, when:0, gamePad : true},
+	38: {name: "up", pressed: false, when:0, gamePad : true},
+	39: {name: "right", pressed: false, when:0, gamePad : true},
+	40: {name: "down", pressed: false, when:0, gamePad : true},
+	80: {name: "P", pressed: false, when:0}
 };
 
 function detectInput(key) {
@@ -20,19 +20,21 @@ function detectInput(key) {
 
 	var tiedNote = function(note) {
 		if(note.isTiedNote && note.pressed && note.tnSongPosition >= BGM.getCurrentPosition() && note.key == keyName) {
-			console.log(note.key+" : "+BGM.getCurrentPosition());
+			incrementScore(note.score, true);
 			return true;
 		}
 	}
 
 	okTiedNotes = $song.notes.filter(tiedNote);
-	if(okTiedNotes.length > 0) return; // ISN'T A TIED NOTE, MAYBE A REGULAR ONE THEN?
+	if(okTiedNotes.length > 0) return;
+	// IT ISN'T A TIED NOTE, MAYBE A REGULAR ONE THEN?
 
 	var regularNote = function(note) {
 		var min = BGM.getCurrentPosition() - $song.baseNoteLength;
 		var max = BGM.getCurrentPosition() + $song.baseNoteLength;
+		var inputDelay = (new Date().getTime() - key.when) / 1000;
 
-		if(note.songPosition >= min && note.songPosition <= max && note.key == keyName) {
+		if(!note.isTiedNote && note.songPosition >= min && note.songPosition <= max && note.key == keyName && inputDelay <= $song.baseNoteLength) {
 			var delta = Math.abs(BGM.getCurrentPosition() - note.songPosition);
 			var percentage = Math.ceil(delta * 100 / $song.baseNoteLength);
 			okPerc.push(percentage);
@@ -43,7 +45,11 @@ function detectInput(key) {
 	};
 
 	okNotes = $song.notes.filter(regularNote);
-	if(okNotes.length == 0) return; // THEN THERE IS NO NOTE TO PRESS : LOSE POINTS
+	if(okNotes.length == 0) {
+		// THEN THERE IS NO NOTE TO PRESS : LOSE POINTS
+		decrementScore(10, true);
+		return;
+	}
 
 	var closestNoteIndex = okPerc.indexOf(Math.max.apply(Math, okPerc));
 	var closestNote = $song.notes[okNotes[closestNoteIndex].index];
@@ -65,6 +71,6 @@ function detectInput(key) {
 		closestNote.accuracy = "miss";
 	}
 
-	incrementScore(closestNote.score, true);
+	if(closestNote.accuracy != "miss") incrementScore(closestNote.score, true);
 	closestNote.pressed = true;
 }

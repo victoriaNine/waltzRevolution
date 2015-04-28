@@ -30,7 +30,7 @@ var autoMuteSound = false;
 var initReady = false;
 
 var $song;
-var $score = 0;
+var $score = 1000;
 
 $(document).ready(function() {
 	if(mobilecheck()) $("html").addClass("isMobile");
@@ -149,13 +149,16 @@ $(document).ready(function() {
         }
     };
 
-	$(window).keydown(function(e) {
+	$(window).keydown($.throttle(100, true, function(e) {
 		e.preventDefault();
 
+		if(!keyMap[e.which].pressed) keyMap[e.which].when = new Date().getTime();
 		keyMap[e.which].pressed = true;
+
 		for(var key in keyMap) if(keyMap[key].pressed) detectInput(keyMap[key]);
-	}).keyup(function(e) {
+	})).keyup(function(e) {
 		e.preventDefault();
+		console.log(e.which);
 
 		if(e.which == 38) $("#keyUp").removeClass("pressed");
 		if(e.which == 39) $("#keyRight").removeClass("pressed");
@@ -164,6 +167,7 @@ $(document).ready(function() {
 		if(e.which == 32) $("#keySpace").removeClass("pressed");
 
 		keyMap[e.which].pressed = false;
+		keyMap[e.which].when = 0;
 	}).resize(function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	});
@@ -193,7 +197,7 @@ $(document).ready(function() {
 
 function setScore(value, update) { $score = value; if(update) updateScore(); }
 function incrementScore(value, update) { $score += value; if(update) updateScore(); }
-function decrementScore(value, update) { if($score -= value >= 0) $score -= value; if(update) updateScore(); }
+function decrementScore(value, update) { if(($score -= value) >= 0) $score -= value; else return; if(update) updateScore(); }
 
 function updateScore() {
 	var currentValue = $("#scoreValue").html() || 0;
