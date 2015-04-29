@@ -307,6 +307,7 @@ function partyEnd() {
 	}
 }
 
+
 //===============================
 // MOBILE DETECTION
 // http://stackoverflow.com/a/11381730/989439
