@@ -16,7 +16,7 @@
 
 - design checkup
 - sreens & UI :
- - pause
+ ~ pause
  - credits
  - results
  - start game

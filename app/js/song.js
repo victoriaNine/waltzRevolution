@@ -112,6 +112,7 @@ Song.prototype.start = function() {
 
 Song.prototype.pause = function() {
   if(!this.paused) {
+    $("#modalBox.pause").addClass("open");
     this.staffScroll.pause();
     BGM.pause();
 
@@ -121,6 +122,7 @@ Song.prototype.pause = function() {
 
 Song.prototype.resume = function() {
   if(this.paused) {
+    $("#modalBox.pause").removeClass("open");
     this.staffScroll.resume();
     BGM.unPause();
 
