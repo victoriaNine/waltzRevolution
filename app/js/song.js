@@ -7,7 +7,6 @@ window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequest
 
 //===============================
 // SONG CLASS
-//
 function Song(url, callback) {
 //===============================
   this.url = url;
@@ -134,7 +133,10 @@ Song.prototype.triggerPause = function() {
   this.paused ? this.resume() : this.pause();
 }
 
+//===============================
+// NOTE CLASS
 function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, tnBeatPosition, tnBeatDivision) {
+//===============================
   this.index;
   this.key = key;
   this.bar = bar;
@@ -216,7 +218,10 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
   }
 }
 
+//===============================
+// UPDATE CANVAS
 function draw() {
+//===============================
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
 
   for(var i = 0; i < $song.score.length; i++) {
@@ -224,7 +229,10 @@ function draw() {
   }
 }
 
+//===============================
+// GET CSS PROPERTIES
 function getStyle(selector, property, valueOnly) {
+//===============================
   var styleSheets = document.styleSheets;
   var classes = [];
 

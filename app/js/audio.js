@@ -1,6 +1,5 @@
 //===============================
 // BUFFERLOADER CLASS
-//
 function BufferLoader(context, urlList, callback) {
 //===============================
   this.context = context;
@@ -54,7 +53,6 @@ BufferLoader.prototype.load = function() {
 
 //===============================
 // AUDIOENGINE CLASS
-//
 function AudioEngine(bgmFile) {
 //===============================
 	this.loadedFiles = 0;
@@ -105,7 +103,6 @@ function AudioEngine(bgmFile) {
 
 //===============================
 // BGM
-//
 var BGM = (function() {
 //===============================
 	var audioCtx;
@@ -276,7 +273,6 @@ var BGM = (function() {
 
 //===============================
 // SFX
-//
 var SFX = (function() {
 //===============================
 	var audioCtx;
