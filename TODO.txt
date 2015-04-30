@@ -23,7 +23,7 @@
  - start game
 ~ screens & UI :
  ~ pause
- - results
+ ~ results
  - credits
  - start game
 - clean code
