@@ -7,6 +7,7 @@ var keyMap = {
 	80: {name: "P", pressed: false, when:0}
 };
 
+
 //===============================
 // INPUT ACCURACY DETECTION
 function detectInputAccuracy(key) {
@@ -84,6 +85,7 @@ function detectInputAccuracy(key) {
 	else decrementScore(10 - Math.abs(closestNote.score), true);
 	closestNote.pressed = true;
 }
+
 
 //===============================
 // FAILED TO INPUT IN TIME

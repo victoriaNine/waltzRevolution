@@ -287,9 +287,7 @@ function gameOver() {
 
 	BGM.setCrossfade(0);
 	TweenMax.to($song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
-		onComplete:function() {
-			partyEnd();
-		}
+		onComplete:function() { partyEnd(); }
 	});
 
 	$accuracyPerc = "-";
@@ -299,6 +297,15 @@ function gameOver() {
 function partyEnd() {
 	$song.pause();
 	BGM.hasEnded();
+
+	for(var i = 0; i < $accuracy.length; i++) {
+		if($accuracy[i] > getLocalStorage("bestAccuracy")[i] || !getLocalStorage("bestAccuracy")) {
+			var newArray = getLocalStorage("bestAccuracy");
+			newArray[i] = $accuracy[i];
+			
+			setLocalStorage("bestAccuracy", newArray);
+		}
+	}
 
 	console.log("Rank "+$rank+" : "+$score+"pts - "+$accuracyPerc+"%");
 	if($score > getLocalStorage("bestScore")[0] || !getLocalStorage("bestScore")) {

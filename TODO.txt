@@ -9,19 +9,26 @@
  ! decrement score when note isn't played
  ! set minimum score to 0
  ! game over (@score = 0, stop song + input detection + scroll)
- ! grades (S, A, B, C, D, E)
+ ! ranks (S = 5 stars, A = 4 stars, B = 3 stars, C = 2 stars, D = 1 stars, E = 0 stars)
  ! save best score
  ! take tied notes bonuses in account
 ! clean code
 
-- design checkup
-- sreens & UI :
+=> 05/01/2015
+~ design checkup :
+ ~ main screen
  ~ pause
- - credits
  - results
+ - credits
+ - start game
+~ screens & UI :
+ ~ pause
+ - results
+ - credits
  - start game
 - clean code
 
+=> 05/02/2015 - 05/03/2015
 - sfx
 - music visualizer
 - clean code

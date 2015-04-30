@@ -189,13 +189,13 @@ body {
 }
 
 #modalBox.pause h1 {
-  color: #D55320;
+  color: $orange;
   font-size: 126px;
   margin-top: calc(25% - (126px + 48px) / 2);
 }
 
 #modalBox.pause h2 {
-  color: #F8F4F0;
+  color: $offWhite;
   font-size: 24px;
   margin-top: 24px;
 }
