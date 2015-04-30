@@ -278,7 +278,7 @@ var SFX = (function() {
 	var audioCtx;
 	var bufferArray = [];
 
-	var files = ['audio/sfx/button.mp3'];
+	var files = [/*'audio/sfx/button.mp3'*/];
 	var filesLoaded = false;
 	var muted = false;
 

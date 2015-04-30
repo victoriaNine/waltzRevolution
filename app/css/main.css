@@ -176,3 +176,28 @@ body {
 
 .note.space, .noteBridge.space {
   top: 160px; }
+
+/*******/
+#modalBox {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  font-weight: 500;
+  text-align: center; }
+
+#modalBox.pause {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease-out; }
+
+#modalBox.pause.open {
+  pointer-events: auto;
+  opacity: 1; }
+
+#modalBox.pause h1 {
+  color: #D55320;
+
+#modalBox.pause h2 {
+  color: #F8F4F0;
+  font-size: 24px;

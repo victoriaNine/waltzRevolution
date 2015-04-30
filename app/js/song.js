@@ -179,6 +179,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 
   this.draw = function() {
     var top = getStyle(".note."+this.key, "top", true);
+    var textAlign = (this.key == "space") ? 10 : 5;
     var charCode;
 
     if(this.key == "up") charCode = "0xf062";
@@ -202,7 +203,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
       ctx.fill();
 
       ctx.fillStyle = "#D55320";
-      ctx.fillText(String.fromCharCode(charCode), (this.tnStaffPosition + 5) - $song.currentStaffPosition, top + 25);
+      ctx.fillText(String.fromCharCode(charCode), (this.tnStaffPosition + textAlign) - $song.currentStaffPosition, top + 25);
     }
 
     ctx.beginPath();
@@ -212,7 +213,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
     ctx.fill();
 
     ctx.fillStyle = "#D55320";
-    ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + 5) - $song.currentStaffPosition, top + 25);
+    ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + textAlign) - $song.currentStaffPosition, top + 25);
 
     if($song.currentStaffPosition > this.staffPosition && !this.accuracy && !this.pressed) failedNote(this);
   }
