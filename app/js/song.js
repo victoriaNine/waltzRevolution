@@ -215,7 +215,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
     ctx.fillStyle = "#D55320";
     ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + textAlign) - $song.currentStaffPosition, top + 25);
 
-    if($song.currentStaffPosition > this.staffPosition && !this.accuracy && !this.pressed) failedNote(this);
+    if($song.currentStaffPosition > this.staffPosition && !this.accuracy && !this.pressed) missedNote(this);
   }
 }
 

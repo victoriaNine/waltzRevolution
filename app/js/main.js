@@ -31,10 +31,13 @@ var initReady = false;
 
 var $song;
 var $rank;
-var $score = 1000;
+var $score = 0;
 var $perfectScore;
-var $accuracy = [0, 0, 0, 0, 0, 0] // perfect, great, cool, poor, miss, fail
+var $HP = 1000;
+var $accuracy = [0, 0, 0, 0, 0] // great, nice, cool, poor, miss
 var $accuracyPerc;
+var $comboArray = [];
+var $combo = 0;
 
 
 //===============================
@@ -65,7 +68,7 @@ $(document).ready(function() {
 		audioEngine = new AudioEngine($song.fileURL);
 		totalFiles += audioEngine.audioFiles;
 
-		var tiedNotesBonus = 0;
+		/*var tiedNotesBonus = 0;
 		$song.notes.filter(function(note) {
 			if(note.hasTiedNote) {
 				var tnLength = note.tnSongPosition - note.songPosition;
@@ -73,8 +76,8 @@ $(document).ready(function() {
 
 				return true;
 			}
-		});
-		$perfectScore = 100 * $song.notes.length + tiedNotesBonus;
+		});*/
+		$perfectScore = 100 * $song.notes.length; //+ tiedNotesBonus;
 
 		loadGame();
 	});
@@ -232,12 +235,7 @@ function setScore(value, update) { $score = value; if(update) updateScore(); }
 function incrementScore(value, update) { $score += value; if(update) updateScore(); }
 function decrementScore(value, update) {
 	if($score <= 0) return;
-	$score -= value;
-
-	if($score <= 0) {
-		$score = 0;
-		gameOver();
-	}
+	$score -= ($score - value <= 0) ? $score : value;
 	if(update) updateScore();
 }
 
@@ -247,6 +245,35 @@ function updateScore() {
 	TweenMax.to($({someValue: currentValue}), .4, {someValue: $score, ease:Power3.easeInOut,
 		onUpdate:function(tween) {
 			$("#scoreValue").html(Math.ceil(tween.target[0].someValue));
+		},
+		onUpdateParams:["{self}"]
+	});
+}
+
+
+//===============================
+// HP
+//===============================
+function setHP(value, update) { $HP = value; if(update) updateHP(); }
+function incrementHP(value, update) {
+	if($HP >= 1000) return;
+	$HP += ($HP + value >= 1000) ? (1000 - $HP) : value;
+	if(update) updateHP();
+}
+function decrementHP(value, update) {
+	if($HP <= 0) return;
+	$HP -= ($HP - value <= 0) ? $HP : value;
+
+	if($HP <= 0) gameOver();
+	if(update) updateHP();
+}
+
+function updateHP() {
+	var currentValue = $("#hpValue").html() || 0;
+
+	TweenMax.to($({someValue: currentValue}), .4, {someValue: $HP, ease:Power3.easeInOut,
+		onUpdate:function(tween) {
+			$("#hpValue").html(Math.ceil(tween.target[0].someValue));
 		},
 		onUpdateParams:["{self}"]
 	});
@@ -266,19 +293,6 @@ function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(ke
 function gameComplete() {
 	console.log("I am SO done.");
 
-	$accuracyPerc = Math.ceil($score * 100 / $perfectScore);
-
-	if($accuracyPerc >= 90 && $accuracyPerc <= 100)
-		$rank = "S"; // perfect
-	else if($accuracyPerc >= 60 && $accuracyPerc <= 89)
-		$rank = "A"; // great
-	else if($accuracyPerc >= 30 && $accuracyPerc <= 59)
-		$rank = "B"; // cool
-	else if($accuracyPerc >= 10 && $accuracyPerc <= 29)
-		$rank = "C"; // poor
-	else if($accuracyPerc >= 1 && $accuracyPerc <= 9)
-		$rank = "D"; // miss
-
 	partyEnd();
 }
 
@@ -289,23 +303,26 @@ function gameOver() {
 	TweenMax.to($song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
 		onComplete:function() { partyEnd(); }
 	});
-
-	$accuracyPerc = "-";
-	$rank = "E"; // fail
 }
 
 function partyEnd() {
 	$song.pause();
 	BGM.hasEnded();
 
-	for(var i = 0; i < $accuracy.length; i++) {
-		if($accuracy[i] > getLocalStorage("bestAccuracy")[i] || !getLocalStorage("bestAccuracy")) {
-			var newArray = getLocalStorage("bestAccuracy");
-			newArray[i] = $accuracy[i];
-			
-			setLocalStorage("bestAccuracy", newArray);
-		}
-	}
+	$accuracyPerc = Math.ceil($score * 100 / $perfectScore);
+
+	if($accuracyPerc == 100)
+		$rank = "S"; // perfect
+	else if($accuracyPerc >= 90 && $accuracyPerc <= 99)
+		$rank = "A"; // great
+	else if($accuracyPerc >= 75 && $accuracyPerc <= 89)
+		$rank = "B"; // cool
+	else if($accuracyPerc >= 60 && $accuracyPerc <= 74)
+		$rank = "C"; // poor
+	else if($accuracyPerc >= 0 && $accuracyPerc <= 59)
+		$rank = "D"; // miss
+
+	var maxCombo = Math.max.apply(Math, $comboArray);
 
 	console.log("Rank "+$rank+" : "+$score+"pts - "+$accuracyPerc+"%");
 	if($score > getLocalStorage("bestScore")[0] || !getLocalStorage("bestScore")) {

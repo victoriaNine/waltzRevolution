@@ -60,12 +60,16 @@ function detectInputAccuracy(key) {
 	closestNote.score = okPerc[closestNoteIndex];
 
 	if(closestNote.score >= 90 && closestNote.score <= 100) {
-		closestNote.accuracy = "perfect";
+		closestNote.accuracy = "great";
 		$accuracy[0]++;
+
+		incrementHP(10, true);
 	}
 	else if(closestNote.score >= 60 && closestNote.score <= 89) {
-		closestNote.accuracy = "great";
+		closestNote.accuracy = "nice";
 		$accuracy[1]++;
+
+		incrementHP(5, true);
 	}
 	else if(closestNote.score >= 30 && closestNote.score <= 59) {
 		closestNote.accuracy = "cool";
@@ -74,26 +78,39 @@ function detectInputAccuracy(key) {
 	else if(closestNote.score >= 10 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
 		$accuracy[3]++;
+
+		decrementHP(5, true);
 	}
 	else if(closestNote.score >= 1 && closestNote.score <= 9) {
 		closestNote.accuracy = "miss";
 		$accuracy[4]++;
-		closestNote.score *= -1;
+		closestNote.score = 0;
+
+		decrementHP(10, true);
 	}
 
 	if(closestNote.accuracy != "miss") incrementScore(closestNote.score, true);
-	else decrementScore(10 - Math.abs(closestNote.score), true);
 	closestNote.pressed = true;
+
+	if(closestNote.accuracy == "great" || closestNote.accuracy == "nice") {
+		$combo++;
+	}
+	else {
+		$comboArray.push($combo);
+		$combo = 0;
+	}
 }
 
 
 //===============================
 // FAILED TO INPUT IN TIME
-function failedNote(note) {
+function missedNote(note) {
 //===============================
-	note.accuracy = "fail";
-	$accuracy[5]++;
-	note.score = -10;
-	
-	decrementScore(Math.abs(note.score), true);
+	note.accuracy = "miss";
+	$accuracy[4]++;
+
+	$comboArray.push($combo);
+	$combo = 0;
+
+	decrementHP(10, true);
 }

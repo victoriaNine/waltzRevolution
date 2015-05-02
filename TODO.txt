@@ -15,22 +15,26 @@
 ! clean code
 
 => 05/01/2015
-~ design checkup :
- ~ main screen
- ~ pause
+! design checkup :
+ ! main screen
+ ! pause
+ ! results
+ ! credits
+ ! main menu
+ ! high scores
+ ! how to play
+- screens & UI :
+ - main screen
+ - pause
  - results
  - credits
- - start game
-~ screens & UI :
- ~ pause
- ~ results
- - credits
- - start game
+ - main menu
+ - high scores
+ - how to play
 - clean code
 
 => 05/02/2015 - 05/03/2015
 - sfx
-- music visualizer
 - clean code
 
 - responsive
