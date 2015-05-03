@@ -23,24 +23,29 @@
  ! main menu
  ! high scores
  ! how to play
-- screens & UI :
- - main screen
+ - loading
+~ screens & UI :
+ ~ main screen (stop updating values when gameOver/paused)
  - pause
  - results
  - credits
  - main menu
  - high scores
  - how to play
+ - loading
 - clean code
 
 => 05/02/2015 - 05/03/2015
+! tune difficulty :
+ ! recheck input accuracy
+ - score tuning
+- clean code
+
 - sfx
 - clean code
 
 - responsive
 - clean code
 
-- tune difficulty :
- - recheck input accuracy
- - score tuning
+- check synchronicity
 - clean code

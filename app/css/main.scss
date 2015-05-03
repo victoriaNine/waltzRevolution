@@ -1,7 +1,63 @@
 $orange: #D55320;
+$beige: #E1D7CE;
 $offWhite: #F8F4F0;
-$darkGrey: #706F6E;
+$red:#C32B44;
 
+$lightGrey: #706F6E;
+$midGrey: #363535;
+$darkGrey: #161515;
+
+$borderRadius:10px;
+
+/*=======================*/
+/* MIXINS
+/*=======================*/
+@mixin keyframes($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+    @content;
+  }
+  @-moz-keyframes #{$animation-name} {
+    @content;
+  }  
+  @-ms-keyframes #{$animation-name} {
+    @content;
+  }
+  @-o-keyframes #{$animation-name} {
+    @content;
+  }  
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+
+@mixin animation($str) {
+  -webkit-animation: #{$str};
+  -moz-animation: #{$str};
+  -ms-animation: #{$str};
+  -o-animation: #{$str};
+  animation: #{$str};      
+}
+
+@mixin transform($str) {
+  -webkit-transform: #{$str};
+  -moz-transform: #{$str};
+  -ms-transform: #{$str};
+  -o-transform: #{$str};
+  transform: #{$str};
+}
+
+@mixin transition($str) {
+  -webkit-transition: -webkit-#{$str};
+  -moz-transition: -moz-#{$str};
+  -ms-transition: -ms-#{$str};
+  -o-transition: -o-#{$str};
+  transition: #{$str};
+}
+
+
+/*=======================*/
+/* GENERAL RULES
+/*=======================*/
 body {
   width:100%;
   height:100%;
@@ -9,6 +65,8 @@ body {
   overflow:hidden;
   font-family:"Oswald", sans-serif;
   font-weight:100;
+  text-transform:uppercase;
+  color:$midGrey;
 }
 
 ::-moz-selection {
@@ -57,38 +115,149 @@ body {
   flex-direction: column;
 }
 
-#header {
+/*******/
+#songInfo {
   width:100%;
   height:150px;
   position:relative;
-  background:rgba(0,0,0,.75);
   padding:40px;
   box-sizing:border-box;
   font-size:30px;
+  text-transform:none;
 }
 
-#songBlock h1 {
+#songInfo h1 {
   font-size:36px;
-  color:$offWhite;
   vertical-align: super;
   display: inline-block;
 }
 
-#songBlock h2 { font-size:30px; color:$darkGrey; }
+#songInfo h2 { font-size:30px; color:$lightGrey; }
 
-#scoreInfo { width:210px; text-align:right; }
-#currentScore { color:$offWhite; vertical-align: super; }
-#bestScore { color:$darkGrey; }
 
-#scoreValue {
-  margin-left:25px;
-  color:$orange;
-  font-size: 75px;
-  font-weight: 500;
-  width: 190px;
-  text-align: right;
+/*******/
+#hud {
+  width:100%;
+  height:180px;
+  position:absolute;
+  bottom:0;
+  padding:0 40px 40px;
+  box-sizing:border-box;
+  font-size:24px;
 }
 
+#lifeSphere {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: absolute;
+  overflow:hidden;
+  bottom: 40px;
+}
+
+#lifeSphere:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: $midGrey 6px solid;
+  border-radius: 50%;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box
+}
+
+#lifeSphere .bar {
+  width: 100%;
+  height: 50%;
+  position:absolute;
+  bottom: 0;
+  background:$midGrey;
+}
+
+#lifeSphere.critical:before { @include animation("criticalBorder 2s ease-out infinite"); }
+#lifeSphere.critical .bar { @include animation("criticalBG 2s ease-out infinite"); }
+
+@include keyframes(criticalBorder) {
+  0%, 100% { border-color:$midGrey; }
+  50% { border-color:$red; }
+}
+
+@include keyframes(criticalBG) {
+  0%, 100% { background:$midGrey; }
+  50% { background:$red; }
+}
+
+#gameInfo {
+  margin-left: 150px;
+  height: 120px;
+  position: absolute;
+  width: calc(100% - 230px);
+  bottom: 40px;
+}
+
+#life, #progress {
+  height:30px;
+  margin-top:15px;
+}
+
+#progress { display: inline-block; }
+#score { display: inline-block; margin-top: -6px; }
+
+#gameInfo .value {
+  color:$orange;
+  font-weight:500;
+  font-size:30px;
+  margin-left: 20px;
+  text-align: right;
+  display:inline-block;
+  width:90px;
+}
+
+#score .value { font-size:48px; width: 120px; }
+
+#progressBar {
+  width:100%;
+  height:15px;
+  margin-top:15px;
+  position:relative;
+  border-radius:$borderRadius;
+  overflow:hidden;
+}
+
+#progressBar:before {
+  content:"";
+  width:100%;
+  height:100%;
+  position:absolute;
+  background:$midGrey;
+}
+
+#progressBar .bar {
+  width:0%;
+  height:100%;
+  position:absolute;
+  background:$orange;
+}
+
+#progressBar .marker {
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  background: $lightGrey;
+  z-index:2;
+
+  transition:background .2s ease-out;
+}
+
+#progressBar .marker.passed { background: $red; }
+
+#progressBar .marker.p60 { left: 60%; }
+#progressBar .marker.p75 { left: 75%; }
+#progressBar .marker.p90 { left: 90%; }
+
+
+/*******/
 #main {
   position:relative;
   -webkit-flex: 1;
@@ -130,7 +299,7 @@ body {
   width:36px;
   height:36px;
   background:#333;
-  color:$darkGrey;
+  color:$lightGrey;
   margin-bottom:4px;
 }
 
@@ -171,7 +340,6 @@ body {
   height: 100%;
   z-index: 9999;
   background: rgba(0,0,0,.9);
-  text-transform: lowercase;
   font-weight: 500;
   text-align: center;
 }

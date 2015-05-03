@@ -1,10 +1,18 @@
+/*=======================*/
+/* MIXINS
+/*=======================*/
+/*=======================*/
+/* GENERAL RULES
+/*=======================*/
 body {
   width: 100%;
   height: 100%;
   position: absolute;
   overflow: hidden;
   font-family: "Oswald", sans-serif;
-  font-weight: 100; }
+  font-weight: 100;
+  text-transform: uppercase;
+  color: #363535; }
 
 ::-moz-selection {
   background: #D55320;
@@ -49,44 +57,198 @@ body {
   -o-flex-direction: column;
   flex-direction: column; }
 
-#header {
+/*******/
+#songInfo {
   width: 100%;
   height: 150px;
   position: relative;
-  background: rgba(0, 0, 0, 0.75);
   padding: 40px;
   box-sizing: border-box;
-  font-size: 30px; }
+  font-size: 30px;
+  text-transform: none; }
 
-#songBlock h1 {
+#songInfo h1 {
   font-size: 36px;
-  color: #F8F4F0;
   vertical-align: super;
   display: inline-block; }
 
-#songBlock h2 {
+#songInfo h2 {
   font-size: 30px;
   color: #706F6E; }
 
-#scoreInfo {
-  width: 210px;
-  text-align: right; }
+/*******/
+#hud {
+  width: 100%;
+  height: 180px;
+  position: absolute;
+  bottom: 0;
+  padding: 0 40px 40px;
+  box-sizing: border-box;
+  font-size: 24px; }
 
-#currentScore {
-  color: #F8F4F0;
-  vertical-align: super; }
+#lifeSphere {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: absolute;
+  overflow: hidden;
+  bottom: 40px; }
 
-#bestScore {
-  color: #706F6E; }
+#lifeSphere:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: #363535 6px solid;
+  border-radius: 50%;
+  bottom: 0;
+  left: 0;
+  box-sizing: border-box; }
 
-#scoreValue {
-  margin-left: 25px;
+#lifeSphere .bar {
+  width: 100%;
+  height: 50%;
+  position: absolute;
+  bottom: 0;
+  background: #363535; }
+
+#lifeSphere.critical:before {
+  -webkit-animation: criticalBorder 2s ease-out infinite;
+  -moz-animation: criticalBorder 2s ease-out infinite;
+  -ms-animation: criticalBorder 2s ease-out infinite;
+  -o-animation: criticalBorder 2s ease-out infinite;
+  animation: criticalBorder 2s ease-out infinite; }
+
+#lifeSphere.critical .bar {
+  -webkit-animation: criticalBG 2s ease-out infinite;
+  -moz-animation: criticalBG 2s ease-out infinite;
+  -ms-animation: criticalBG 2s ease-out infinite;
+  -o-animation: criticalBG 2s ease-out infinite;
+  animation: criticalBG 2s ease-out infinite; }
+
+@-webkit-keyframes criticalBorder {
+  0%, 100% {
+    border-color: #363535; }
+  50% {
+    border-color: #C32B44; } }
+@-moz-keyframes criticalBorder {
+  0%, 100% {
+    border-color: #363535; }
+  50% {
+    border-color: #C32B44; } }
+@-ms-keyframes criticalBorder {
+  0%, 100% {
+    border-color: #363535; }
+  50% {
+    border-color: #C32B44; } }
+@-o-keyframes criticalBorder {
+  0%, 100% {
+    border-color: #363535; }
+  50% {
+    border-color: #C32B44; } }
+@keyframes criticalBorder {
+  0%, 100% {
+    border-color: #363535; }
+  50% {
+    border-color: #C32B44; } }
+@-webkit-keyframes criticalBG {
+  0%, 100% {
+    background: #363535; }
+  50% {
+    background: #C32B44; } }
+@-moz-keyframes criticalBG {
+  0%, 100% {
+    background: #363535; }
+  50% {
+    background: #C32B44; } }
+@-ms-keyframes criticalBG {
+  0%, 100% {
+    background: #363535; }
+  50% {
+    background: #C32B44; } }
+@-o-keyframes criticalBG {
+  0%, 100% {
+    background: #363535; }
+  50% {
+    background: #C32B44; } }
+@keyframes criticalBG {
+  0%, 100% {
+    background: #363535; }
+  50% {
+    background: #C32B44; } }
+#gameInfo {
+  margin-left: 150px;
+  height: 120px;
+  position: absolute;
+  width: calc(100% - 230px);
+  bottom: 40px; }
+
+#life, #progress {
+  height: 30px;
+  margin-top: 15px; }
+
+#progress {
+  display: inline-block; }
+
+#score {
+  display: inline-block;
+  margin-top: -6px; }
+
+#gameInfo .value {
   color: #D55320;
-  font-size: 75px;
   font-weight: 500;
-  width: 190px;
-  text-align: right; }
+  font-size: 30px;
+  margin-left: 20px;
+  text-align: right;
+  display: inline-block;
+  width: 90px; }
 
+#score .value {
+  font-size: 48px;
+  width: 120px; }
+
+#progressBar {
+  width: 100%;
+  height: 15px;
+  margin-top: 15px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden; }
+
+#progressBar:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #363535; }
+
+#progressBar .bar {
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  background: #D55320; }
+
+#progressBar .marker {
+  position: absolute;
+  height: 100%;
+  width: 2px;
+  background: #706F6E;
+  z-index: 2;
+  transition: background .2s ease-out; }
+
+#progressBar .marker.passed {
+  background: #C32B44; }
+
+#progressBar .marker.p60 {
+  left: 60%; }
+
+#progressBar .marker.p75 {
+  left: 75%; }
+
+#progressBar .marker.p90 {
+  left: 90%; }
+
+/*******/
 #main {
   position: relative;
   -webkit-flex: 1;
@@ -184,7 +346,6 @@ body {
   height: 100%;
   z-index: 9999;
   background: rgba(0, 0, 0, 0.9);
-  text-transform: lowercase;
   font-weight: 500;
   text-align: center; }
 

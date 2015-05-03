@@ -32,6 +32,7 @@ function Song(url, callback) {
   this.staffScroll;
   this.staffScrollDuration;
 
+  this.currentNoteIndex = 0;
   this.paused = false;
 }
 
@@ -77,8 +78,8 @@ Song.prototype.loadSong = function(url) {
     loader.staffLength = loader.notes[loader.notes.length - 1].staffPosition + loader.noteWidth;
     loader.staffScrollDuration = loader.notes[loader.notes.length - 1].songPosition;
 
-    $("#songBlock h1").html(loader.title);
-    $("#songBlock h2").html(loader.artist);
+    $("#songInfo h1").html(loader.title);
+    $("#songInfo h2").html(loader.artist);
     loader.callback();
   }
 
@@ -91,7 +92,7 @@ Song.prototype.load = function() { this.loadSong(this.url); }
 
 Song.prototype.start = function() {
   var song = this;
-  var rAF = function() { if(!song.paused) requestAnimationFrame(draw); }
+  var rAF = function() { /*if(!song.paused)*/ requestAnimationFrame(draw); }
 
   BGM.play();
   draw();
@@ -111,21 +112,21 @@ Song.prototype.start = function() {
 
 Song.prototype.pause = function() {
   if(!this.paused) {
-    $("#modalBox.pause").addClass("open");
     this.staffScroll.pause();
     BGM.pause();
 
     this.paused = true;
+    $("#modalBox.pause").addClass("open");
   }
 }
 
 Song.prototype.resume = function() {
   if(this.paused) {
-    $("#modalBox.pause").removeClass("open");
     this.staffScroll.resume();
     BGM.unPause();
 
     this.paused = false;
+    $("#modalBox.pause").removeClass("open");
   }
 }
 
@@ -182,6 +183,9 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
     var textAlign = (this.key == "space") ? 10 : 5;
     var charCode;
 
+    var orange = "#D55320";
+    var beige = "#E1D7CE";
+
     if(this.key == "up") charCode = "0xf062";
     if(this.key == "right") charCode = "0xf061";
     if(this.key == "left") charCode = "0xf060";
@@ -193,13 +197,13 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
     if(this.hasTiedNote) {
       var noteStaffDistance = this.tnStaffPosition - this.staffPosition;
       var bridgeStaffPosition = this.staffPosition + $song.noteWidth/2;
-      ctx.fillStyle = "#F8F4F0";
+      ctx.fillStyle = beige;
       ctx.fillRect(bridgeStaffPosition - $song.currentStaffPosition, top + 10, noteStaffDistance, 10);
 
       ctx.beginPath();
       ctx.arc((this.tnStaffPosition + 16) - $song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
       ctx.closePath();
-      ctx.fillStyle = "#F8F4F0";
+      ctx.fillStyle = beige;
       ctx.fill();
 
       ctx.fillStyle = "#D55320";
@@ -209,13 +213,19 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
     ctx.beginPath();
     ctx.arc((this.staffPosition + 16) - $song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
     ctx.closePath();
-    ctx.fillStyle = "#F8F4F0";
+    ctx.fillStyle = beige;
     ctx.fill();
 
     ctx.fillStyle = "#D55320";
     ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + textAlign) - $song.currentStaffPosition, top + 25);
+  }
 
-    if($song.currentStaffPosition > this.staffPosition && !this.accuracy && !this.pressed) missedNote(this);
+  this.checkInput = function() {
+    if((this.songPosition + $song.baseNoteLength) < BGM.getCurrentPosition()) {
+      $song.currentNoteIndex = this.index + 1;
+
+      if(!this.accuracy && !this.pressed) missedNote(this);
+    }
   }
 }
 
@@ -224,9 +234,11 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 function draw() {
 //===============================
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
+  //var noteIndex = $gameOver ? 0 : $song.currentNoteIndex;
 
   for(var i = 0; i < $song.score.length; i++) {
     $song.notes[i].draw();
+    $song.notes[i].checkInput();
   }
 }
 
@@ -246,7 +258,7 @@ function getStyle(selector, property, valueOnly) {
 
   for(var i = 0; i < classes.length; i++) {
     for(var j = 0; j < classes[i].length; j++) {
-        if(classes[i][j].selectorText.indexOf(selector) != -1) {
+        if(classes[i][j].selectorText && classes[i][j].selectorText.indexOf(selector) != -1) {
             if(property) {
               if(valueOnly) return parseFloat(classes[i][j].style[property]);
               else return classes[i][j].style[property];

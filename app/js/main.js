@@ -30,14 +30,22 @@ var autoMuteSound = false;
 var initReady = false;
 
 var $song;
-var $rank;
+
+var $HP = 500;
+var $maxHP = 1000;
+
 var $score = 0;
-var $perfectScore;
-var $HP = 1000;
+var $maxScore;
+var $progress = 0;
+var $rank;
+
 var $accuracy = [0, 0, 0, 0, 0] // great, nice, cool, poor, miss
 var $accuracyPerc;
+var $totalNotes;
 var $comboArray = [];
 var $combo = 0;
+
+var $gameOver = false;
 
 
 //===============================
@@ -48,8 +56,7 @@ $(document).ready(function() {
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
 
-	updateScore();
-	$("#bestScore .right").html(getLocalStorage("bestScore") ? getLocalStorage("bestScore")[0] : "-");
+	//$("#bestScore .right").html(getLocalStorage("bestScore") ? getLocalStorage("bestScore")[0] : "-");
 
 	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 
@@ -77,7 +84,13 @@ $(document).ready(function() {
 				return true;
 			}
 		});*/
-		$perfectScore = 100 * $song.notes.length; //+ tiedNotesBonus;
+
+		$totalNotes = $song.notes.length;
+		$maxScore = 100 * $totalNotes; //+ tiedNotesBonus;
+
+		updateScore();
+		updateHP();
+		updateProgress();
 
 		loadGame();
 	});
@@ -180,16 +193,28 @@ $(document).ready(function() {
 // Keyboard input, touch events, window resize
 function addListeners() {
 //===============================
-	$(window).keydown($.throttle($song.baseNoteLength, true, function(e) {
+	$(window).keydown(function(e) {
 		e.preventDefault();
 
-		if(keyMap[e.which]) {
-			if(!keyMap[e.which].pressed) keyMap[e.which].when = new Date().getTime();
-			keyMap[e.which].pressed = true;
+		if($gameOver) return;
 
-			for(var key in keyMap) if(keyMap[key].pressed) detectInputAccuracy(keyMap[key]);
+		if(keyMap[e.which]) {
+			if(!keyMap[e.which].pressed) {
+				keyMap[e.which].when = new Date().getTime();
+				keyMap[e.which].pressed = true;
+
+				detectInputAccuracy(keyMap[e.which]);
+			}
+
+			for(var key in keyMap) {
+				if(keyMap[key].pressed) {
+					setTimeout(function() { 
+						if(keyMap[key].pressed) detectInputAccuracy(keyMap[key])
+					}, $song.baseNoteLength * 1000);
+				}
+			}
 		}
-	})).keyup(function(e) {
+	}).keyup(function(e) {
 		e.preventDefault();
 
 		if(e.which == 38) $("#keyUp").removeClass("pressed");
@@ -240,11 +265,11 @@ function decrementScore(value, update) {
 }
 
 function updateScore() {
-	var currentValue = $("#scoreValue").html() || 0;
+	var currentValue = $("#score .value").html() || 0;
 
 	TweenMax.to($({someValue: currentValue}), .4, {someValue: $score, ease:Power3.easeInOut,
 		onUpdate:function(tween) {
-			$("#scoreValue").html(Math.ceil(tween.target[0].someValue));
+			$("#score .value").html(Math.ceil(tween.target[0].someValue));
 		},
 		onUpdateParams:["{self}"]
 	});
@@ -256,8 +281,8 @@ function updateScore() {
 //===============================
 function setHP(value, update) { $HP = value; if(update) updateHP(); }
 function incrementHP(value, update) {
-	if($HP >= 1000) return;
-	$HP += ($HP + value >= 1000) ? (1000 - $HP) : value;
+	if($HP >= $maxHP) return;
+	$HP += ($HP + value >= $maxHP) ? ($maxHP - $HP) : value;
 	if(update) updateHP();
 }
 function decrementHP(value, update) {
@@ -269,14 +294,40 @@ function decrementHP(value, update) {
 }
 
 function updateHP() {
-	var currentValue = $("#hpValue").html() || 0;
+	var percentage = $HP * 100 / $maxHP;
+	var currentValue = parseFloat($("#life .value").html()) || 0;
 
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: $HP, ease:Power3.easeInOut,
+	TweenMax.to($({someValue: currentValue}), .4, {someValue: percentage, ease:Power3.easeInOut,
 		onUpdate:function(tween) {
-			$("#hpValue").html(Math.ceil(tween.target[0].someValue));
+			$("#life .value").html((tween.target[0].someValue).toFixed(1)+"%");
 		},
 		onUpdateParams:["{self}"]
 	});
+
+	TweenMax.to($("#lifeSphere .bar"), .4, {height: percentage+"%", ease:Power3.easeInOut});
+
+	if(percentage <= 25) $("#lifeSphere").addClass("critical");
+	else if($("#lifeSphere").hasClass("critical")) $("#lifeSphere").removeClass("critical");
+}
+
+//===============================
+// PROGRESS
+//===============================
+function updateProgress() {
+	$progress = ($accuracy[0] + $accuracy[1]) * 100 / $totalNotes;
+	var currentValue = parseFloat($("#progress .value").html()) || 0;
+
+	TweenMax.to($({someValue: currentValue}), .4, {someValue: $progress, ease:Power3.easeInOut,
+		onUpdate:function(tween) {
+			$("#progress .value").html((tween.target[0].someValue).toFixed(1)+"%");
+		},
+		onUpdateParams:["{self}"]
+	});
+
+	TweenMax.to($("#progressBar .bar"), .4, {width: $progress+"%", ease:Power3.easeInOut});
+	if($progress >= 60 && !$("#progressBar .p60").hasClass("passed")) $("#progressBar .p60").addClass("passed");
+	if($progress >= 75 && !$("#progressBar .p75").hasClass("passed")) $("#progressBar .p75").addClass("passed");
+	if($progress >= 90 && !$("#progressBar .p90").hasClass("passed")) $("#progressBar .p90").addClass("passed");
 }
 
 
@@ -298,6 +349,7 @@ function gameComplete() {
 
 function gameOver() {
 	console.log("game over");
+	$gameOver = true;
 
 	BGM.setCrossfade(0);
 	TweenMax.to($song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
@@ -309,7 +361,7 @@ function partyEnd() {
 	$song.pause();
 	BGM.hasEnded();
 
-	$accuracyPerc = Math.ceil($score * 100 / $perfectScore);
+	$accuracyPerc = Math.ceil($score * 100 / $maxScore);
 
 	if($accuracyPerc == 100)
 		$rank = "S"; // perfect
@@ -318,9 +370,9 @@ function partyEnd() {
 	else if($accuracyPerc >= 75 && $accuracyPerc <= 89)
 		$rank = "B"; // cool
 	else if($accuracyPerc >= 60 && $accuracyPerc <= 74)
-		$rank = "C"; // poor
+		$rank = "C"; // okay
 	else if($accuracyPerc >= 0 && $accuracyPerc <= 59)
-		$rank = "D"; // miss
+		$rank = "D"; // poor
 
 	var maxCombo = Math.max.apply(Math, $comboArray);
 

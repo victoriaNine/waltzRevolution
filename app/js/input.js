@@ -15,6 +15,7 @@ function detectInputAccuracy(key) {
 	var keyName = key.name;
 	var keyNameFirstLetterUppercase = keyName.replace(keyName.charAt(0), keyName.charAt(0).toUpperCase());
 	var gamePad = key.gamePad;
+	var inputDelay = (new Date().getTime() - key.when) / 1000;
 
 	if(keyName == "P") $song.triggerPause();
 	if($song.paused || !gamePad) return;
@@ -23,22 +24,29 @@ function detectInputAccuracy(key) {
 	var okPerc = [], okNotes = [], okIndex = [], okTiedNotes = [];
 
 	var tiedNote = function(note) {
-		if(note.hasTiedNote && note.pressed && note.tnSongPosition >= BGM.getCurrentPosition() && note.key == keyName) {
-			incrementScore(note.score, true);
-			return true;
+		if(note.hasTiedNote && note.pressed && note.key == keyName) {
+			if(note.tnSongPosition >= BGM.getCurrentPosition()) {
+				incrementScore(note.score, true);
+				return true;
+			}
+			else if(note.tnSongPosition + $song.baseNoteLength >= BGM.getCurrentPosition()) {
+				return true;
+			}
 		}
 	}
 
 	okTiedNotes = $song.notes.filter(tiedNote);
 	if(okTiedNotes.length > 0) return;
+
 	// IT DOESN'T HAVE A TIED NOTE, MAYBE IT'S A REGULAR ONE THEN?
-
 	var regularNote = function(note) {
-		var min = BGM.getCurrentPosition() - $song.baseNoteLength;
-		var max = BGM.getCurrentPosition() + $song.baseNoteLength;
-		var inputDelay = (new Date().getTime() - key.when) / 1000;
+		var min = note.songPosition - $song.baseNoteLength;
+		var max = note.songPosition + $song.baseNoteLength;
+		var nextNoteSongPosition = $song.notes[$song.currentNoteIndex].songPosition;
 
-		if(note.songPosition >= min && note.songPosition <= max && note.key == keyName && inputDelay <= $song.baseNoteLength) {
+		if(!note.pressed && note.key == keyName && inputDelay <= $song.baseNoteLength
+		   && BGM.getCurrentPosition() >= min && BGM.getCurrentPosition() <= max)
+		{
 			var delta = Math.abs(BGM.getCurrentPosition() - note.songPosition);
 			var percentage = Math.ceil(delta * 100 / $song.baseNoteLength);
 			okPerc.push(percentage);
@@ -50,55 +58,52 @@ function detectInputAccuracy(key) {
 
 	okNotes = $song.notes.filter(regularNote);
 	if(okNotes.length == 0) {
-		// THEN THERE IS NO NOTE TO PRESS : LOSE POINTS
-		decrementScore(10, true);
+		// THEN THERE IS NO NOTE TO PLAY : LOSE POINTS
+		decrementHP(10, true);
 		return;
 	}
 
-	var closestNoteIndex = okPerc.indexOf(Math.max.apply(Math, okPerc));
+	var closestNoteIndex = okIndex.indexOf(Math.min.apply(Math, okIndex));
 	var closestNote = $song.notes[okNotes[closestNoteIndex].index];
 	closestNote.score = okPerc[closestNoteIndex];
 
-	if(closestNote.score >= 90 && closestNote.score <= 100) {
+	if(closestNote.score >= 80 && closestNote.score <= 100) {
 		closestNote.accuracy = "great";
 		$accuracy[0]++;
 
+		incrementHP(15, true);
+	}
+	else if(closestNote.score >= 50 && closestNote.score <= 79) {
+		closestNote.accuracy = "cool";
+		$accuracy[1]++;
+
 		incrementHP(10, true);
 	}
-	else if(closestNote.score >= 60 && closestNote.score <= 89) {
-		closestNote.accuracy = "nice";
-		$accuracy[1]++;
+	else if(closestNote.score >= 30 && closestNote.score <= 49) {
+		closestNote.accuracy = "okay";
+		$accuracy[2]++;
 
 		incrementHP(5, true);
 	}
-	else if(closestNote.score >= 30 && closestNote.score <= 59) {
-		closestNote.accuracy = "cool";
-		$accuracy[2]++;
-	}
-	else if(closestNote.score >= 10 && closestNote.score <= 29) {
+	else if(closestNote.score >= 1 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
 		$accuracy[3]++;
 
 		decrementHP(5, true);
 	}
-	else if(closestNote.score >= 1 && closestNote.score <= 9) {
-		closestNote.accuracy = "miss";
-		$accuracy[4]++;
-		closestNote.score = 0;
 
-		decrementHP(10, true);
-	}
-
-	if(closestNote.accuracy != "miss") incrementScore(closestNote.score, true);
+	incrementScore(closestNote.score, true);
 	closestNote.pressed = true;
 
-	if(closestNote.accuracy == "great" || closestNote.accuracy == "nice") {
+	if(closestNote.accuracy == "great" || closestNote.accuracy == "cool") {
 		$combo++;
 	}
-	else {
+	else if($combo > 1) {
 		$comboArray.push($combo);
 		$combo = 0;
 	}
+
+	updateProgress();
 }
 
 
@@ -109,8 +114,10 @@ function missedNote(note) {
 	note.accuracy = "miss";
 	$accuracy[4]++;
 
-	$comboArray.push($combo);
-	$combo = 0;
+	if($combo > 1) {
+		$comboArray.push($combo);
+		$combo = 0;
+	}
 
-	decrementHP(10, true);
+	decrementHP(15, true);
 }
