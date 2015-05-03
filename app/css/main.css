@@ -273,7 +273,7 @@ body {
   box-shadow: 0  40px 0 #999, 0  80px 0 #999, 0 120px 0 #999, 0 160px 0 #999;
   z-index: 2; }
 
-#keys {
+#keys, #accuracy {
   z-index: 3;
   position: absolute; }
 
@@ -295,6 +295,35 @@ body {
 #keys i {
   line-height: 1.5em;
   font-size: 1.5em; }
+
+#accuracy {
+  left: 48px;
+  top: -20px; }
+
+#accuracy li {
+  font-weight: 400;
+  color: #D55320;
+  font-family: "Press Start 2P", cursive;
+  font-size: 10px;
+  background: #363535;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  line-height: 16px;
+  height: 32px;
+  display: table;
+  opacity: 0; }
+
+#accuracy li.visible {
+  opacity: 1; }
+
+#accuracy .value {
+  color: #E1D7CE;
+  float: right;
+  display: inline-block;
+  text-align: right;
+  margin-left: 10px; }
 
 #notes {
   width: calc(100% - 16px);

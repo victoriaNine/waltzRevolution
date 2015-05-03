@@ -288,7 +288,7 @@ body {
   z-index:2;
 }
 
-#keys { z-index:3; position:absolute; }
+#keys, #accuracy { z-index:3; position:absolute; }
 
 #keys li, .note {
   border-radius:50%;
@@ -305,6 +305,36 @@ body {
 
 #keys li.pressed { background:$orange; color:$offWhite; }
 #keys i { line-height: 1.5em; font-size:1.5em; }
+
+#accuracy { left:48px; top: -20px; }
+
+#accuracy li {
+  font-weight: 400;
+  color: $orange;
+  font-family: "Press Start 2P", cursive;
+  font-size: 10px;
+  background: $midGrey;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  line-height: 16px;
+  height: 32px;
+  display: table;
+  opacity:0;
+}
+
+#accuracy li.visible {
+  opacity:1;
+}
+
+#accuracy .value {
+  color: $beige;
+  float: right;
+  display: inline-block;
+  text-align: right;
+  margin-left: 10px;
+}
 
 #notes { width: calc(100% - 16px); height: 100%; position:absolute; z-index:2; left: 16px; }
 .note {

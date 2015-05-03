@@ -6,6 +6,7 @@
     <title>Waltz²Revolution</title>
     <link rel="stylesheet prefetch" href="css/reset.css">
     <link rel="stylesheet prefetch" href="//fonts.googleapis.com/css?family=Oswald:400,300,700">
+    <link rel="stylesheet prefetch" href='//fonts.googleapis.com/css?family=Press+Start+2P'>
     <link rel="stylesheet prefetch" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/main.css">
   </head>
@@ -25,11 +26,18 @@
           <div id="layoutElements">
             <div id="lines"></div>
             <ul id="keys">
-              <li id="keyUp"><i class="fa fa-arrow-up"></i></li>
-              <li id="keyRight"><i class="fa fa-arrow-right"></i></li>
-              <li id="keyLeft"><i class="fa fa-arrow-left"></i></li>
-              <li id="keyDown"><i class="fa fa-arrow-down"></i></li>
-              <li id="keySpace"><i class="fa fa-exclamation"></i></li>
+              <li class="keyUp"><i class="fa fa-arrow-up"></i></li>
+              <li class="keyRight"><i class="fa fa-arrow-right"></i></li>
+              <li class="keyLeft"><i class="fa fa-arrow-left"></i></li>
+              <li class="keyDown"><i class="fa fa-arrow-down"></i></li>
+              <li class="keySpace"><i class="fa fa-exclamation"></i></li>
+            </ul>
+            <ul id="accuracy">
+              <li class="keyUp"></li>
+              <li class="keyRight"></li>
+              <li class="keyLeft"></li>
+              <li class="keyDown"></li>
+              <li class="keySpace"></li>
             </ul>
           </div>
           <canvas id="notes"></canvas>

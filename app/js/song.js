@@ -179,19 +179,24 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
   }
 
   this.draw = function() {
-    var top = getStyle(".note."+this.key, "top", true);
-    var textAlign = (this.key == "space") ? 10 : 5;
-    var charCode;
+    var top;
+    if(this.key == "up") top = 0;
+    if(this.key == "right") top = 40;
+    if(this.key == "left") top = 80;
+    if(this.key == "down") top = 120;
+    if(this.key == "space") top = 160;
 
     var orange = "#D55320";
     var beige = "#E1D7CE";
 
+    var charCode;
     if(this.key == "up") charCode = "0xf062";
     if(this.key == "right") charCode = "0xf061";
     if(this.key == "left") charCode = "0xf060";
     if(this.key == "down") charCode = "0xf063";
     if(this.key == "space") charCode = "0xf12a";
 
+    var textAlign = (this.key == "space") ? 10 : 5;
     ctx.font = "24px FontAwesome";
 
     if(this.hasTiedNote) {

@@ -103,19 +103,6 @@ $(document).ready(function() {
 
 			$(document).trigger("fileLoaded");
 		});
-
-		$(window).on("blur", function() {
-			if(audioEngine.ready && initReady) {
-
-				if($song.paused) return;
-				else $song.pause();
-			}
-		})/*.on("focus", function() {
-			if(audioEngine.ready && initReady) {
-				if(autoMuteSound) autoMuteSound = false;
-				else audioEngine.unMute();
-			}
-		})*/;
 		
 		for(var i = 0; i < loadingArray.length; i++) {
 			$("<div>").load(loadingArray[i], function() {
@@ -202,26 +189,19 @@ function addListeners() {
 			if(!keyMap[e.which].pressed) {
 				keyMap[e.which].when = new Date().getTime();
 				keyMap[e.which].pressed = true;
-
-				detectInputAccuracy(keyMap[e.which]);
 			}
 
-			for(var key in keyMap) {
-				if(keyMap[key].pressed) {
-					setTimeout(function() { 
-						if(keyMap[key].pressed) detectInputAccuracy(keyMap[key])
-					}, $song.baseNoteLength * 1000);
-				}
-			}
+			for(var key in keyMap)
+				if(keyMap[key].pressed) detectInputAccuracy(keyMap[key]);
 		}
 	}).keyup(function(e) {
 		e.preventDefault();
 
-		if(e.which == 38) $("#keyUp").removeClass("pressed");
-		if(e.which == 39) $("#keyRight").removeClass("pressed");
-		if(e.which == 37) $("#keyLeft").removeClass("pressed");
-		if(e.which == 40) $("#keyDown").removeClass("pressed");
-		if(e.which == 32) $("#keySpace").removeClass("pressed");
+		if(e.which == 38) $("#keys .keyUp").removeClass("pressed");
+		if(e.which == 39) $("#keys .keyRight").removeClass("pressed");
+		if(e.which == 37) $("#keys .keyLeft").removeClass("pressed");
+		if(e.which == 40) $("#keys .keyDown").removeClass("pressed");
+		if(e.which == 32) $("#keys .keySpace").removeClass("pressed");
 
 		if(keyMap[e.which]) {
 			keyMap[e.which].pressed = false;
@@ -230,26 +210,53 @@ function addListeners() {
 	}).resize(function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 		requestAnimationFrame(draw);
-	});
+	}).on("blur", function() {
+		if(audioEngine.ready && initReady && !$song.paused) $song.pause();
+	})/*.on("focus", function() {
+		if(audioEngine.ready && initReady) {
+			if(autoMuteSound) autoMuteSound = false;
+			else audioEngine.unMute();
+		}
+	})*/;
 
-	$(document).on("songEnded", gameComplete);
+	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', function(e) {
+		e.preventDefault();
 
-	$("#keyUp, #keyRight, #keyLeft, #keyDown, #keySpace").on('touchstart touchend', function(e) {
 		var type;
 		if(e.type == 'touchstart') type = 'keydown';
 		if(e.type == 'touchend') type = 'keyup';
 
 		var code;
-		if(this.id == "keyUp") code = 38;
-		if(this.id == "keyRight") code = 39;
-		if(this.id == "keyLeft") code = 37;
-		if(this.id == "keyDown") code = 40;
-		if(this.id == "keySpace") code = 32;
+		if(this.className == "keyUp") code = 38;
+		if(this.className == "keyRight") code = 39;
+		if(this.className == "keyLeft") code = 37;
+		if(this.className == "keyDown") code = 40;
+		if(this.className == "keySpace") code = 32;
 
 		var _e = $.Event(type);
 		_e.which = _e.keyCode = code;
 		$(window).trigger(_e);
 	});
+
+	$(document).on("songEnded", gameComplete);
+}
+
+//===============================
+// ACCURACY TOOLTIP
+//===============================
+function showAccuracy(note) {
+	var keyName = note.key;
+	var keyNameFirstLetterUppercase = keyName.replace(keyName.charAt(0), keyName.charAt(0).toUpperCase());
+
+	var container = $("#accuracy .key"+keyNameFirstLetterUppercase);
+	container.html(note.accuracy);
+	if($combo > 0) {
+		container.append("<span class=\"value\"></span>");
+		container.find(".value").html($combo);
+	}
+
+	container.addClass("visible");
+	setTimeout(function() { container.removeClass("visible"); }, 1000);
 }
 
 

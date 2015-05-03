@@ -17,16 +17,18 @@ function detectInputAccuracy(key) {
 	var gamePad = key.gamePad;
 	var inputDelay = (new Date().getTime() - key.when) / 1000;
 
+
 	if(keyName == "P") $song.triggerPause();
 	if($song.paused || !gamePad) return;
 
-	$("#key"+keyNameFirstLetterUppercase).addClass("pressed");
+	$("#keys .key"+keyNameFirstLetterUppercase).addClass("pressed");
 	var okPerc = [], okNotes = [], okIndex = [], okTiedNotes = [];
 
 	var tiedNote = function(note) {
 		if(note.hasTiedNote && note.pressed && note.key == keyName) {
 			if(note.tnSongPosition >= BGM.getCurrentPosition()) {
-				incrementScore(note.score, true);
+				var noteAmount = (note.tnSongPosition - note.songPosition) / $song.baseNoteLength;
+				incrementScore(Math.ceil(note.score / noteAmount), true);
 				return true;
 			}
 			else if(note.tnSongPosition + $song.baseNoteLength >= BGM.getCurrentPosition()) {
@@ -48,7 +50,7 @@ function detectInputAccuracy(key) {
 		   && BGM.getCurrentPosition() >= min && BGM.getCurrentPosition() <= max)
 		{
 			var delta = Math.abs(BGM.getCurrentPosition() - note.songPosition);
-			var percentage = Math.ceil(delta * 100 / $song.baseNoteLength);
+			var percentage = 100 - Math.ceil(delta * 100 / $song.baseNoteLength);
 			okPerc.push(percentage);
 			okIndex.push(note.index);
 
@@ -98,12 +100,13 @@ function detectInputAccuracy(key) {
 	if(closestNote.accuracy == "great" || closestNote.accuracy == "cool") {
 		$combo++;
 	}
-	else if($combo > 1) {
+	else if($combo > 0) {
 		$comboArray.push($combo);
 		$combo = 0;
 	}
 
 	updateProgress();
+	showAccuracy(closestNote);
 }
 
 
@@ -114,10 +117,11 @@ function missedNote(note) {
 	note.accuracy = "miss";
 	$accuracy[4]++;
 
-	if($combo > 1) {
+	if($combo > 0) {
 		$comboArray.push($combo);
 		$combo = 0;
 	}
 
 	decrementHP(15, true);
+	showAccuracy(note);
 }
