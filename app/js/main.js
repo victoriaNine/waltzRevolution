@@ -40,12 +40,12 @@ var $progress = 0;
 var $rank;
 
 var $accuracy = [0, 0, 0, 0, 0] // great, nice, cool, poor, miss
-var $accuracyPerc;
 var $totalNotes;
 var $comboArray = [];
 var $combo = 0;
 
 var $gameOver = false;
+var $newRecord = false;
 
 
 //===============================
@@ -56,7 +56,7 @@ $(document).ready(function() {
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
 
-	//$("#bestScore .right").html(getLocalStorage("bestScore") ? getLocalStorage("bestScore")[0] : "-");
+	//$("#highScores .right").html(getLocalStorage("highScores") ? getLocalStorage("highScores")[0] : "-");
 
 	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 
@@ -351,7 +351,7 @@ function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(ke
 function gameComplete() {
 	console.log("I am SO done.");
 
-	partyEnd();
+	toResults();
 }
 
 function gameOver() {
@@ -360,34 +360,42 @@ function gameOver() {
 
 	BGM.setCrossfade(0);
 	TweenMax.to($song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
-		onComplete:function() { partyEnd(); }
+		onComplete:function() { toResults(); }
 	});
 }
 
-function partyEnd() {
+function toResults() {
 	$song.pause();
 	BGM.hasEnded();
 
-	$accuracyPerc = Math.ceil($score * 100 / $maxScore);
-
-	if($accuracyPerc == 100)
+	if($progress == 100)
 		$rank = "S"; // perfect
-	else if($accuracyPerc >= 90 && $accuracyPerc <= 99)
+	else if($progress >= 90 && $progress <= 99)
 		$rank = "A"; // great
-	else if($accuracyPerc >= 75 && $accuracyPerc <= 89)
+	else if($progress >= 75 && $progress <= 89)
 		$rank = "B"; // cool
-	else if($accuracyPerc >= 60 && $accuracyPerc <= 74)
+	else if($progress >= 60 && $progress <= 74)
 		$rank = "C"; // okay
-	else if($accuracyPerc >= 0 && $accuracyPerc <= 59)
+	else if($progress >= 0 && $progress <= 59)
 		$rank = "D"; // poor
 
 	var maxCombo = Math.max.apply(Math, $comboArray);
+	var newScore = [$score, $progress, $rank, new Date()];
+	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
 
-	console.log("Rank "+$rank+" : "+$score+"pts - "+$accuracyPerc+"%");
-	if($score > getLocalStorage("bestScore")[0] || !getLocalStorage("bestScore")) {
-		setLocalStorage("bestScore", [$score, $rank, $accuracyPerc]);
-		console.log("New best score!");
+	for(var i = 0; i < highScores.length; i++) {
+		if($score > highScores[i][0] || !highScores[i][0]) {
+			for(var j = highScores.length - 2; j >= i; j--) {
+				highScores[j+1] = highScores[j];
+			}
+
+			highScores[i] = newScore;
+			$newRecord = true;
+			break;
+		}
 	}
+
+	setLocalStorage("highScores", highScores);
 }
 
 
