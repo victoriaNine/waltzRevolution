@@ -39,13 +39,14 @@
  - pause
  ~ results
  - main menu
- - loading
  - high scores
  - credits
  - how to play
  - main menu canvas
+ - loading
 - clean code
 
+- bgm
 - sfx
 - clean code
 

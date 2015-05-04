@@ -241,6 +241,7 @@ function addListeners() {
 	$(document).on("songEnded", gameComplete);
 }
 
+
 //===============================
 // ACCURACY TOOLTIP
 //===============================
@@ -316,6 +317,7 @@ function updateHP() {
 	if(percentage <= 25) $("#lifeSphere").addClass("critical");
 	else if($("#lifeSphere").hasClass("critical")) $("#lifeSphere").removeClass("critical");
 }
+
 
 //===============================
 // PROGRESS
