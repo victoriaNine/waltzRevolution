@@ -24,6 +24,16 @@
  ! high scores
  ! how to play
  ! loading
+! gameplay checkup
+
+=> 05/02/2015 - 05/03/2015
+! tune difficulty :
+ ! recheck input accuracy
+ ! score tuning
+! check synchronicity
+! save high scores (new gameplay)
+
+=> 05/04/2015 - 05/08/2015
 ~ screens & UI :
  ! main screen (stop updating values when gameOver/paused)
  - pause
@@ -33,19 +43,12 @@
  - high scores
  - credits
  - how to play
-- clean code
-
-=> 05/02/2015 - 05/03/2015
-! tune difficulty :
- ! recheck input accuracy
- ! score tuning
+ - main menu canvas
 - clean code
 
 - sfx
 - clean code
 
+=> 05/09/2015 - 05/11/2015
 - responsive
-- clean code
-
-- check synchronicity
 - clean code
