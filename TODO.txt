@@ -53,3 +53,15 @@
 => 05/09/2015 - 05/11/2015
 - responsive
 - clean code
+
+
+----------
+
+Clean Code (organization, cohesion)
+Semantics (Markup)
+Web Technologies
+Accessibility
+SEO
+Performance
+Animations
+Responsive Design
