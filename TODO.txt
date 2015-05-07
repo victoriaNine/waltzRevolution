@@ -36,7 +36,7 @@
 => 05/04/2015 - 05/08/2015
 ~ screens & UI :
  ! main screen (stop updating values when gameOver/paused)
- - pause
+ ! pause
  ~ results
  - main menu
  - high scores
@@ -44,6 +44,8 @@
  - how to play
  - main menu canvas
  - loading
+ - link screens together
+ - fix arrows visibility
 - clean code
 
 - bgm
