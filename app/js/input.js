@@ -19,7 +19,7 @@ function detectInputAccuracy(key) {
 
 
 	if(keyName == "P") $song.triggerPause();
-	if($song.paused || !gamePad) return;
+	if($noInput || !gamePad) return;
 
 	$("#keys .key"+keyNameFirstLetterUppercase).addClass("pressed");
 	var okPerc = [], okNotes = [], okIndex = [], okTiedNotes = [];
@@ -72,24 +72,28 @@ function detectInputAccuracy(key) {
 	if(closestNote.score >= 80 && closestNote.score <= 100) {
 		closestNote.accuracy = "great";
 		$accuracy[0]++;
+		$points[0] += closestNote.score;
 
 		incrementHP(15, true);
 	}
 	else if(closestNote.score >= 50 && closestNote.score <= 79) {
 		closestNote.accuracy = "cool";
 		$accuracy[1]++;
+		$points[1] += closestNote.score;
 
 		incrementHP(10, true);
 	}
 	else if(closestNote.score >= 30 && closestNote.score <= 49) {
 		closestNote.accuracy = "okay";
 		$accuracy[2]++;
+		$points[2] += closestNote.score;
 
 		incrementHP(5, true);
 	}
 	else if(closestNote.score >= 1 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
 		$accuracy[3]++;
+		$points[3] += closestNote.score;
 
 		decrementHP(5, true);
 	}

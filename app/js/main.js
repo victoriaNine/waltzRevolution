@@ -40,10 +40,12 @@ var $progress = 0;
 var $rank;
 
 var $accuracy = [0, 0, 0, 0, 0] // great, nice, cool, poor, miss
+var $points = [0, 0, 0, 0] // great, nice, cool, poor
 var $totalNotes;
 var $comboArray = [];
 var $combo = 0;
 
+var $noInput = false;
 var $gameOver = false;
 var $newRecord = false;
 
@@ -323,7 +325,7 @@ function updateHP() {
 // PROGRESS
 //===============================
 function updateProgress() {
-	$progress = ($accuracy[0] + $accuracy[1]) * 100 / $totalNotes;
+	$progress = (($accuracy[0] + $accuracy[1]) * 100 / $totalNotes).toFixed(1);
 	var currentValue = parseFloat($("#progress .value").html()) || 0;
 
 	TweenMax.to($({someValue: currentValue}), .4, {someValue: $progress, ease:Power3.easeInOut,
@@ -367,7 +369,7 @@ function gameOver() {
 }
 
 function toResults() {
-	$song.pause();
+	$noInput = true;
 	BGM.hasEnded();
 
 	if($progress == 100)
@@ -392,12 +394,37 @@ function toResults() {
 			}
 
 			highScores[i] = newScore;
+			setLocalStorage("highScores", highScores);
 			$newRecord = true;
 			break;
 		}
 	}
 
-	setLocalStorage("highScores", highScores);
+	$("#results_totalNotes").find(".nb").html($totalNotes);
+	$("#results_maxCombo").find(".nb").html(maxCombo);
+
+	var percentGreat = $accuracy[0] * 100 / $totalNotes;
+	$("#results_great").find(".nb").html(accuracy[0]);
+	$("#results_great").find(".points").html(points[0]+"pts");
+	$("#results_great").find(".percent").html(percentGreat+"%");
+
+	var percentNice = $accuracy[1] * 100 / $totalNotes;
+	$("#results_nice").find(".nb").html(accuracy[1]);
+	$("#results_nice").find(".points").html(points[1]+"pts");
+	$("#results_nice").find(".percent").html(percentNice+"%");
+
+	$("#results_cool").find(".nb").html(accuracy[2]);
+	$("#results_cool").find(".points").html(points[2]+"pts");
+	$("#results_poor").find(".nb").html(accuracy[3]);
+	$("#results_poor").find(".points").html(points[3]+"pts");
+	$("#results_miss").find(".nb").html(accuracy[4]);
+
+	$("#results_totalCompletion").find(".percent").html($progress+"%");
+
+	$("#results_score").find(".points").html($score+"pts");
+	$("#results_highScore").find(".points").html(highScores[0][0]+"pts");
+
+	$("#screen_results").addClass("open");
 }
 
 

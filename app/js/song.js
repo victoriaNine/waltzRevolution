@@ -116,7 +116,8 @@ Song.prototype.pause = function() {
     BGM.pause();
 
     this.paused = true;
-    $("#pauseScreen").addClass("open");
+    $("#screen_pause").addClass("open");
+    $noInput = true;
   }
 }
 
@@ -126,7 +127,8 @@ Song.prototype.resume = function() {
     BGM.unPause();
 
     this.paused = false;
-    $("#pauseScreen").removeClass("open");
+    $("#screen_pause").removeClass("open");
+    $noInput = false;
   }
 }
 
