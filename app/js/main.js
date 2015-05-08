@@ -47,7 +47,6 @@ var $combo = 0;
 
 var $noInput = false;
 var $gameOver = false;
-var $newRecord = false;
 
 
 //===============================
@@ -90,6 +89,9 @@ $(document).ready(function() {
 		$totalNotes = $song.notes.length;
 		$maxScore = 100 * $totalNotes; //+ tiedNotesBonus;
 
+		$("#songInfo h1").html($song.title);
+   	    $("#songInfo h2").html($song.artist);
+   	    $("#progressBar .markers").removeClass("passed");
 		updateScore();
 		updateHP();
 		updateProgress();
@@ -325,17 +327,19 @@ function updateHP() {
 // PROGRESS
 //===============================
 function updateProgress() {
-	$progress = (($accuracy[0] + $accuracy[1]) * 100 / $totalNotes).toFixed(1);
+	var progress = ($accuracy[0] + $accuracy[1]) * 100 / $totalNotes;
 	var currentValue = parseFloat($("#progress .value").html()) || 0;
 
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: $progress, ease:Power3.easeInOut,
+	TweenMax.to($({someValue: currentValue}), .4, {someValue: progress, ease:Power3.easeInOut,
 		onUpdate:function(tween) {
 			$("#progress .value").html((tween.target[0].someValue).toFixed(1)+"%");
 		},
 		onUpdateParams:["{self}"]
 	});
 
-	TweenMax.to($("#progressBar .bar"), .4, {width: $progress+"%", ease:Power3.easeInOut});
+	TweenMax.to($("#progressBar .bar"), .4, {width: progress+"%", ease:Power3.easeInOut});
+
+	$progress = progress.toFixed(1);
 	if($progress >= 60 && !$("#progressBar .p60").hasClass("passed")) $("#progressBar .p60").addClass("passed");
 	if($progress >= 75 && !$("#progressBar .p75").hasClass("passed")) $("#progressBar .p75").addClass("passed");
 	if($progress >= 90 && !$("#progressBar .p90").hasClass("passed")) $("#progressBar .p90").addClass("passed");
@@ -372,20 +376,32 @@ function toResults() {
 	$noInput = true;
 	BGM.hasEnded();
 
-	if($progress == 100)
-		$rank = "S"; // perfect
-	else if($progress >= 90 && $progress <= 99)
-		$rank = "A"; // great
-	else if($progress >= 75 && $progress <= 89)
-		$rank = "B"; // cool
-	else if($progress >= 60 && $progress <= 74)
-		$rank = "C"; // okay
-	else if($progress >= 0 && $progress <= 59)
-		$rank = "D"; // poor
+	var stars;
+	if($progress == 100) {
+		$rank = "perfect"; // S
+		stars = 5;
+	}
+	else if($progress >= 90 && $progress <= 99) {
+		$rank = "great"; // A
+		stars = 4;
+	}
+	else if($progress >= 75 && $progress <= 89) {
+		$rank = "cool"; // B
+		stars = 3;
+	}
+	else if($progress >= 60 && $progress <= 74) {
+		$rank = "okay"; // C
+		stars = 2;
+	}
+	else if($progress >= 0 && $progress <= 59) {
+		$rank = "poor"; // D
+		stars = 1;
+	}
 
 	var maxCombo = Math.max.apply(Math, $comboArray);
 	var newScore = [$score, $progress, $rank, new Date()];
 	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
+	var newRecord = false;
 
 	for(var i = 0; i < highScores.length; i++) {
 		if($score > highScores[i][0] || !highScores[i][0]) {
@@ -395,34 +411,50 @@ function toResults() {
 
 			highScores[i] = newScore;
 			setLocalStorage("highScores", highScores);
-			$newRecord = true;
+			newRecord = true;
 			break;
 		}
 	}
 
+	if($rank == "poor") $("#screen_results").find("h2").html("stage failed...");
+	else $("#screen_results").find("h2").html("stage cleared!");
+
 	$("#results_totalNotes").find(".nb").html($totalNotes);
 	$("#results_maxCombo").find(".nb").html(maxCombo);
 
-	var percentGreat = $accuracy[0] * 100 / $totalNotes;
-	$("#results_great").find(".nb").html(accuracy[0]);
-	$("#results_great").find(".points").html(points[0]+"pts");
+	var percentGreat = ($accuracy[0] * 100 / $totalNotes).toFixed(1);
+	$("#results_great").find(".nb").html($accuracy[0]);
+	$("#results_great").find(".points").html($points[0]+"pts");
 	$("#results_great").find(".percent").html(percentGreat+"%");
 
-	var percentNice = $accuracy[1] * 100 / $totalNotes;
-	$("#results_nice").find(".nb").html(accuracy[1]);
-	$("#results_nice").find(".points").html(points[1]+"pts");
+	var percentNice = ($accuracy[1] * 100 / $totalNotes).toFixed(1);
+	$("#results_nice").find(".nb").html($accuracy[1]);
+	$("#results_nice").find(".points").html($points[1]+"pts");
 	$("#results_nice").find(".percent").html(percentNice+"%");
 
-	$("#results_cool").find(".nb").html(accuracy[2]);
-	$("#results_cool").find(".points").html(points[2]+"pts");
-	$("#results_poor").find(".nb").html(accuracy[3]);
-	$("#results_poor").find(".points").html(points[3]+"pts");
-	$("#results_miss").find(".nb").html(accuracy[4]);
+	$("#results_cool").find(".nb").html($accuracy[2]);
+	$("#results_cool").find(".points").html($points[2]+"pts");
+	$("#results_poor").find(".nb").html($accuracy[3]);
+	$("#results_poor").find(".points").html($points[3]+"pts");
+	$("#results_miss").find(".nb").html($accuracy[4]);
 
 	$("#results_totalCompletion").find(".percent").html($progress+"%");
 
+	$("#results_score").find(".newRecord").removeClass("visible");
 	$("#results_score").find(".points").html($score+"pts");
 	$("#results_highScore").find(".points").html(highScores[0][0]+"pts");
+	if(newRecord) $("#results_score").find(".newRecord").addClass("visible");
+
+	$("#screen_results").find(".title").html($song.title);
+   	$("#screen_results").find(".artist").html("by "+$song.artist);
+
+
+   	var rank = $rank.replace($rank.charAt(0), $rank.charAt(0).toUpperCase());
+   	$("#screen_results").find(".rank").html(rank);
+
+   	$("#screen_results .stars i").removeClass("on");
+   	for(var i = 0; i < stars; i++)
+   		$("#screen_results .stars").find("i").eq(i).addClass("on");
 
 	$("#screen_results").addClass("open");
 }

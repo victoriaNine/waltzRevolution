@@ -119,6 +119,8 @@ body {
   color:$midGrey;
 }
 
+hr { border: none; background: $midGrey; height: 1px; }
+
 ::-moz-selection {
   background:  $orange;
   color:       #FFF;
@@ -139,6 +141,9 @@ body {
   display:table;
   clear:both;
 }
+
+.beige { color:$beige; }
+.orange { color:$orange; }
 
 #bg {
   width:100%;
@@ -167,7 +172,7 @@ body {
 
 
 /*******/
-#playScreen {
+#screen_play {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -321,7 +326,7 @@ body {
   height:195px;
   position:absolute;
   right:0;
-  top:calc(50% - (195px / 2) - 40px);
+  top:calc(50% - (195px / 2) - 20px);
 }
 
 #lines {
@@ -383,6 +388,8 @@ body {
   margin-left: 10px;
 }
 
+#notes { width: calc(100% - 16px); height: 100%; position:absolute; z-index:2; left: 16px; }
+
 
 /*******/
 .button {
@@ -396,6 +403,7 @@ body {
   box-sizing:border-box;
   display:inline-block;
   cursor:pointer;
+  text-align:left;
 
   transition:letter-spacing .2s ease-out;
 }
@@ -425,11 +433,11 @@ body {
 
 .screen .container {
   width:1200px;
-  height:665px;
+  height:550px;
   position:absolute;
   left:calc(50% - 1200px/2);
-  top:calc(50% - 665px/2);
-  padding:0 40px 40px;
+  top:calc(50% - 550px/2);
+  padding:0 40px;
   box-sizing:border-box;
 }
 
@@ -440,13 +448,74 @@ body {
   font-family: 'Oswald-RegularItalic';
 }
 
-.screen ul li {
+#screen_results h1 { margin-bottom:50px; }
+
+.screen .nav li {
   @extend .button;
   margin-right:50px;
 }
 
-.panel {
-  background: $darkGrey;
-  border-radius:$borderRadius;
-  height: calc(100% - 160px);
+.screen .nav li:last-child { margin-right:0; }
+.screen .panel, .screen .right { height: calc(100% - 130px); width:calc(50% - 40px); }
+.screen .panel { background: $darkGrey; border-radius:$borderRadius; padding: 10px; box-sizing: border-box; font-size: 20px; }
+.screen .right { text-align:right; }
+
+.screen .panel h2 {
+  font-family: "Press Start 2P", cursive;
+  text-transform: none;
+  text-align: center;
+  margin: 15px 0 25px;
+  color:$beige;
 }
+
+.screen .panel .row { line-height: 24px; position:relative; }
+.screen .panel .row span { display:inline-block; position:relative; }
+
+#results_totalCompletion { margin-top:14px; }
+
+.screen .label { width:40%; }
+.screen .nb, .screen .points, .screen .percent { text-align: right; }
+.screen .nb { width: 10%; }
+.screen .points { width: 25%; }
+.screen .percent { width: 20%; }
+
+.screen .newRecord {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  border-radius: 50%;
+  background: $midGrey;
+  color: $orange;
+  text-align: center;
+  line-height: 28px;
+  font-size: 18px;
+  left:32px;
+  opacity:0;
+}
+
+.screen .newRecord:before {
+  content:"new record!";
+  position:absolute;
+  background: $midGrey;
+  font-family: "Press Start 2P", cursive;
+  color:$beige;
+  font-size: 7px;
+  width: 90px;
+  border-radius: 20px;
+  padding-left: 18px;
+  height: 20px;
+  line-height: 20px;
+  top: 4px;
+}
+
+.screen .newRecord.visible { opacity:1; }
+
+#screen_results .nav { position:absolute; right:40px; bottom:0px; }
+.screen .title, .screen .artist { text-transform:none; font-size:32px; }
+.screen .title { color:$orange; margin-bottom:10px; }
+.screen .artist { color:$beige; }
+
+.screen .rank { font-family: 'Oswald-RegularItalic'; font-size:60px; color:$beige; margin:150px 0 10px; }
+.screen .stars { font-size:32px; color:$midGrey; }
+.screen .stars i:not(:last-child) { margin-right:4px; }
+.screen .stars i.on { color:$orange; }
