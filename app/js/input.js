@@ -18,8 +18,8 @@ function detectInputAccuracy(key) {
 	var inputDelay = (new Date().getTime() - key.when) / 1000;
 
 
-	if(keyName == "P") $song.triggerPause();
-	if($noInput || !gamePad) return;
+	if(keyName == "P") $game.song.triggerPause();
+	if($game.noInput || !gamePad) return;
 
 	$("#keys .key"+keyNameFirstLetterUppercase).addClass("pressed");
 	var okPerc = [], okNotes = [], okIndex = [], okTiedNotes = [];
@@ -27,30 +27,30 @@ function detectInputAccuracy(key) {
 	var tiedNote = function(note) {
 		if(note.hasTiedNote && note.pressed && note.key == keyName) {
 			if(note.tnSongPosition >= BGM.getCurrentPosition()) {
-				var noteAmount = (note.tnSongPosition - note.songPosition) / $song.baseNoteLength;
+				var noteAmount = (note.tnSongPosition - note.songPosition) / $game.song.baseNoteLength;
 				incrementScore(Math.ceil(note.score / noteAmount), true);
 				return true;
 			}
-			else if(note.tnSongPosition + $song.baseNoteLength >= BGM.getCurrentPosition()) {
+			else if(note.tnSongPosition + $game.song.baseNoteLength >= BGM.getCurrentPosition()) {
 				return true;
 			}
 		}
 	}
 
-	okTiedNotes = $song.notes.filter(tiedNote);
+	okTiedNotes = $game.song.notes.filter(tiedNote);
 	if(okTiedNotes.length > 0) return;
 
 	// IT DOESN'T HAVE A TIED NOTE, MAYBE IT'S A REGULAR ONE THEN?
 	var regularNote = function(note) {
-		var min = note.songPosition - $song.baseNoteLength;
-		var max = note.songPosition + $song.baseNoteLength;
-		var nextNoteSongPosition = $song.notes[$song.currentNoteIndex].songPosition;
+		var min = note.songPosition - $game.song.baseNoteLength;
+		var max = note.songPosition + $game.song.baseNoteLength;
+		var nextNoteSongPosition = $game.song.notes[$game.song.currentNoteIndex].songPosition;
 
-		if(!note.pressed && note.key == keyName && inputDelay <= $song.baseNoteLength
+		if(!note.pressed && note.key == keyName && inputDelay <= $game.song.baseNoteLength
 		   && BGM.getCurrentPosition() >= min && BGM.getCurrentPosition() <= max)
 		{
 			var delta = Math.abs(BGM.getCurrentPosition() - note.songPosition);
-			var percentage = 100 - Math.ceil(delta * 100 / $song.baseNoteLength);
+			var percentage = 100 - Math.ceil(delta * 100 / $game.song.baseNoteLength);
 			okPerc.push(percentage);
 			okIndex.push(note.index);
 
@@ -58,7 +58,7 @@ function detectInputAccuracy(key) {
 		}
 	};
 
-	okNotes = $song.notes.filter(regularNote);
+	okNotes = $game.song.notes.filter(regularNote);
 	if(okNotes.length == 0) {
 		// THEN THERE IS NO NOTE TO PLAY : LOSE POINTS
 		decrementHP(10, true);
@@ -66,34 +66,34 @@ function detectInputAccuracy(key) {
 	}
 
 	var closestNoteIndex = okIndex.indexOf(Math.min.apply(Math, okIndex));
-	var closestNote = $song.notes[okNotes[closestNoteIndex].index];
+	var closestNote = $game.song.notes[okNotes[closestNoteIndex].index];
 	closestNote.score = okPerc[closestNoteIndex];
 
 	if(closestNote.score >= 80 && closestNote.score <= 100) {
 		closestNote.accuracy = "great";
-		$accuracy[0]++;
-		$points[0] += closestNote.score;
+		$game.accuracy[0]++;
+		$game.points[0] += closestNote.score;
 
 		incrementHP(15, true);
 	}
 	else if(closestNote.score >= 50 && closestNote.score <= 79) {
 		closestNote.accuracy = "cool";
-		$accuracy[1]++;
-		$points[1] += closestNote.score;
+		$game.accuracy[1]++;
+		$game.points[1] += closestNote.score;
 
 		incrementHP(10, true);
 	}
 	else if(closestNote.score >= 30 && closestNote.score <= 49) {
 		closestNote.accuracy = "okay";
-		$accuracy[2]++;
-		$points[2] += closestNote.score;
+		$game.accuracy[2]++;
+		$game.points[2] += closestNote.score;
 
 		incrementHP(5, true);
 	}
 	else if(closestNote.score >= 1 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
-		$accuracy[3]++;
-		$points[3] += closestNote.score;
+		$game.accuracy[3]++;
+		$game.points[3] += closestNote.score;
 
 		decrementHP(5, true);
 	}
@@ -101,12 +101,11 @@ function detectInputAccuracy(key) {
 	incrementScore(closestNote.score, true);
 	closestNote.pressed = true;
 
-	if(closestNote.accuracy == "great" || closestNote.accuracy == "cool") {
-		$combo++;
-	}
-	else if($combo > 0) {
-		$comboArray.push($combo);
-		$combo = 0;
+	if(closestNote.accuracy == "great" || closestNote.accuracy == "cool")
+		$game.combo++;
+	else if($game.combo > 0) {
+		$game.comboArray.push($game.combo);
+		$game.combo = 0;
 	}
 
 	updateProgress();
@@ -119,11 +118,11 @@ function detectInputAccuracy(key) {
 function missedNote(note) {
 //===============================
 	note.accuracy = "miss";
-	$accuracy[4]++;
+	$game.accuracy[4]++;
 
-	if($combo > 0) {
-		$comboArray.push($combo);
-		$combo = 0;
+	if($game.combo > 0) {
+		$game.comboArray.push($game.combo);
+		$game.combo = 0;
 	}
 
 	decrementHP(15, true);

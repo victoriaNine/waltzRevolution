@@ -144,6 +144,7 @@ hr { border: none; background: $midGrey; height: 1px; }
 
 .beige { color:$beige; }
 .orange { color:$orange; }
+.midGrey { color:$midGrey; }
 
 #bg {
   width:100%;
@@ -189,13 +190,13 @@ hr { border: none; background: $midGrey; height: 1px; }
   text-transform:none;
 }
 
-#songInfo h1 {
+#songInfo .title {
   font-size:36px;
   vertical-align: super;
   display: inline-block;
 }
 
-#songInfo h2 { font-size:30px; color:$lightGrey; }
+#songInfo .artist { font-size:30px; color:$lightGrey; }
 
 
 /*******/
@@ -342,23 +343,20 @@ hr { border: none; background: $midGrey; height: 1px; }
   z-index:2;
 }
 
-#keys, #accuracy { z-index:3; position:absolute; }
+#keys, #accuracy { z-index:3; position:absolute; font-size:16px; }
 
 #keys li, .note {
-  border-radius:50%;
-  text-align:center;
-}
-
-#keys li {
   width:36px;
   height:36px;
   background:#333;
   color:$lightGrey;
   margin-bottom:4px;
+  border-radius:50%;
+  text-align:center;
 }
 
 #keys li.pressed { background:$orange; color:$offWhite; }
-#keys i { line-height: 1.5em; font-size:1.5em; }
+#keys i, .note i { line-height: 1.5em; font-size:1.5em; }
 
 #accuracy { left:48px; top: -20px; }
 
@@ -404,6 +402,8 @@ hr { border: none; background: $midGrey; height: 1px; }
   display:inline-block;
   cursor:pointer;
   text-align:left;
+  margin:40px 0 0;
+  position:relative;
 
   transition:letter-spacing .2s ease-out;
 }
@@ -414,19 +414,19 @@ hr { border: none; background: $midGrey; height: 1px; }
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 9999;
-  background: rgba(0,0,0,.95);
   font-size:24px;
 }
 
-.screen {
+.overlay {
+  z-index: 9999;
+  background: rgba(0,0,0,.95);
   pointer-events:none;
   opacity:0;
 
   transition:opacity .2s ease-out;
 }
 
-.screen.open {
+.overlay.open {
   pointer-events:auto;
   opacity:1;
 }
@@ -449,16 +449,25 @@ hr { border: none; background: $midGrey; height: 1px; }
 }
 
 #screen_results h1 { margin-bottom:50px; }
+.screen p { line-height: 28px; }
 
 .screen .nav li {
   @extend .button;
-  margin-right:50px;
+  margin: 0 50px 0 0;
 }
 
 .screen .nav li:last-child { margin-right:0; }
-.screen .panel, .screen .right { height: calc(100% - 130px); width:calc(50% - 40px); }
-.screen .panel { background: $darkGrey; border-radius:$borderRadius; padding: 10px; box-sizing: border-box; font-size: 20px; }
+
+.screen .left, .screen .right { height: calc(100% - 130px); width:calc(50% - 40px); }
 .screen .right { text-align:right; }
+
+.screen .panel {
+  background: $darkGrey;
+  border-radius:$borderRadius;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 20px;
+}
 
 .screen .panel h2 {
   font-family: "Press Start 2P", cursive;
@@ -468,16 +477,61 @@ hr { border: none; background: $midGrey; height: 1px; }
   color:$beige;
 }
 
-.screen .panel .row { line-height: 24px; position:relative; }
-.screen .panel .row span { display:inline-block; position:relative; }
+.screen .row { line-height: 24px; position:relative; }
+.screen .row span { display:inline-block; position:relative; }
+.screen .nb, .screen .points, .screen .percent { text-align: right; }
+
+#screen_highScores .row { line-height: 28px; }
+#screen_highScores .label { width: 75px; }
+#screen_highScores .date { width: 200px; }
+#screen_highScores .points { width: 125px; }
+#screen_highScores .percent { width: 90px; }
+#screen_highScores .stars { display:inline-block; width: 150px; text-align: right; }
+
+#screen_howToPlay p { font-size: 22px; margin-bottom:32px; }
+
+#screen_howToPlay li { display: inline-table; width: 32.9%; }
+#screen_howToPlay li:nth-child(1), #screen_howToPlay li:nth-child(2), #screen_howToPlay li:nth-child(3) { margin-bottom:16px; }
+#screen_howToPlay .note, #screen_howToPlay .label { display: inline-block; }
+#screen_howToPlay .note { width: 32px; height: 32px; margin-right:16px; }
+#screen_howToPlay .note i { line-height: 1.25em; font-size: 1.25em; }
+#screen_howToPlay .label {
+  color:$beige;
+  font-size:7px;
+  font-family: "Press Start 2P", cursive;
+  vertical-align: middle;
+  height: 100%;
+  line-height: 32px;
+}
+
+.fa-p:before {
+  content: "P";
+  font-family: Oswald;
+  font-weight: 600;
+}
+
+#screen_credits .button:after {
+  content:"- Thanks for playing!";
+  font-family: "Press Start 2P", cursive;
+  color:$orange;
+  font-size:7px;
+  transform:translateY(10px);
+  opacity:0;
+  position:absolute;
+  top: -40px;
+  left: 0;
+  white-space: nowrap;
+
+  transition:all.2s ease-out;
+}
+
+#screen_credits .button:hover:after { transform:translateY(0); opacity:1; }
 
 #results_totalCompletion { margin-top:14px; }
-
-.screen .label { width:40%; }
-.screen .nb, .screen .points, .screen .percent { text-align: right; }
-.screen .nb { width: 10%; }
-.screen .points { width: 25%; }
-.screen .percent { width: 20%; }
+#results_totalCompletion .label { width:40%; }
+#results_totalCompletion .nb { width: 10%; }
+#results_totalCompletion .points { width: 25%; }
+#results_totalCompletion .percent { width: 20%; }
 
 .screen .newRecord {
   width: 28px;
@@ -516,6 +570,9 @@ hr { border: none; background: $midGrey; height: 1px; }
 .screen .artist { color:$beige; }
 
 .screen .rank { font-family: 'Oswald-RegularItalic'; font-size:60px; color:$beige; margin:150px 0 10px; }
-.screen .stars { font-size:32px; color:$midGrey; }
-.screen .stars i:not(:last-child) { margin-right:4px; }
+.screen .stars { color:$midGrey; }
+.screen .stars i:not(:last-child) { margin-right:-4px; }
 .screen .stars i.on { color:$orange; }
+
+#screen_results .stars { font-size:32px; }
+#screen_results .stars i:not(:last-child) { margin-right:4px; }

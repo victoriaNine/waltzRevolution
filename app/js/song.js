@@ -78,8 +78,6 @@ Song.prototype.loadSong = function(url) {
     loader.staffLength = loader.notes[loader.notes.length - 1].staffPosition + loader.noteWidth;
     loader.staffScrollDuration = loader.notes[loader.notes.length - 1].songPosition;
 
-    $("#songInfo h1").html(loader.title);
-    $("#songInfo h2").html(loader.artist);
     loader.callback();
   }
 
@@ -91,12 +89,13 @@ Song.prototype.loadSong = function(url) {
 Song.prototype.load = function() { this.loadSong(this.url); }
 
 Song.prototype.start = function() {
-  var song = this;
-  var rAF = function() { /*if(!song.paused)*/ requestAnimationFrame(draw); }
+  var rAF = function() { requestAnimationFrame(draw); }
 
-  BGM.play();
+  var fileName = this.fileURL.slice(this.fileURL.lastIndexOf("/")+1, this.fileURL.lastIndexOf("."))
+  BGM.play(fileName);
   draw();
 
+  var song = this;
   TweenMax.ticker.addEventListener("tick", rAF);
   this.staffScroll = TweenMax.to($("<div>").css("left","0px"), this.staffScrollDuration, {left:this.staffLength+"px", ease:Power0.easeNone,
       onUpdate:function(tween, prop) {
@@ -110,14 +109,14 @@ Song.prototype.start = function() {
   });
 }
 
-Song.prototype.pause = function() {
+Song.prototype.pause = function(noScreen) {
   if(!this.paused) {
     this.staffScroll.pause();
     BGM.pause();
 
     this.paused = true;
-    $("#screen_pause").addClass("open");
-    $noInput = true;
+    if(!noScreen) $("#screen_pause").addClass("open");
+    $game.noInput = true;
   }
 }
 
@@ -127,8 +126,8 @@ Song.prototype.resume = function() {
     BGM.unPause();
 
     this.paused = false;
-    $("#screen_pause").removeClass("open");
-    $noInput = false;
+    if($("#screen_pause").hasClass("open")) $("#screen_pause").removeClass("open");
+    $game.noInput = false;
   }
 }
 
@@ -157,23 +156,23 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
   this.accuracy;
 
   this.init = function() {
-    this.songPosition = $song.startTime;
+    this.songPosition = $game.song.startTime;
     // At what time is the bar
-    this.songPosition  = $song.barLength * (bar-1);
+    this.songPosition  = $game.song.barLength * (bar-1);
     // At what time is the beat in said bar
-    this.songPosition += $song.baseNoteLength * (beat-1);
+    this.songPosition += $game.song.baseNoteLength * (beat-1);
     // At what time is the note in said beat
-    this.songPosition += $song.baseNoteLength * ($song.timeSignature[1] / beatDivision) * (beatPosition-1);
+    this.songPosition += $game.song.baseNoteLength * ($game.song.timeSignature[1] / beatDivision) * (beatPosition-1);
 
     // Where on the staff should the note be
-    this.staffPosition = (this.songPosition / $song.baseNoteLength) * $song.noteScale * $song.noteWidth;
+    this.staffPosition = (this.songPosition / $game.song.baseNoteLength) * $game.song.noteScale * $game.song.noteWidth;
 
     if(hasTiedNote) {
       this.tnSongPosition  = this.songPosition;
-      this.tnSongPosition += $song.baseNoteLength * (tnBeat-1);
-      this.tnSongPosition += $song.baseNoteLength * ($song.timeSignature[1] / tnBeatDivision) * (tnBeatPosition-1);
+      this.tnSongPosition += $game.song.baseNoteLength * (tnBeat-1);
+      this.tnSongPosition += $game.song.baseNoteLength * ($game.song.timeSignature[1] / tnBeatDivision) * (tnBeatPosition-1);
 
-      this.tnStaffPosition = (this.tnSongPosition / $song.baseNoteLength) * $song.noteScale * $song.noteWidth;
+      this.tnStaffPosition = (this.tnSongPosition / $game.song.baseNoteLength) * $game.song.noteScale * $game.song.noteWidth;
     }
     
     // Let's place the note on the staff
@@ -203,35 +202,35 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 
     if(this.hasTiedNote) {
       var noteStaffDistance = this.tnStaffPosition - this.staffPosition;
-      var bridgeStaffPosition = this.staffPosition + $song.noteWidth/2;
+      var bridgeStaffPosition = this.staffPosition + $game.song.noteWidth/2;
       ctx.fillStyle = beige;
-      ctx.fillRect(bridgeStaffPosition - $song.currentStaffPosition, top + 10, noteStaffDistance, 10);
+      ctx.fillRect(bridgeStaffPosition - $game.song.currentStaffPosition, top + 10, noteStaffDistance, 10);
 
       ctx.beginPath();
-      ctx.arc((this.tnStaffPosition + 16) - $song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
+      ctx.arc((this.tnStaffPosition + 16) - $game.song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
       ctx.closePath();
       ctx.fillStyle = beige;
       ctx.fill();
 
       ctx.fillStyle = "#D55320";
-      ctx.fillText(String.fromCharCode(charCode), (this.tnStaffPosition + textAlign) - $song.currentStaffPosition, top + 25);
+      ctx.fillText(String.fromCharCode(charCode), (this.tnStaffPosition + textAlign) - $game.song.currentStaffPosition, top + 25);
     }
 
     ctx.beginPath();
-    ctx.arc((this.staffPosition + 16) - $song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
+    ctx.arc((this.staffPosition + 16) - $game.song.currentStaffPosition, top + 16, 16, 0, Math.PI*2);
     ctx.closePath();
     ctx.fillStyle = beige;
     ctx.fill();
 
     ctx.fillStyle = "#D55320";
-    ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + textAlign) - $song.currentStaffPosition, top + 25);
+    ctx.fillText(String.fromCharCode(charCode), (this.staffPosition + textAlign) - $game.song.currentStaffPosition, top + 25);
   }
 
   this.checkInput = function() {
-    if((this.songPosition + $song.baseNoteLength) < BGM.getCurrentPosition()) {
-      $song.currentNoteIndex = this.index + 1;
+    if((this.songPosition + $game.song.baseNoteLength) < BGM.getCurrentPosition()) {
+      $game.song.currentNoteIndex = this.index + 1;
 
-      if(!this.accuracy && !this.pressed) missedNote(this);
+      if(!this.accuracy && !this.pressed) $game.missedNote(this);
     }
   }
 }
@@ -241,11 +240,11 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 function draw() {
 //===============================
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
-  //var noteIndex = $gameOver ? 0 : $song.currentNoteIndex;
+  //var noteIndex = $gameOver ? 0 : $game.song.currentNoteIndex;
 
-  for(var i = 0; i < $song.score.length; i++) {
-    $song.notes[i].draw();
-    $song.notes[i].checkInput();
+  for(var i = 0; i < $game.song.score.length; i++) {
+    $game.song.notes[i].draw();
+    $game.song.notes[i].checkInput();
   }
 }
 

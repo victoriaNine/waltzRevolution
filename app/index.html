@@ -13,26 +13,101 @@
   <body>
     <div id="bg"></div>
     <div id="wrapper">
-      <section id="screen_pause" class="screen">
+      <section id="screen_main" class="screen">
         <div class="container">
-          <h1>Pause</h1>
+          <h1><span class="midGrey">Waltz Waltz</span> Revolution</h1>
           <ul class="nav">
-              <li>Resume</li>
-              <li>Retry</li>
-              <li>Main menu</li>
+            <li>Play</li>
+            <li>High scores</li>
+            <li>How to play</li>
+            <li>Credits</li>
           </ul>
         </div>
       </section>
-      <section id="screen_results" class="screen">
+      <section id="screen_highScores" class="screen overlay">
+        <div class="container">
+          <h1>High Scores</h1>
+          <div class="row">
+            <span class="label">#01</span><span class="date beige">05.02.2015 @ 14:12</span><span class="points orange">14445pts</span><span class="percent orange">98%</span>
+            <div class="stars">
+              <i class="fa fa-star on"></i>
+              <i class="fa fa-star on"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+            </div>
+          </div>
+          <div class="row"><span class="label">#02</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#03</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#04</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#05</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#06</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#07</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#08</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#09</span><span class="date beige">-</span></div>
+          <div class="row"><span class="label">#10</span><span class="date beige">-</span></div>
+          <div class="button">Back</div>
+        </div>
+      </section>
+      <section id="screen_howToPlay" class="screen overlay open">
+        <div class="container">
+          <h1>How to play</h1>
+          <div class="left">
+            <p class="beige">Follow the rhythm and press the keys at the right time!<br />
+               Hold the long notes correctly to get a bonus.<br />
+               If your life points drop to zero, it’s game over.<br />
+               <br/>
+               <span class="orange">Think you can get a perfect score? Here are the keys :</span>
+               <br/>
+            </p>
+            <div class="panel">
+              <ul>
+                <li><span class="note"><i class="fa fa-arrow-left"></i></span><span class="label">left arrow</span></li>
+                <li><span class="note"><i class="fa fa-arrow-up"></i></span><span class="label">up arrow</span></li>
+                <li><span class="note"><i class="fa fa-exclamation"></i></span><span class="label">space</span></li>
+                <li><span class="note"><i class="fa fa-arrow-right"></i></span><span class="label">right arrow</span></li>
+                <li><span class="note"><i class="fa fa-arrow-down"></i></span><span class="label">down arrow</span></li>
+                <li><span class="note"><i class="fa fa-p"></i></span><span class="label">pause</span></li>
+              </ul>
+            </div>
+            <div class="button">Back</div>
+          </div>
+        </div>
+      </section>
+      <section id="screen_credits" class="screen overlay">
+        <div class="container">
+          <h1>Credits</h1>
+          <p>
+            <span class="beige">Concept, development, design &amp; music</span><br />
+            Victoria Nine<br />
+            <br />
+            <span class="beige">SFX</span><br />
+            Hatsune Miku -Project DIVA-f<br />
+            <br />
+          </p>
+          <div class="button">Back</div>
+        </div>
+      </section>
+      <section id="screen_pause" class="screen overlay">
+        <div class="container">
+          <h1>Pause</h1>
+          <ul class="nav">
+            <li>Resume</li>
+            <li>Retry</li>
+            <li>Main menu</li>
+          </ul>
+        </div>
+      </section>
+      <section id="screen_results" class="screen overlay">
         <div class="container">
           <h1>Results</h1>
           <div class="panel left">
-            <h2>stage cleared!</h2>
+            <h2></h2>
             <hr />
             <div id="results_totalNotes" class="row"><span class="label beige">Total notes</span><span class="nb"></span></div>
             <div id="results_maxCombo" class="row"><span class="label beige">Max combo</span><span class="nb"></span></div>
             <hr />
-            <div class="row"><span class="label beige">Accuracy details</span></div>
+            <div class="row"><span class="label beige">Notes details</span></div>
             <div id="results_great" class="row"><span class="label orange">Great</span><span class="nb"></span><span class="points"></span><span class="percent"></span></div>
             <div id="results_nice" class="row"><span class="label orange">Nice</span><span class="nb"></span><span class="points"></span><span class="percent"></span></div>
             <div id="results_cool" class="row"><span class="label orange">Cool</span><span class="nb"></span><span class="points"></span><span class="percent">-</span></div>
@@ -40,18 +115,20 @@
             <div id="results_miss" class="row"><span class="label orange">Miss</span><span class="nb"></span><span class="points">-</span><span class="percent">-</span></div>
             <div id="results_totalCompletion" class="row"><span class="label beige">Total completion</span><span class="nb"></span><span class="points"></span><span class="percent orange"></span></div>
             <hr />
-            <div id="results_score" class="row"><span class="label beige">Score</span><span class="nb"></span><span class="points orange"></span><span class="newRecord"><i class="fa fa-trophy"></i></span></div>
+            <div id="results_score" class="row">
+              <span class="label beige">Score</span><span class="nb"></span><span class="points orange"></span><span class="newRecord"><i class="fa fa-trophy"></i></span>
+            </div>
             <div id="results_highScore" class="row"><span class="label beige">High score</span><span class="nb"></span><span class="points orange"></span></div>
           </div>
           <div class="right">
-            <div class="title">Waltz for the Night Creatures</div>
-            <div class="artist">by Leivvi</div>
-            <div class="rank">Great</div>
+            <div class="title"></div>
+            <div class="artist"></div>
+            <div class="rank"></div>
             <div class="stars">
-              <i class="fa fa-star on"></i>
-              <i class="fa fa-star on"></i>
-              <i class="fa fa-star on"></i>
-              <i class="fa fa-star on"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
+              <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
             <ul class="nav">
@@ -61,10 +138,10 @@
           </div>
         </div>
       </section>
-      <div id="screen_play">
+      <section id="screen_play" class="screen">
         <header id="songInfo">
-          <h1></h1>
-          <h2></h2>
+          <div class="title"></div>
+          <div class="artist"></div>
         </header>
         <div id="staff">
           <div id="layoutElements">
@@ -102,7 +179,7 @@
             </div>
           </div>
         </footer>
-      </div>
+      </section>
     </div>
     <script src="bower_components/modernizr/modernizr.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -110,7 +187,7 @@
     <script src="js/jquery.ba-throttle-debounce.min.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/song.js"></script>
-    <script src="js/input.js"></script>
+    <script src="js/game.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

@@ -39,9 +39,9 @@
  ! pause
  ~ results
  - main menu
- - high scores
- - credits
- - how to play
+ ~ high scores
+ ! credits
+ ! how to play
  - main menu canvas
  - loading
  - link screens together

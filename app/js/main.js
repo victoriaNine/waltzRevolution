@@ -25,28 +25,9 @@ var loadingArray = [/*"images/planet.svg",
 		            "images/meteor.svg",
 		            "images/filters.svg"*/];
 
-var audioEngine;
+var $audioEngine;
 var autoMuteSound = false;
-var initReady = false;
-
-var $song;
-
-var $HP = 500;
-var $maxHP = 1000;
-
-var $score = 0;
-var $maxScore;
-var $progress = 0;
-var $rank;
-
-var $accuracy = [0, 0, 0, 0, 0] // great, nice, cool, poor, miss
-var $points = [0, 0, 0, 0] // great, nice, cool, poor
-var $totalNotes;
-var $comboArray = [];
-var $combo = 0;
-
-var $noInput = false;
-var $gameOver = false;
+var $game;
 
 
 //===============================
@@ -57,117 +38,6 @@ $(document).ready(function() {
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
 
-	//$("#highScores .right").html(getLocalStorage("highScores") ? getLocalStorage("highScores")[0] : "-");
-
-	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
-
-	// INTRO ANIMATIONS HERE
-	// TweenMax.from($("#loading img"), .75, {opacity:0});
-	// TweenMax.from($("#loading img+span"), .75, {opacity:0, repeat:-1, yoyo:true});
-	// TweenMax.from($("#loading .info"), .75, {bottom:"-100px", opacity:0, ease:Bounce.easeOut});
-
-	var loadedFiles = 0;
-	var totalFiles = loadingArray.length;
-	var loadedPercentage = function() {
-		return Math.ceil(loadedFiles * 100 / totalFiles);
-	}
-
-	$song = new Song("js/waltz.json", function() {
-		audioEngine = new AudioEngine($song.fileURL);
-		totalFiles += audioEngine.audioFiles;
-
-		/*var tiedNotesBonus = 0;
-		$song.notes.filter(function(note) {
-			if(note.hasTiedNote) {
-				var tnLength = note.tnSongPosition - note.songPosition;
-				tiedNotesBonus += Math.ceil((tnLength / $song.baseNoteLength) * 100);
-
-				return true;
-			}
-		});*/
-
-		$totalNotes = $song.notes.length;
-		$maxScore = 100 * $totalNotes; //+ tiedNotesBonus;
-
-		$("#songInfo h1").html($song.title);
-   	    $("#songInfo h2").html($song.artist);
-   	    $("#progressBar .markers").removeClass("passed");
-		updateScore();
-		updateHP();
-		updateProgress();
-
-		loadGame();
-	});
-  	$song.load();
-
-  	function loadGame() {
-		$(document).on("soundLoaded", function() {
-			audioEngine.loadedFiles++;
-			loadedFiles++;
-
-			$(document).trigger("fileLoaded");
-		});
-		
-		for(var i = 0; i < loadingArray.length; i++) {
-			$("<div>").load(loadingArray[i], function() {
-				loadedFiles++;
-				$(document).trigger("fileLoaded");
-			});
-		}
-
-		$(document).on("fileLoaded", function() {
-			// LOADING ANIMATION HERE
-			// TweenMax.to($("#loading .loadingBar"), .3, {width:loadedPercentage()+"%", ease:Power4.easeOut});
-			if(loadedPercentage() == 100) $(document).trigger("allFilesLoaded");
-		});
-
-		$(document).on("allFilesLoaded", function() {
-			var waitForFocus = function() {
-				mobilecheck() ? initSong() : initSite();
-				 $(window).off("focus", waitForFocus);
-			};
-
-			if(document["hasFocus"]()) mobilecheck() ? initSong() : initSite();
-			else $(window).on("focus", waitForFocus);
-		});
-	}
-
-	function initSite() {
-		// REMOVE LOADING SCREEN HERE
-		//TweenMax.to($("#loading"), 1, {opacity:0,
-			//onComplete:function() {
-				$(document).off("soundLoaded allSoundsLoaded fileLoaded allFilesLoaded");
-				addListeners();
-				// $("body").find("#loading").remove();
-
-				//$requestScreen = "Menu";
-				//switchScreen();
-
-				if(!mobilecheck()) $song.start();
-				initReady = true;
-			//}
-		//});
-	}
-
-	function initSong() {
-		// MOBILE DEVICES : BGM LAUNCH ANIMATION HERE
-		//TweenMax.to($("#loading img+span"), .75, {opacity:0, 
-			//onComplete: function() {
-				// $("#loading img+span").html("Tap to launch the experience");
-				// TweenMax.to($("#loading img+span"), .75, {opacity:1});
-
-				var startSong = function() {
-					$song.start();
-					$("body").off(eventtype, startSong);
-
-					initSite();
-				};
-
-				$("body").on(eventtype, startSong);
-			//}
-		//});
-	}
-
 	if(navigator.appName == 'Microsoft Internet Explorer') {
         var agent = navigator.userAgent;
 
@@ -176,288 +46,100 @@ $(document).ready(function() {
             $("html").addClass("ie"+version);
         }
     };
+
+    $audioEngine = new AudioEngine();
+    newGame();
+
+    /*var loadedFiles = 0;
+	var totalFiles = loadingArray.length;
+	var loadedPercentage = function() {
+		return Math.ceil(loadedFiles * 100 / totalFiles);
+	}*/
 });
 
+function newGame() {
+	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 
-//===============================
-// EVENT LISTENERS
-// Keyboard input, touch events, window resize
-function addListeners() {
-//===============================
-	$(window).keydown(function(e) {
-		e.preventDefault();
+	// INTRO ANIMATIONS HERE
+	// TweenMax.from($("#loading img"), .75, {opacity:0});
+	// TweenMax.from($("#loading img+span"), .75, {opacity:0, repeat:-1, yoyo:true});
+	// TweenMax.from($("#loading .info"), .75, {bottom:"-100px", opacity:0, ease:Bounce.easeOut});
 
-		if($gameOver) return;
-
-		if(keyMap[e.which]) {
-			if(!keyMap[e.which].pressed) {
-				keyMap[e.which].when = new Date().getTime();
-				keyMap[e.which].pressed = true;
-			}
-
-			for(var key in keyMap)
-				if(keyMap[key].pressed) detectInputAccuracy(keyMap[key]);
-		}
-	}).keyup(function(e) {
-		e.preventDefault();
-
-		if(e.which == 38) $("#keys .keyUp").removeClass("pressed");
-		if(e.which == 39) $("#keys .keyRight").removeClass("pressed");
-		if(e.which == 37) $("#keys .keyLeft").removeClass("pressed");
-		if(e.which == 40) $("#keys .keyDown").removeClass("pressed");
-		if(e.which == 32) $("#keys .keySpace").removeClass("pressed");
-
-		if(keyMap[e.which]) {
-			keyMap[e.which].pressed = false;
-			keyMap[e.which].when = 0;
-		}
-	}).resize(function() {
-		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
-		requestAnimationFrame(draw);
-	}).on("blur", function() {
-		if(audioEngine.ready && initReady && !$song.paused) $song.pause();
-	})/*.on("focus", function() {
-		if(audioEngine.ready && initReady) {
-			if(autoMuteSound) autoMuteSound = false;
-			else audioEngine.unMute();
-		}
-	})*/;
-
-	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', function(e) {
-		e.preventDefault();
-
-		var type;
-		if(e.type == 'touchstart') type = 'keydown';
-		if(e.type == 'touchend') type = 'keyup';
-
-		var code;
-		if(this.className == "keyUp") code = 38;
-		if(this.className == "keyRight") code = 39;
-		if(this.className == "keyLeft") code = 37;
-		if(this.className == "keyDown") code = 40;
-		if(this.className == "keySpace") code = 32;
-
-		var _e = $.Event(type);
-		_e.which = _e.keyCode = code;
-		$(window).trigger(_e);
-	});
-
-	$(document).on("songEnded", gameComplete);
+	$game = new Game("js/waltz.json");
 }
 
 
-//===============================
-// ACCURACY TOOLTIP
-//===============================
-function showAccuracy(note) {
-	var keyName = note.key;
-	var keyNameFirstLetterUppercase = keyName.replace(keyName.charAt(0), keyName.charAt(0).toUpperCase());
+function loadGame() {
+	$(document).on("soundLoaded", function() {
+		$audioEngine.loadedFiles++;
+		loadedFiles++;
 
-	var container = $("#accuracy .key"+keyNameFirstLetterUppercase);
-	container.html(note.accuracy);
-	if($combo > 0) {
-		container.append("<span class=\"value\"></span>");
-		container.find(".value").html($combo);
+		$(document).trigger("fileLoaded");
+	});
+	
+	for(var i = 0; i < loadingArray.length; i++) {
+		$("<div>").load(loadingArray[i], function() {
+			loadedFiles++;
+			$(document).trigger("fileLoaded");
+		});
 	}
 
-	container.addClass("visible");
-	setTimeout(function() { container.removeClass("visible"); }, 1000);
-}
+	$(document).on("fileLoaded", function() {
+		// LOADING ANIMATION HERE
+		// TweenMax.to($("#loading .loadingBar"), .3, {width:loadedPercentage()+"%", ease:Power4.easeOut});
+		if(loadedPercentage() == 100) $(document).trigger("allFilesLoaded");
+	});
 
+	$(document).on("allFilesLoaded", function() {
+		var waitForFocus = function() {
+			mobilecheck() ? launchGameMobile() : launchGame();
+			 $(window).off("focus", waitForFocus);
+		};
 
-//===============================
-// SCORE
-//===============================
-function setScore(value, update) { $score = value; if(update) updateScore(); }
-function incrementScore(value, update) { $score += value; if(update) updateScore(); }
-function decrementScore(value, update) {
-	if($score <= 0) return;
-	$score -= ($score - value <= 0) ? $score : value;
-	if(update) updateScore();
-}
-
-function updateScore() {
-	var currentValue = $("#score .value").html() || 0;
-
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: $score, ease:Power3.easeInOut,
-		onUpdate:function(tween) {
-			$("#score .value").html(Math.ceil(tween.target[0].someValue));
-		},
-		onUpdateParams:["{self}"]
+		if(document["hasFocus"]()) mobilecheck() ? launchGameMobile() : launchGame();
+		else $(window).on("focus", waitForFocus);
 	});
 }
 
+function launchGame() {
+	// REMOVE LOADING SCREEN HERE
+	//TweenMax.to($("#loading"), 1, {opacity:0,
+		//onComplete:function() {
+			$(document).off("soundLoaded allSoundsLoaded fileLoaded allFilesLoaded");	
+			// $("body").find("#loading").remove();
 
-//===============================
-// HP
-//===============================
-function setHP(value, update) { $HP = value; if(update) updateHP(); }
-function incrementHP(value, update) {
-	if($HP >= $maxHP) return;
-	$HP += ($HP + value >= $maxHP) ? ($maxHP - $HP) : value;
-	if(update) updateHP();
-}
-function decrementHP(value, update) {
-	if($HP <= 0) return;
-	$HP -= ($HP - value <= 0) ? $HP : value;
+			//$requestScreen = "Menu";
+			//switchScreen();
 
-	if($HP <= 0) gameOver();
-	if(update) updateHP();
+			
+		//}
+	//});
 }
 
-function updateHP() {
-	var percentage = $HP * 100 / $maxHP;
-	var currentValue = parseFloat($("#life .value").html()) || 0;
+function launchGameMobile() {
+	// MOBILE DEVICES : BGM LAUNCH ANIMATION HERE
+	//TweenMax.to($("#loading img+span"), .75, {opacity:0, 
+		//onComplete: function() {
+			// $("#loading img+span").html("Tap to launch the experience");
+			// TweenMax.to($("#loading img+span"), .75, {opacity:1});
 
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: percentage, ease:Power3.easeInOut,
-		onUpdate:function(tween) {
-			$("#life .value").html((tween.target[0].someValue).toFixed(1)+"%");
-		},
-		onUpdateParams:["{self}"]
-	});
+			var startSong = function() {
+				$game.song.start();
+				$("body").off(eventtype, startSong);
 
-	TweenMax.to($("#lifeSphere .bar"), .4, {height: percentage+"%", ease:Power3.easeInOut});
+				launchGame();
+			};
 
-	if(percentage <= 25) $("#lifeSphere").addClass("critical");
-	else if($("#lifeSphere").hasClass("critical")) $("#lifeSphere").removeClass("critical");
+			$("body").on(eventtype, startSong);
+		//}
+	//});
 }
-
-
-//===============================
-// PROGRESS
-//===============================
-function updateProgress() {
-	var progress = ($accuracy[0] + $accuracy[1]) * 100 / $totalNotes;
-	var currentValue = parseFloat($("#progress .value").html()) || 0;
-
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: progress, ease:Power3.easeInOut,
-		onUpdate:function(tween) {
-			$("#progress .value").html((tween.target[0].someValue).toFixed(1)+"%");
-		},
-		onUpdateParams:["{self}"]
-	});
-
-	TweenMax.to($("#progressBar .bar"), .4, {width: progress+"%", ease:Power3.easeInOut});
-
-	$progress = progress.toFixed(1);
-	if($progress >= 60 && !$("#progressBar .p60").hasClass("passed")) $("#progressBar .p60").addClass("passed");
-	if($progress >= 75 && !$("#progressBar .p75").hasClass("passed")) $("#progressBar .p75").addClass("passed");
-	if($progress >= 90 && !$("#progressBar .p90").hasClass("passed")) $("#progressBar .p90").addClass("passed");
-}
-
 
 //===============================
 // LOCAL STORAGE
 //===============================
 function setLocalStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
 function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(key)); }
-
-
-//===============================
-// PARTY COMPLETED
-//===============================
-function gameComplete() {
-	console.log("I am SO done.");
-
-	toResults();
-}
-
-function gameOver() {
-	console.log("game over");
-	$gameOver = true;
-
-	BGM.setCrossfade(0);
-	TweenMax.to($song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
-		onComplete:function() { toResults(); }
-	});
-}
-
-function toResults() {
-	$noInput = true;
-	BGM.hasEnded();
-
-	var stars;
-	if($progress == 100) {
-		$rank = "perfect"; // S
-		stars = 5;
-	}
-	else if($progress >= 90 && $progress <= 99) {
-		$rank = "great"; // A
-		stars = 4;
-	}
-	else if($progress >= 75 && $progress <= 89) {
-		$rank = "cool"; // B
-		stars = 3;
-	}
-	else if($progress >= 60 && $progress <= 74) {
-		$rank = "okay"; // C
-		stars = 2;
-	}
-	else if($progress >= 0 && $progress <= 59) {
-		$rank = "poor"; // D
-		stars = 1;
-	}
-
-	var maxCombo = Math.max.apply(Math, $comboArray);
-	var newScore = [$score, $progress, $rank, new Date()];
-	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
-	var newRecord = false;
-
-	for(var i = 0; i < highScores.length; i++) {
-		if($score > highScores[i][0] || !highScores[i][0]) {
-			for(var j = highScores.length - 2; j >= i; j--) {
-				highScores[j+1] = highScores[j];
-			}
-
-			highScores[i] = newScore;
-			setLocalStorage("highScores", highScores);
-			newRecord = true;
-			break;
-		}
-	}
-
-	if($rank == "poor") $("#screen_results").find("h2").html("stage failed...");
-	else $("#screen_results").find("h2").html("stage cleared!");
-
-	$("#results_totalNotes").find(".nb").html($totalNotes);
-	$("#results_maxCombo").find(".nb").html(maxCombo);
-
-	var percentGreat = ($accuracy[0] * 100 / $totalNotes).toFixed(1);
-	$("#results_great").find(".nb").html($accuracy[0]);
-	$("#results_great").find(".points").html($points[0]+"pts");
-	$("#results_great").find(".percent").html(percentGreat+"%");
-
-	var percentNice = ($accuracy[1] * 100 / $totalNotes).toFixed(1);
-	$("#results_nice").find(".nb").html($accuracy[1]);
-	$("#results_nice").find(".points").html($points[1]+"pts");
-	$("#results_nice").find(".percent").html(percentNice+"%");
-
-	$("#results_cool").find(".nb").html($accuracy[2]);
-	$("#results_cool").find(".points").html($points[2]+"pts");
-	$("#results_poor").find(".nb").html($accuracy[3]);
-	$("#results_poor").find(".points").html($points[3]+"pts");
-	$("#results_miss").find(".nb").html($accuracy[4]);
-
-	$("#results_totalCompletion").find(".percent").html($progress+"%");
-
-	$("#results_score").find(".newRecord").removeClass("visible");
-	$("#results_score").find(".points").html($score+"pts");
-	$("#results_highScore").find(".points").html(highScores[0][0]+"pts");
-	if(newRecord) $("#results_score").find(".newRecord").addClass("visible");
-
-	$("#screen_results").find(".title").html($song.title);
-   	$("#screen_results").find(".artist").html("by "+$song.artist);
-
-
-   	var rank = $rank.replace($rank.charAt(0), $rank.charAt(0).toUpperCase());
-   	$("#screen_results").find(".rank").html(rank);
-
-   	$("#screen_results .stars i").removeClass("on");
-   	for(var i = 0; i < stars; i++)
-   		$("#screen_results .stars").find("i").eq(i).addClass("on");
-
-	$("#screen_results").addClass("open");
-}
 
 
 //===============================
