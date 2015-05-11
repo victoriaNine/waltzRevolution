@@ -38,6 +38,8 @@ $(document).ready(function() {
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
 
+	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
+
 	if(navigator.appName == 'Microsoft Internet Explorer') {
         var agent = navigator.userAgent;
 
@@ -57,8 +59,38 @@ $(document).ready(function() {
 	}*/
 });
 
+function showHighScores() {
+	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
+
+	for(var i = 0; i < highScores.length; i++) {
+		if(highScores[i].length == 0) break;
+
+		var label = $("#screen_highScores .row").eq(i).find(".label");
+		var points = $("<span class=\"points orange\">").html(highScores[i][0]+"pts");
+		var percent = $("<span class=\"percent orange\">").html(highScores[i][1]+"%");
+		var rank = $("<span class=\"rank\">").html(highScores[i][2]);
+
+		var date_data = new Date(highScores[i][4]);
+		var date_string = date_data.getFullYear()+".";
+		date_string += date_data.getMonth()+1 > 9 ? (date_data.getMonth()+1)+"." : "0"+(date_data.getMonth()+1)+".";
+		date_string += date_data.getDate() > 9 ? date_data.getDate() : "0"+date_data.getDate();
+		date_string += " @ ";
+		date_string += date_data.getHours() > 9 ? date_data.getHours()+":" : "0"+date_data.getHours()+":";
+		date_string += date_data.getMinutes() > 9 ? date_data.getMinutes() : "0"+date_data.getMinutes();
+
+		var date = $("<span class=\"date beige\">").html(date_string);
+
+		var stars_data = highScores[i][3];
+		var stars = $("<div class=\"stars\"><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i><i class=\"fa fa-star\"></i></div>");
+
+		for(var j = 0; j < stars_data; j++)
+   			stars.find("i").eq(j).addClass("on");
+
+   		$("#screen_highScores .row").eq(i).empty().append(label, date, points, percent, stars, rank);
+	}
+}
+
 function newGame() {
-	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 
 	// INTRO ANIMATIONS HERE
 	// TweenMax.from($("#loading img"), .75, {opacity:0});
@@ -68,6 +100,10 @@ function newGame() {
 	$game = new Game("js/waltz.json");
 }
 
+function retryGame() {
+	$(".screen").removeClass("open");
+	newGame();
+}
 
 function loadGame() {
 	$(document).on("soundLoaded", function() {
@@ -141,6 +177,13 @@ function launchGameMobile() {
 function setLocalStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
 function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(key)); }
 
+
+//===============================
+// LOCAL STORAGE
+//===============================
+$(".nav .retry").on(eventtype, function() {
+	retryGame();
+});
 
 //===============================
 // MOBILE DETECTION

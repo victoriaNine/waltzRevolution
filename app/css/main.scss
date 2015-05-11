@@ -121,6 +121,9 @@ body {
 
 hr { border: none; background: $midGrey; height: 1px; }
 
+a { color: inherit; text-decoration: none; }
+a:hover { color:$orange; }
+
 ::-moz-selection {
   background:  $orange;
   color:       #FFF;
@@ -481,11 +484,14 @@ hr { border: none; background: $midGrey; height: 1px; }
 .screen .row span { display:inline-block; position:relative; }
 .screen .nb, .screen .points, .screen .percent { text-align: right; }
 
+#screen_loading .percent { width:250px; display:inline-block; }
+
 #screen_highScores .row { line-height: 28px; }
 #screen_highScores .label { width: 75px; }
 #screen_highScores .date { width: 200px; }
 #screen_highScores .points { width: 125px; }
-#screen_highScores .percent { width: 90px; }
+#screen_highScores .percent { width: 95px; }
+#screen_highScores .rank { margin-left: 16px; }
 #screen_highScores .stars { display:inline-block; width: 150px; text-align: right; }
 
 #screen_howToPlay p { font-size: 22px; margin-bottom:32px; }
@@ -527,11 +533,11 @@ hr { border: none; background: $midGrey; height: 1px; }
 
 #screen_credits .button:hover:after { transform:translateY(0); opacity:1; }
 
-#results_totalCompletion { margin-top:14px; }
-#results_totalCompletion .label { width:40%; }
-#results_totalCompletion .nb { width: 10%; }
-#results_totalCompletion .points { width: 25%; }
-#results_totalCompletion .percent { width: 20%; }
+#screen_results .label { width:40%; }
+#screen_results .nb { width: 10%; }
+#screen_results .points { width: 25%; }
+#screen_results .percent { width: 20%; }
+#screen_results #results_totalCompletion { margin-top:14px; }
 
 .screen .newRecord {
   width: 28px;
@@ -569,9 +575,8 @@ hr { border: none; background: $midGrey; height: 1px; }
 .screen .title { color:$orange; margin-bottom:10px; }
 .screen .artist { color:$beige; }
 
-.screen .rank { font-family: 'Oswald-RegularItalic'; font-size:60px; color:$beige; margin:150px 0 10px; }
+#screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:60px; color:$beige; margin:150px 0 10px; }
 .screen .stars { color:$midGrey; }
-.screen .stars i:not(:last-child) { margin-right:-4px; }
 .screen .stars i.on { color:$orange; }
 
 #screen_results .stars { font-size:32px; }

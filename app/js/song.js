@@ -91,8 +91,8 @@ Song.prototype.load = function() { this.loadSong(this.url); }
 Song.prototype.start = function() {
   var rAF = function() { requestAnimationFrame(draw); }
 
-  var fileName = this.fileURL.slice(this.fileURL.lastIndexOf("/")+1, this.fileURL.lastIndexOf("."))
-  BGM.play(fileName);
+  var fileName = this.url.slice(this.url.lastIndexOf("/")+1, this.url.lastIndexOf("."));
+  $audioEngine.BGM.play(fileName);
   draw();
 
   var song = this;
@@ -112,7 +112,7 @@ Song.prototype.start = function() {
 Song.prototype.pause = function(noScreen) {
   if(!this.paused) {
     this.staffScroll.pause();
-    BGM.pause();
+    $audioEngine.BGM.pause();
 
     this.paused = true;
     if(!noScreen) $("#screen_pause").addClass("open");
@@ -123,7 +123,7 @@ Song.prototype.pause = function(noScreen) {
 Song.prototype.resume = function() {
   if(this.paused) {
     this.staffScroll.resume();
-    BGM.unPause();
+    $audioEngine.BGM.unPause();
 
     this.paused = false;
     if($("#screen_pause").hasClass("open")) $("#screen_pause").removeClass("open");
@@ -227,7 +227,7 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
   }
 
   this.checkInput = function() {
-    if((this.songPosition + $game.song.baseNoteLength) < BGM.getCurrentPosition()) {
+    if((this.songPosition + $game.song.baseNoteLength) < $audioEngine.BGM.currentPosition()) {
       $game.song.currentNoteIndex = this.index + 1;
 
       if(!this.accuracy && !this.pressed) $game.missedNote(this);

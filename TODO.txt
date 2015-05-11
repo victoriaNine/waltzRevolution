@@ -3,6 +3,7 @@
 ! detect input accuracy ("perfect", "great", "cool", "poor", "miss")
 ! clean code
 
+http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-once
 ! score :
  ! increment score depending on accuracy
  ! decrement score when keys are constantly pressed (but not when playing a tied note)
@@ -16,7 +17,7 @@
 
 => 05/01/2015
 ! design checkup :
- ! main screen
+ ! play
  ! pause
  ! results
  ! credits
@@ -33,18 +34,27 @@
 ! check synchronicity
 ! save high scores (new gameplay)
 
-=> 05/04/2015 - 05/08/2015
-~ screens & UI :
- ! main screen (stop updating values when gameOver/paused)
+=> 05/08/2015 - 05/09/2015
+! screens & UI (CSS) :
+ ! play
  ! pause
- ~ results
- - main menu
- ~ high scores
+ ! results
+ ! main menu
+ ! high scores
+ ! credits
+ ! how to play
+ ! loading
+
+~ screens & UI (JS) :
+ ! play (stop updating values when gameOver/paused)
+ ! pause
+ ! results
+ ! high scores
  ! credits
  ! how to play
  - main menu canvas
  - loading
- - link screens together
+ - screens transitions
  - fix arrows visibility
 - clean code
 

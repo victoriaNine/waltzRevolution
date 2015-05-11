@@ -107,10 +107,10 @@ function AudioEngine() {
 function BGM() {
 //===============================
 	this.audioCtx;
-	this.sourceArray = [];
+	this.sourceArray = {};
 	this.crossfadeArray = [];
 
-	this.files = [];
+	this.files;
 	this.filesLoaded = false;
 	this.currentFile;
 	this.muted = false;
@@ -128,6 +128,8 @@ function BGM() {
 	this.songLength;
 	this.hasEnded = false;
 
+	this.callback;
+
 
 	this.init = function() {
 	  try {
@@ -140,38 +142,38 @@ function BGM() {
 	  }
 	}
 
-	this.addSource = function(url) {
+	this.addSource = function(url, callback) {
 		this.filesLoaded = false;
-		this.files.push(url);
+		this.file = url;
 
-	    var bufferLoader = new BufferLoader(this.audioCtx, this.files, this.setSources);
+		if(callback && typeof callback == "function") this.callback = callback;
+
+	    var bufferLoader = new BufferLoader(this.audioCtx, [url], this.setSources);
 	  	bufferLoader.load();
 	}
 
 	this.setSources = function(bufferList) {
+		var bgm = $audioEngine.BGM;
 		for(var i = 0; i < bufferList.length; i++) {
-			var source = this.createSource(bufferList[i], i);
-			this.sourceArray[source.name] = source;
+			var source = bgm.createSource(bufferList[i], i);
+			bgm.sourceArray[source.name] = source;
 		}
 
-		this.filesLoaded = true;
-		if(SFX.filesLoaded()) {
-			$audioEngine.ready = true;
-			$(document).trigger("allSoundsLoaded");
-		}
+		bgm.filesLoaded = true;
+		if(bgm.callback && typeof bgm.callback == "function") bgm.callback();
 	}
 
 	this.createSource = function(buffer, index) {
 		var index = index;
-		var source = audioCtx.createBufferSource();
+		var source = this.audioCtx.createBufferSource();
 		var buffer = buffer;
-		var gainNode = audioCtx.createGain ? audioCtx.createGain() : audioCtx.createGainNode();
+		var gainNode = this.audioCtx.createGain ? this.audioCtx.createGain() : this.audioCtx.createGainNode();
 	    source.buffer = buffer;
 
-	    songLength = source.buffer.duration;
+	    this.songLength = source.buffer.duration;
 
 		source.connect(gainNode);
-	    gainNode.connect(audioCtx.destination);
+	    gainNode.connect(this.audioCtx.destination);
 
 	    if(source.name == "waltz") source.gainNode.gain.value = .8;
 
@@ -185,29 +187,29 @@ function BGM() {
 	}
 
 	this.play = function(file) {
-		currentFile = file;
-		sourceArray[file].source.start(0);
-		startedAt = new Date().getTime();
+		this.currentFile = file;
+		this.sourceArray[file].source.start(0);
+		this.startedAt = new Date().getTime();
 	}
 
 	this.setCrossfade = function(gain) {
-		crossfading = true;
+		this.crossfading = true;
 
 		if(gain != -1) {
-			TweenMax.to(sourceArray[currentFile].gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
+			TweenMax.to(this.sourceArray[this.currentFile].gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
 				onComplete:function() {
-					crossfading = false;
+					this.crossfading = false;
 				}
 			});
 		}
 	}
 
-	this.prepareCrossfade = function(gain) { crossfadeArray.unshift(gain); }
+	this.prepareCrossfade = function(gain) { this.crossfadeArray.unshift(gain); }
 
 	this.playCrossfade = function() {
-		if(!muted && crossfadeArray.length > 0) {
-			setCrossfade(crossfadeArray[0]);
-			if(!crossfading) crossfadeArray.shift();
+		if(!this.muted && this.crossfadeArray.length > 0) {
+			this.setCrossfade(this.crossfadeArray[0]);
+			if(!this.crossfading) this.crossfadeArray.shift();
 		}
 	}
 
@@ -232,26 +234,30 @@ function BGM() {
 		}
 	}*/
 
-	this.pause = function(state) {
-		if(hasEnded) return;
+	this.triggerPause = function(state) {
+		if(this.hasEnded) return;
 		if(state == true || state == false) {
-			if(state == paused) return;
-			paused = state;
+			if(state == this.paused) return;
+			this.paused = state;
 		}
-		else if(state == "toggle") paused = !paused;
+		else if(state == "toggle") this.paused = !this.paused;
 
-		if(paused) {
-			sourceArray[currentFile].source.stop();
-			pausedAt += new Date().getTime() - startedAt;
+		if(this.paused) {
+			this.sourceArray[this.currentFile].source.stop();
+			this.pausedAt += new Date().getTime() - this.startedAt;
 		}
 		else {
-			var source = createSource(sourceArray[currentFile].buffer, sourceArray[currentFile].index);
-			sourceArray[currentFile] = source;
+			var source = this.createSource(this.sourceArray[this.currentFile].buffer, this.sourceArray[this.currentFile].index);
+			this.sourceArray[this.currentFile] = source;
 
-			sourceArray[currentFile].source.start(0, pausedAt / 1000);
-			startedAt = new Date().getTime();
+			this.sourceArray[this.currentFile].source.start(0, this.pausedAt / 1000);
+			this.startedAt = new Date().getTime();
 		}
 	}
+
+	this.pause = function() { this.triggerPause(true) }
+	this.unPause = function() { this.triggerPause(false) };
+	this.togglePause = function() { this.triggerPause("toggle") };
 
 	/*return {
 		init:init,
@@ -303,7 +309,7 @@ var SFX = (function() {
 		}
 
 		filesLoaded = true;
-		if(BGM.filesLoaded()) {
+		if($audioEngine.BGM.filesLoaded) {
 			audioEngine.ready = true;
 			$(document).trigger("allSoundsLoaded");
 		}

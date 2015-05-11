@@ -5,10 +5,12 @@ function Game(songFile) {
 	this.HP = 500;
 	this.maxHP = 1000;
 
+	console.log(this.HP);
+
 	this.score = 0;
-	this.maxScore;
 	this.progress = 0;
 	this.rank;
+	this.stars = 0;
 
 	this.accuracy = [0, 0, 0, 0, 0] // great, nice, cool, poor, miss
 	this.points = [0, 0, 0, 0] // great, nice, cool, poor
@@ -26,7 +28,7 @@ function Game(songFile) {
 		80: {name: "P", pressed: false, when:0}
 	};
 
-	this.gameOver = false;
+	this.isGameOver = false;
 	this.ready = false;
 
 	this.loadSong();
@@ -35,10 +37,12 @@ function Game(songFile) {
 Game.prototype.loadSong = function() {
 	var game = this;
 	this.song = new Song(this.songFile, function() {
-		$audioEngine.BGM.addSource(game.song.fileURL);
+		$audioEngine.BGM.addSource(game.song.fileURL, function() {
+			console.log(game);
+			game.start();
+		});
 
 		game.initValues();
-		game.start();
 	});
 
   	this.song.load();
@@ -48,6 +52,8 @@ Game.prototype.initValues = function() {
 	$("#songInfo .title").html(this.song.title);
 	$("#songInfo .artist").html(this.song.artist);
 	$("#progressBar .markers").removeClass("passed");
+
+	this.totalNotes = this.song.notes.length;
 
 	this.updateScore();
 	this.updateHP();
@@ -71,7 +77,7 @@ Game.prototype.addListeners = function() {
 	$(window).keydown(function(e) {
 		e.preventDefault();
 
-		if(game.gameOver) return;
+		if(game.isGameOver) return;
 
 		if(game.keyMap[e.which]) {
 			if(!game.keyMap[e.which].pressed) {
@@ -99,8 +105,8 @@ Game.prototype.addListeners = function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 		requestAnimationFrame(draw);
 	}).on("blur", function() {
-		if(audioEngine.ready && game.initReady && !game.song.paused)
-			this.song.pause();
+		if($audioEngine.ready && game.ready && !game.song.paused)
+			game.song.pause();
 	});
 
 	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', function(e) {
@@ -144,12 +150,12 @@ Game.prototype.detectInputAccuracy = function(key) {
 
 	var tiedNote = function(note) {
 		if(note.hasTiedNote && note.pressed && note.key == keyName) {
-			if(note.tnSongPosition >= $audioEngine.BGM.getCurrentPosition()) {
+			if(note.tnSongPosition >= $audioEngine.BGM.currentPosition()) {
 				var noteAmount = (note.tnSongPosition - note.songPosition) / $game.song.baseNoteLength;
-				incrementScore(Math.ceil(note.score / noteAmount), true);
+				this.incrementScore(Math.ceil(note.score / noteAmount), true);
 				return true;
 			}
-			else if(note.tnSongPosition + $game.song.baseNoteLength >= $audioEngine.BGM.getCurrentPosition()) {
+			else if(note.tnSongPosition + $game.song.baseNoteLength >= $audioEngine.BGM.currentPosition()) {
 				return true;
 			}
 		}
@@ -165,9 +171,9 @@ Game.prototype.detectInputAccuracy = function(key) {
 		var nextNoteSongPosition = $game.song.notes[$game.song.currentNoteIndex].songPosition;
 
 		if(!note.pressed && note.key == keyName && inputDelay <= $game.song.baseNoteLength
-		   && $audioEngine.BGM.getCurrentPosition() >= min && $audioEngine.BGM.getCurrentPosition() <= max)
+		   && $audioEngine.BGM.currentPosition() >= min && $audioEngine.BGM.currentPosition() <= max)
 		{
-			var delta = Math.abs($audioEngine.BGM.getCurrentPosition() - note.songPosition);
+			var delta = Math.abs($audioEngine.BGM.currentPosition() - note.songPosition);
 			var percentage = 100 - Math.ceil(delta * 100 / $game.song.baseNoteLength);
 			okPerc.push(percentage);
 			okIndex.push(note.index);
@@ -179,7 +185,7 @@ Game.prototype.detectInputAccuracy = function(key) {
 	okNotes = $game.song.notes.filter(regularNote);
 	if(okNotes.length == 0) {
 		// THEN THERE IS NO NOTE TO PLAY : LOSE POINTS
-		decrementHP(10, true);
+		this.decrementHP(10, true);
 		return;
 	}
 
@@ -192,31 +198,31 @@ Game.prototype.detectInputAccuracy = function(key) {
 		$game.accuracy[0]++;
 		$game.points[0] += closestNote.score;
 
-		incrementHP(15, true);
+		this.incrementHP(15, true);
 	}
 	else if(closestNote.score >= 50 && closestNote.score <= 79) {
 		closestNote.accuracy = "cool";
 		$game.accuracy[1]++;
 		$game.points[1] += closestNote.score;
 
-		incrementHP(10, true);
+		this.incrementHP(10, true);
 	}
 	else if(closestNote.score >= 30 && closestNote.score <= 49) {
 		closestNote.accuracy = "okay";
 		$game.accuracy[2]++;
 		$game.points[2] += closestNote.score;
 
-		incrementHP(5, true);
+		this.incrementHP(5, true);
 	}
 	else if(closestNote.score >= 1 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
 		$game.accuracy[3]++;
 		$game.points[3] += closestNote.score;
 
-		decrementHP(5, true);
+		this.decrementHP(5, true);
 	}
 
-	incrementScore(closestNote.score, true);
+	this.incrementScore(closestNote.score, true);
 	closestNote.pressed = true;
 
 	if(closestNote.accuracy == "great" || closestNote.accuracy == "cool")
@@ -233,18 +239,18 @@ Game.prototype.detectInputAccuracy = function(key) {
 
 //===============================
 // FAILED TO INPUT IN TIME
-function missedNote(note) {
+Game.prototype.missedNote = function(note) {
 //===============================
 	note.accuracy = "miss";
-	$game.accuracy[4]++;
+	this.accuracy[4]++;
 
-	if($game.combo > 0) {
-		$game.comboArray.push($game.combo);
-		$game.combo = 0;
+	if(this.combo > 0) {
+		this.comboArray.push(this.combo);
+		this.combo = 0;
 	}
 
-	decrementHP(15, true);
-	showAccuracy(note);
+	this.decrementHP(15, true);
+	this.showAccuracy(note);
 }
 
 
@@ -305,7 +311,7 @@ Game.prototype.decrementHP = function(value, update) {
 	if(this.HP <= 0) return;
 	this.HP -= (this.HP - value <= 0) ? this.HP : value;
 
-	if(this.HP <= 0) gameOver();
+	if(this.HP <= 0) this.gameOver();
 	if(update) this.updateHP();
 }
 
@@ -354,56 +360,53 @@ Game.prototype.updateProgress = function() {
 // PARTY COMPLETED
 //===============================
 Game.prototype.gameComplete = function() {
-	console.log("I am SO done.");
-
-	toResults();
+	this.toResults();
 }
 
 Game.prototype.gameOver = function() {
-	console.log("game over");
-	this.gameOver = true;
+	var game = this;
+	this.isGameOver = true;
 
 	$audioEngine.BGM.setCrossfade(0);
 	TweenMax.to(this.song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
-		onComplete:function() { toResults(); }
+		onComplete:function() { game.toResults(); }
 	});
 }
 
 Game.prototype.toResults = function() {
 	this.song.pause(true);
-	$audioEngine.BGM.hasEnded();
+	$audioEngine.BGM.hasEnded = true;
 
-	var stars;
 	if(this.progress == 100) {
 		this.rank = "perfect"; // S
-		stars = 5;
+		this.stars = 5;
 	}
 	else if(this.progress >= 90 && this.progress <= 99) {
 		this.rank = "great"; // A
-		stars = 4;
+		this.stars = 4;
 	}
 	else if(this.progress >= 75 && this.progress <= 89) {
 		this.rank = "cool"; // B
-		stars = 3;
+		this.stars = 3;
 	}
 	else if(this.progress >= 60 && this.progress <= 74) {
 		this.rank = "okay"; // C
-		stars = 2;
+		this.stars = 2;
 	}
 	else if(this.progress >= 0 && this.progress <= 59) {
 		this.rank = "poor"; // D
-		stars = 1;
+		this.stars = 1;
 	}
 
 	var maxCombo = Math.max.apply(Math, this.comboArray);
 	if(isNaN(maxCombo) || !isFinite(maxCombo)) maxCombo = 0;
 
-	var newScore = [this.score, this.progress, this.rank, new Date()];
+	var newScore = [this.score, this.progress, this.rank, this.stars, new Date()];
 	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
 	var newRecord = false;
 
 	for(var i = 0; i < highScores.length; i++) {
-		if(this.score > highScores[i][0] || !highScores[i][0]) {
+		if(highScores[i][0] == undefined || this.score > highScores[i][0]) {
 			for(var j = highScores.length - 2; j >= i; j--) {
 				highScores[j+1] = highScores[j];
 			}
@@ -452,7 +455,7 @@ Game.prototype.toResults = function() {
    	$("#screen_results").find(".rank").html(rank);
 
    	$("#screen_results .stars i").removeClass("on");
-   	for(var i = 0; i < stars; i++)
+   	for(var i = 0; i < this.stars; i++)
    		$("#screen_results .stars").find("i").eq(i).addClass("on");
 
 	$("#screen_results").addClass("open");

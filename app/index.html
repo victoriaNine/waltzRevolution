@@ -13,7 +13,12 @@
   <body>
     <div id="bg"></div>
     <div id="wrapper">
-      <section id="screen_main" class="screen">
+    <section id="screen_loading" class="screen" style="display:none;">
+        <div class="container">
+          <h1>Loading<span class="midGrey percent">97%</span></h1>
+        </div>
+      </section>
+      <section id="screen_main" class="screen" style="display:none;">
         <div class="container">
           <h1><span class="midGrey">Waltz Waltz</span> Revolution</h1>
           <ul class="nav">
@@ -27,16 +32,7 @@
       <section id="screen_highScores" class="screen overlay">
         <div class="container">
           <h1>High Scores</h1>
-          <div class="row">
-            <span class="label">#01</span><span class="date beige">05.02.2015 @ 14:12</span><span class="points orange">14445pts</span><span class="percent orange">98%</span>
-            <div class="stars">
-              <i class="fa fa-star on"></i>
-              <i class="fa fa-star on"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-          </div>
+          <div class="row"><span class="label">#01</span><span class="date beige">-</span></div>
           <div class="row"><span class="label">#02</span><span class="date beige">-</span></div>
           <div class="row"><span class="label">#03</span><span class="date beige">-</span></div>
           <div class="row"><span class="label">#04</span><span class="date beige">-</span></div>
@@ -49,7 +45,7 @@
           <div class="button">Back</div>
         </div>
       </section>
-      <section id="screen_howToPlay" class="screen overlay open">
+      <section id="screen_howToPlay" class="screen overlay">
         <div class="container">
           <h1>How to play</h1>
           <div class="left">
@@ -79,7 +75,7 @@
           <h1>Credits</h1>
           <p>
             <span class="beige">Concept, development, design &amp; music</span><br />
-            Victoria Nine<br />
+            <a href="http://orion9.net" target="_blank">Victoria Nine</a><br />
             <br />
             <span class="beige">SFX</span><br />
             Hatsune Miku -Project DIVA-f<br />
@@ -93,7 +89,7 @@
           <h1>Pause</h1>
           <ul class="nav">
             <li>Resume</li>
-            <li>Retry</li>
+            <li class="retry">Retry</li>
             <li>Main menu</li>
           </ul>
         </div>
@@ -132,7 +128,7 @@
               <i class="fa fa-star"></i>
             </div>
             <ul class="nav">
-              <li>Retry</li>
+              <li class="retry">Retry</li>
               <li>Main menu</li>
             </ul>
           </div>
