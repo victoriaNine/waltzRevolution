@@ -179,8 +179,8 @@ function launchGameMobile() {
 	//});
 }
 
-function s() {
-	requestAnimationFrame(s);
+function drawAudioVisualizer() {
+	requestAnimationFrame(drawAudioVisualizer);
 
     c.clearRect(0, 0, window.innerWidth, window.innerHeight);
     var dataArray = new Uint8Array($audioEngine.BGM.analyserNode.frequencyBinCount);

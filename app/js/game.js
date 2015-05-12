@@ -37,10 +37,7 @@ Game.prototype.loadSong = function() {
 	this.song = new Song(this.songFile, function() {
 		$audioEngine.BGM.addSource(game.song.fileURL, function() {
 			game.start();
-			
-			//requestAnimationFrame(draw);
-			//setInterval(s, 10);
-			s();
+			drawAudioVisualizer();
 		});
 
 		game.initValues();
