@@ -29,6 +29,11 @@ var $audioEngine;
 var autoMuteSound = false;
 var $game;
 
+var audioVisualizer = document.getElementById("audioVisualizer");
+var c = audioVisualizer.getContext("2d");
+var analyserNode;
+var dataArray;
+
 
 //===============================
 // MAIN INITIALIZATION
@@ -169,6 +174,56 @@ function launchGameMobile() {
 			$("body").on(eventtype, startSong);
 		//}
 	//});
+}
+
+function s() {
+    c.clearRect(0, 0, 1920, 400), c.fillStyle = "#fff", c.fillRect(0, 0, 1920, 400), c.beginPath(), c.strokeStyle = "#000", c.fillStyle = "#000";
+    dataArray = new Uint8Array(analyserNode.frequencyBinCount);
+    analyserNode.getByteTimeDomainData(dataArray);
+    // p = array for AnalyserNode-s
+    // p.bgm = AnalyserNode used for the bgm
+
+    /*switch (p.bgm.getByteFrequencyData(e), d) {
+        case 0: // horizontal lines
+            t(e);
+            break;
+        case 1: // dots
+            a(e);
+            break;
+        case 2: // diagonal lines
+            n(e);
+            break;
+        case 3: // oscilloscope*/
+            t(dataArray);
+    //}
+}
+
+function t(e) {
+    var f = 75;
+    var t, a = Math.round(parseFloat($(window).width()) / f);
+    for (c.lineTo(0, 0), t = 0; f > t; t++) c.lineTo(t * a, e[t]);
+    c.lineTo(parseFloat($(window).width()), 0), c.fill(), c.stroke(), c.closePath()
+}
+
+function a(e) {
+    var f = 75;
+    var t, a = Math.round(parseFloat($(window).width()) / f);
+    for (t = 0; f > t; t++) c.fillRect(t * a, e[t] + 100, 2, 2)
+}
+
+function n(e) {
+    var f = 75;
+    var t, a = Math.round(parseFloat($(window).width()) / f);
+    for (c.lineWidth = 1, t = 0; f > t; t++) c.moveTo(t * a + e[t], e[t]), c.lineTo(-e[t] + 500, -t * a - e[t] + 500);
+    c.stroke()
+}
+
+function o(e) {
+    // c = canvas ctx
+    var f = 100;
+    var t;
+    for (c.lineWidth = 1, t = 0; f > t; t++) c.moveTo(1e3 * e[t], 2 * e[t]), c.lineTo(1e3 * -e[t], -1 * e[t]);
+    c.stroke()
 }
 
 //===============================

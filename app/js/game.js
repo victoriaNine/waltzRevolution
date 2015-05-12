@@ -5,8 +5,6 @@ function Game(songFile) {
 	this.HP = 500;
 	this.maxHP = 1000;
 
-	console.log(this.HP);
-
 	this.score = 0;
 	this.progress = 0;
 	this.rank;
@@ -38,8 +36,12 @@ Game.prototype.loadSong = function() {
 	var game = this;
 	this.song = new Song(this.songFile, function() {
 		$audioEngine.BGM.addSource(game.song.fileURL, function() {
-			console.log(game);
 			game.start();
+			analyserNode = $audioEngine.BGM.audioCtx.createAnalyser();
+			
+			//requestAnimationFrame(draw);
+			setInterval(s, 10);
+			//s();
 		});
 
 		game.initValues();
