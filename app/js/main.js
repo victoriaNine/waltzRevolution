@@ -63,6 +63,10 @@ $(document).ready(function() {
 	}*/
 });
 
+$(window).resize(function() {
+	$(audioVisualizer).attr("width", window.innerWidth).attr("height", window.innerHeight);
+});
+
 function showHighScores() {
 	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
 
@@ -197,7 +201,7 @@ function s() {
             break;
         case 3: // horizontal lines
         	o(e)*/
-            a(dataArray);
+            waveform(dataArray);
             oscilloscope(dataArray);
     //}
 }
@@ -206,47 +210,75 @@ function oscilloscope(dataArray) {
     var nbEQband = 75;
     var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
     
-    var zoom = 1.25;
+    var zoom = 1;
     var maxHeight = 255 * zoom;
     var top = $(window).height();
 
     c.save();
     c.beginPath();
+
 	c.fillStyle = "#161515";
 	c.strokeStyle = "#161515";
-
     c.lineTo(0, top);
-    for (var i = 0; i <= nbEQband; i++) c.lineTo(i * bandWidth, top - dataArray[i] * zoom);
-    c.lineTo(parseFloat($(window).width()), top);
 
+    for (var i = 0; i <= nbEQband; i++)
+    	c.lineTo(i * bandWidth, top - dataArray[i] * zoom);
+
+    c.lineTo(parseFloat($(window).width()), top - dataArray[nbEQband] * zoom);
+    c.lineTo(parseFloat($(window).width()), top);
     c.fill();
     c.stroke();
+
     c.closePath();
     c.restore();
 }
 
-function a(e) {
-	c.save();
+function waveform(dataArray) {
+    var nbEQband = 75;
+    var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
+
+    var zoom = 1;
+    var maxHeight = 255 * zoom;
+    var top = maxHeight * 1.5;
+
+    c.save();
 	c.fillStyle = "#D55320";
-    var f = 75;
-    var t, a = Math.round(parseFloat($(window).width()) / f);
-    for (t = 0; t <= f; t++) c.fillRect(t * a, e[t] + 100, 2, 2);
+
+    for (var i = 0; i <= nbEQband; i++)
+    	c.fillRect(i * bandWidth, top + dataArray[i], 2, 2);
+
     c.restore();
 }
 
-function n(e) {
-    var f = 75;
-    var t, a = Math.round(parseFloat($(window).width()) / f);
-    for (c.lineWidth = 1, t = 0; f > t; t++) c.moveTo(t * a + e[t], e[t]), c.lineTo(-e[t] + 500, -t * a - e[t] + 500);
-    c.stroke()
+function n(dataArray) {
+    var nbEQband = 75;
+    var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
+
+    c.save();
+    c.lineWidth = 1;
+
+    for (var i = 0; i <= nbEQband; t++) {
+    	c.moveTo(i * bandWidth + dataArray[i], dataArray[i]);
+    	c.lineTo(-dataArray[i] + 500, -i * a - dataArray[i] + 500);
+    }
+
+    c.stroke();
+	c.restore();
 }
 
-function o(e) {
-    // c = canvas ctx
-    var f = 100;
-    var t;
-    for (c.lineWidth = 1, t = 0; f > t; t++) c.moveTo(1e3 * e[t], 2 * e[t]), c.lineTo(1e3 * -e[t], -1 * e[t]);
-    c.stroke()
+function o(dataArray) {
+    var nbEQband = 100;
+
+    c.save();
+    c.lineWidth = 1;
+
+    for (var i = 0; i <= nbEQband; i++) {
+    	c.moveTo(1e3 * dataArray[i], 2 * dataArray[i]);
+    	c.lineTo(1e3 * -dataArray[i], -1 * dataArray[i]);
+    }
+
+    c.stroke();
+	c.restore();
 }
 
 //===============================

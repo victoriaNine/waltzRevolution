@@ -52,15 +52,15 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! high scores
  ! credits
  ! how to play
- - main menu canvas
+ ~ main menu canvas
+ - "retry" feature
+ - bgm implementation
+ - sfx implementation
  - loading
- - screens transitions
+ - screens transitions & animations
  - fix arrows visibility
 - clean code
 
-- bgm
-- sfx
-- clean code
 
 => 05/09/2015 - 05/11/2015
 - responsive
@@ -69,11 +69,12 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 
 ----------
 
-Clean Code (organization, cohesion)
-Semantics (Markup)
-Web Technologies
-Accessibility
-SEO
-Performance
-Animations
-Responsive Design
+Checklist :
+- Clean Code (organization, cohesion)
+- Semantics (Markup)
+- Web Technologies
+- Accessibility
+- SEO
+- Performance
+- Animations
+- Responsive Design

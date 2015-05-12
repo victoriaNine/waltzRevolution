@@ -148,7 +148,7 @@ function BGM() {
 		this.filesLoaded = false;
 		this.file = url;
 
-		if(callback && typeof callback == "function") this.callback = callback;
+		if(callback && typeof callback === "function") this.callback = callback;
 
 	    var bufferLoader = new BufferLoader(this.audioCtx, [url], this.setSources);
 	  	bufferLoader.load();
@@ -162,7 +162,7 @@ function BGM() {
 		}
 
 		bgm.filesLoaded = true;
-		if(bgm.callback && typeof bgm.callback == "function") bgm.callback();
+		if(bgm.callback && typeof bgm.callback === "function") bgm.callback();
 	}
 
 	this.createSource = function(buffer, index) {
