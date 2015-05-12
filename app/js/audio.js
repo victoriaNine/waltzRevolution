@@ -10,7 +10,7 @@ function BufferLoader(context, urlList, callback) {
 }
 
 BufferLoader.prototype.loadBuffer = function(url, index) {
-  if(!url.match(".mp3|.ogg")) url += Modernizr.audio.ogg ? '.ogg' : '.mp3';
+  if(!url.match(".mp3|.ogg|.wav")) url += Modernizr.audio.ogg ? '.ogg' : '.mp3';
 
   // Load buffer asynchronously
   var request = new XMLHttpRequest();
@@ -107,6 +107,7 @@ function AudioEngine() {
 function BGM() {
 //===============================
 	this.audioCtx;
+	this.analyserNode;
 	this.sourceArray = {};
 	this.crossfadeArray = [];
 
@@ -136,6 +137,7 @@ function BGM() {
 	    // Fix up for prefixing
 	    window.AudioContext = window.AudioContext||window.webkitAudioContext;
 	    this.audioCtx = new AudioContext();
+	    this.analyserNode = this.audioCtx.createAnalyser();
 	  }
 	  catch(e) {
 	    alert('Web Audio API is not supported in this browser');
@@ -173,6 +175,7 @@ function BGM() {
 	    this.songLength = source.buffer.duration;
 
 		source.connect(gainNode);
+		source.connect(this.analyserNode);
 	    gainNode.connect(this.audioCtx.destination);
 
 	    if(source.name == "waltz") source.gainNode.gain.value = .8;

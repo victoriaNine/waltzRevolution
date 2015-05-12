@@ -31,8 +31,6 @@ var $game;
 
 var audioVisualizer = document.getElementById("audioVisualizer");
 var c = audioVisualizer.getContext("2d");
-var analyserNode;
-var dataArray;
 
 
 //===============================
@@ -44,6 +42,7 @@ $(document).ready(function() {
 	if(tabletcheck()) $("html").addClass("isTablet");
 
 	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
+	$(audioVisualizer).attr("width", window.innerWidth).attr("height", window.innerHeight);
 
 	if(navigator.appName == 'Microsoft Internet Explorer') {
         var agent = navigator.userAgent;
@@ -177,14 +176,17 @@ function launchGameMobile() {
 }
 
 function s() {
-    c.clearRect(0, 0, 1920, 400), c.fillStyle = "#fff", c.fillRect(0, 0, 1920, 400), c.beginPath(), c.strokeStyle = "#000", c.fillStyle = "#000";
-    dataArray = new Uint8Array(analyserNode.frequencyBinCount);
-    analyserNode.getByteTimeDomainData(dataArray);
+	requestAnimationFrame(s);
+
+    c.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    var dataArray = new Uint8Array($audioEngine.BGM.analyserNode.frequencyBinCount);
+    $audioEngine.BGM.analyserNode.getByteFrequencyData(dataArray);
+
     // p = array for AnalyserNode-s
     // p.bgm = AnalyserNode used for the bgm
 
     /*switch (p.bgm.getByteFrequencyData(e), d) {
-        case 0: // horizontal lines
+        case 0: // oscilloscope
             t(e);
             break;
         case 1: // dots
@@ -193,22 +195,43 @@ function s() {
         case 2: // diagonal lines
             n(e);
             break;
-        case 3: // oscilloscope*/
-            t(dataArray);
+        case 3: // horizontal lines
+        	o(e)*/
+            a(dataArray);
+            oscilloscope(dataArray);
     //}
 }
 
-function t(e) {
-    var f = 75;
-    var t, a = Math.round(parseFloat($(window).width()) / f);
-    for (c.lineTo(0, 0), t = 0; f > t; t++) c.lineTo(t * a, e[t]);
-    c.lineTo(parseFloat($(window).width()), 0), c.fill(), c.stroke(), c.closePath()
+function oscilloscope(dataArray) {
+    var nbEQband = 75;
+    var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
+    
+    var zoom = 1.25;
+    var maxHeight = 255 * zoom;
+    var top = $(window).height();
+
+    c.save();
+    c.beginPath();
+	c.fillStyle = "#161515";
+	c.strokeStyle = "#161515";
+
+    c.lineTo(0, top);
+    for (var i = 0; i <= nbEQband; i++) c.lineTo(i * bandWidth, top - dataArray[i] * zoom);
+    c.lineTo(parseFloat($(window).width()), top);
+
+    c.fill();
+    c.stroke();
+    c.closePath();
+    c.restore();
 }
 
 function a(e) {
+	c.save();
+	c.fillStyle = "#D55320";
     var f = 75;
     var t, a = Math.round(parseFloat($(window).width()) / f);
-    for (t = 0; f > t; t++) c.fillRect(t * a, e[t] + 100, 2, 2)
+    for (t = 0; t <= f; t++) c.fillRect(t * a, e[t] + 100, 2, 2);
+    c.restore();
 }
 
 function n(e) {
@@ -239,6 +262,7 @@ function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(ke
 $(".nav .retry").on(eventtype, function() {
 	retryGame();
 });
+
 
 //===============================
 // MOBILE DETECTION

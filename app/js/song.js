@@ -32,7 +32,6 @@ function Song(url, callback) {
   this.staffScroll;
   this.staffScrollDuration;
 
-  this.currentNoteIndex = 0;
   this.paused = false;
 }
 
@@ -228,8 +227,6 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 
   this.checkInput = function() {
     if((this.songPosition + $game.song.baseNoteLength) < $audioEngine.BGM.currentPosition()) {
-      $game.song.currentNoteIndex = this.index + 1;
-
       if(!this.accuracy && !this.pressed) $game.missedNote(this);
     }
   }
@@ -240,7 +237,6 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 function draw() {
 //===============================
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
-  //var noteIndex = $gameOver ? 0 : $game.song.currentNoteIndex;
 
   for(var i = 0; i < $game.song.score.length; i++) {
     $game.song.notes[i].draw();
