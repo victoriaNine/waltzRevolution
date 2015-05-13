@@ -175,8 +175,8 @@ function BGM() {
 	    this.songLength = source.buffer.duration;
 
 		source.connect(gainNode);
-		source.connect(this.analyserNode);
 	    gainNode.connect(this.audioCtx.destination);
+	    gainNode.connect(this.analyserNode);
 
 	    if(source.name == "waltz") source.gainNode.gain.value = .8;
 
