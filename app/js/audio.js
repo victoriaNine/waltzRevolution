@@ -108,26 +108,29 @@ function BGM() {
 //===============================
 	this.audioCtx;
 	this.analyserNode;
+	
 	this.sourceArray = {};
-	this.crossfadeArray = [];
-
-	this.files;
-	this.filesLoaded = false;
+	this.fileURL;
 	this.currentFile;
+	this.fileLoaded = false;
+	
 	this.muted = false;
 	this.paused = false;
+	this.hasEnded = false;
+
+	this.crossfadeArray = [];
 	this.crossfading = false;
 
-	this.startedAt;
+	this.startedAt = 0;
 	this.pausedAt = 0;
+	this.songLength = 0;
+
 	this.currentPosition = function() {
 		var position = this.paused ? this.pausedAt / 1000 : ((new Date().getTime() - this.startedAt) + this.pausedAt) / 1000;
 		if(position > this.songLength) position = this.songLength;
 
 		return position;
 	};
-	this.songLength;
-	this.hasEnded = false;
 
 	this.callback;
 
@@ -145,8 +148,8 @@ function BGM() {
 	}
 
 	this.addSource = function(url, callback) {
-		this.filesLoaded = false;
-		this.file = url;
+		this.fileLoaded = false;
+		this.fileURL = url;
 
 		if(callback && typeof callback === "function") this.callback = callback;
 
@@ -161,7 +164,7 @@ function BGM() {
 			bgm.sourceArray[source.name] = source;
 		}
 
-		bgm.filesLoaded = true;
+		bgm.fileLoaded = true;
 		if(bgm.callback && typeof bgm.callback === "function") bgm.callback();
 	}
 
@@ -189,10 +192,24 @@ function BGM() {
 	    };
 	}
 
-	this.play = function(file) {
-		this.currentFile = file;
-		this.sourceArray[file].source.start(0);
+	this.play = function() {
+		this.sourceArray[this.currentFile].source.start(0);
 		this.startedAt = new Date().getTime();
+	}
+
+	this.setFile = function(file) {
+		this.currentFile = file;
+
+		this.muted = false;
+		this.paused = false;
+		this.hasEnded = false;
+
+		this.crossfadeArray = [];
+		this.crossfading = false;
+
+		this.startedAt = 0;
+		this.pausedAt = 0;
+		this.songLength = 0;
 	}
 
 	this.setCrossfade = function(gain) {

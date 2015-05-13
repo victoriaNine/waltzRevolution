@@ -91,8 +91,7 @@ Song.prototype.load = function() { this.loadSong(this.url); }
 Song.prototype.start = function() {
   var rAF = function() { requestAnimationFrame(draw); }
 
-  var fileName = this.url.slice(this.url.lastIndexOf("/")+1, this.url.lastIndexOf("."));
-  $audioEngine.BGM.play(fileName);
+  $audioEngine.BGM.play();
   draw();
 
   var song = this;
@@ -228,8 +227,11 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 
   this.checkInput = function() {
     if((this.songPosition + $game.song.baseNoteLength) < $audioEngine.BGM.currentPosition()) {
-      $game.song.currentNoteIndex = this.index + 1;
-
+      console.log(this);
+      if(this.index == $game.song.currentNoteIndex) {
+        $game.song.currentNoteIndex = this.index + 1;
+        console.log(this);
+      }
       if(!this.accuracy && !this.pressed) $game.missedNote(this);
     }
   }
@@ -244,7 +246,7 @@ function draw() {
 
   for(var i = 0; i < $game.song.score.length; i++) {
     $game.song.notes[i].draw();
-    $game.song.notes[i].checkInput();
+    if(!$game.isGameOver) $game.song.notes[i].checkInput();
   }
 }
 

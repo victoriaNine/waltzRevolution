@@ -249,13 +249,13 @@ function waveform(dataArray) {
 
     var zoom = 1;
     var maxHeight = 255 * zoom;
-    var top = maxHeight * 1.5;
+    var top = $(window).height() - maxHeight / 4;
 
     c.save();
 	c.fillStyle = "#D55320";
 
     for (var i = 0; i <= nbEQband; i++)
-    	c.fillRect(i * bandWidth, top + dataArray[i], 2, 2);
+    	c.fillRect(i * bandWidth, top - dataArray[i], 2, 2);
 
     c.restore();
 }
@@ -301,6 +301,11 @@ function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(ke
 //===============================
 // LOCAL STORAGE
 //===============================
+
+$(".nav .resume").on(eventtype, function() {
+	$game.song.resume();
+});
+
 $(".nav .retry").on(eventtype, function() {
 	retryGame();
 });

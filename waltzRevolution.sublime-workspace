@@ -4,40 +4,48 @@
 		"selected_items":
 		[
 			[
+				"backgr",
+				"background-size"
+			],
+			[
+				"a",
+				"analyserNode"
+			],
+			[
+				"audi",
+				"audioAnalyser"
+			],
+			[
+				"ac",
+				"accuracy"
+			],
+			[
+				"acc",
+				"accuracyPerc"
+			],
+			[
+				"perfec",
+				"perfectScore"
+			],
+			[
 				"get",
-				"getCurrentPosition"
+				"getLocalStorage"
 			],
 			[
-				"_st",
-				"_staffScroll"
+				"_",
+				"_currentStaffPosition"
 			],
 			[
-				"pau",
-				"pausedAt"
+				"is",
+				"isTiedNote"
 			],
 			[
-				"star",
-				"startedAt"
-			],
-			[
-				"_sta",
-				"_staffLength"
-			],
-			[
-				"not",
-				"noteScale"
-			],
-			[
-				"ti",
-				"timeSignature"
+				"staff",
+				"staffPosition"
 			],
 			[
 				"va",
 				"value"
-			],
-			[
-				"is",
-				"isTransitioning"
 			],
 			[
 				"loaded",
@@ -296,29 +304,10 @@
 	"buffers":
 	[
 		{
-			"file": "app/js/audio.js",
+			"file": "app/index.html",
 			"settings":
 			{
-				"buffer_size": 8310,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "TODO.txt",
-			"settings":
-			{
-				"buffer_size": 649,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "$orange: #D55320;\n$offWhite: #F8F4F0;\n$darkGrey: #706F6E;\n\nbody {\n  width:100%;\n  height:100%;\n  position:absolute;\n  overflow:hidden;\n  font-family:\"Oswald\", sans-serif;\n  font-weight:100;\n}\n\n::-moz-selection {\n  background:  $orange;\n  color:       #FFF;\n  text-shadow: none;\n}\n\n::selection {\n  background:  $orange;\n  color:       #FFF;\n  text-shadow: none;\n}\n\n.left { float:left; }\n.right { float:right; }\n\n.left:after, .right:after {\n  content:\"\";\n  display:table;\n  clear:both;\n}\n\n#bg {\n  width:100%;\n  height:100%;\n  position:absolute;\n  background:$offWhite url(\"../img/bg.jpg\") no-repeat;\n  background-size:cover;\n}\n\n#container {\n  width:100%;\n  height:100%;\n  position:absolute;\n  \n  display: -webkit-flex;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: flex;\n  -webkit-flex-direction: column;\n  -moz-flex-direction: column;\n  -ms-flex-direction: column;\n  -o-flex-direction: column;\n  flex-direction: column;\n}\n\n#header {\n  width:100%;\n  height:150px;\n  position:relative;\n  background:rgba(0,0,0,.75);\n  padding:40px;\n  box-sizing:border-box;\n  font-size:30px;\n}\n\n#songBlock h1 {\n  font-size:36px;\n  color:$offWhite;\n  vertical-align: super;\n  display: inline-block;\n}\n\n#songBlock h2 { font-size:30px; color:$darkGrey; }\n\n#scoreInfo { width:210px; text-align:right; }\n#currentScore { color:$offWhite; vertical-align: super; }\n#bestScore { color:$darkGrey; }\n\n#scoreValue {\n  margin-left:25px;\n  color:$orange;\n  font-size: 75px;\n  font-weight: 500;\n  width: 190px;\n  text-align: right;\n}\n\n#main {\n  position:relative;\n  -webkit-flex: 1;\n  -moz-flex: 1;\n  -ms-flex: 1;\n  -o-flex: 1;\n  flex: 1;\n}\n\n#staff {\n  width:calc(100% - 40px);\n  height:195px;\n  position:absolute;\n  right:0;\n  top:160px;\n}\n\n#lines {\n  width:100%;\n  height:1px;\n  top:16px;\n  position:absolute;\n  background:#999;\n  box-shadow:0  40px 0 #999,\n             0  80px 0 #999,\n             0 120px 0 #999,\n             0 160px 0 #999;\n  z-index:2;\n}\n\n#keys { z-index:3; position:absolute; }\n\n#keys li, .note {\n  border-radius:50%;\n  text-align:center;\n}\n\n#keys li {\n  width:36px;\n  height:36px;\n  background:#333;\n  color:$darkGrey;\n  margin-bottom:4px;\n}\n\n#keys li.pressed { background:$orange; color:$offWhite; }\n#keys i { line-height: 1.5em; font-size:1.5em; }\n\n#notes { width: calc(100% - 16px); height: 100%; position:absolute; z-index:2; left: 16px; }\n.note {\n  width:32px;\n  height:32px;\n  background:$offWhite;\n  color:$orange;\n  position:absolute;\n}\n\n.note i { line-height: 1.4em; font-size:1.5em; }\n\n.tiedNote { position: absolute; }\n.noteBridge {\n  position: absolute;\n  height: 10px;\n  background: $offWhite;\n  margin-top: 12px;\n  z-index: -1;\n}\n\n.note.up, .noteBridge.up { top:0; }\n.note.right, .noteBridge.right { top:40px; }\n.note.left, .noteBridge.left { top:80px; }\n.note.down, .noteBridge.down { top:120px; }\n.note.space, .noteBridge.space { top:160px; }",
-			"file": "app/css/main.scss",
-			"file_size": 3040,
-			"file_write_time": 130747220583117512,
-			"settings":
-			{
-				"buffer_size": 2877,
+				"buffer_size": 9448,
 				"line_ending": "Windows"
 			}
 		},
@@ -326,7 +315,23 @@
 			"file": "app/js/main.js",
 			"settings":
 			{
-				"buffer_size": 12348,
+				"buffer_size": 13481,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/js/game.js",
+			"settings":
+			{
+				"buffer_size": 14481,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/js/audio.js",
+			"settings":
+			{
+				"buffer_size": 9444,
 				"line_ending": "Windows"
 			}
 		},
@@ -334,47 +339,46 @@
 			"file": "app/js/song.js",
 			"settings":
 			{
-				"buffer_size": 7494,
+				"buffer_size": 8701,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "app/js/controller.js",
+			"file": "app/js/input.js",
 			"settings":
 			{
-				"buffer_size": 2947,
+				"buffer_size": 3879,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "L R L R L\nD U D U D\nL R L R L\nD U D U D\n\nU R D L D, L D R\nU L R D R, L U D R\n\nL R L R L\nD U D U D\nL R L R L\nD U D U D\n\nU R D L D, L D R\nU L R D L, L U D\nS, D U, U L D\n\nU+R L+D U+D L+R\nL+U, D+R, S\n\n// REPEAT\n\nL R L R L\nD U D U D\nL R L R L\nD U D U D\n\nU R D L D, L D R\nU L R D R, L U D R",
+			"file": "TODO.txt",
 			"settings":
 			{
-				"buffer_size": 284,
-				"line_ending": "Windows",
-				"name": "L R L R L"
+				"buffer_size": 1606,
+				"line_ending": "Windows"
 			}
 		}
 	],
 	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
 	"command_palette":
 	{
-		"height": 490.0,
+		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
-			[
-				"",
-				"Preferences: Browse Packages"
-			]
 		],
-		"width": 490.0
+		"width": 0.0
 	},
 	"console":
 	{
-		"height": 144.0,
+		"height": 0.0,
 		"history":
 		[
-			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
 		]
 	},
 	"distraction_free":
@@ -388,62 +392,47 @@
 	},
 	"expanded_folders":
 	[
-		"/E/labs/waltzRevolution",
-		"/E/labs/waltzRevolution/app",
-		"/E/labs/waltzRevolution/app/css",
-		"/E/labs/waltzRevolution/app/js"
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/css",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js"
 	],
 	"file_history":
 	[
-		"/E/labs/waltzRevolution/node_modules/grunt-usemin/lib/file.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/mout/object/forOwn.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/configstore/node_modules/js-yaml/node_modules/argparse/node_modules/lodash/object/forOwnRight.js",
-		"/E/labs/waltzRevolution/bower_components/modernizr/feature-detects/forms-speechinput.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-modernizr/node_modules/uglify-js/test/unit/compress/expected/forstatement.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/tar-fs/node_modules/tar-stream/node_modules/readable-stream/lib/_stream_passthrough.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-autoprefixer/node_modules/autoprefixer-core/node_modules/postcss/lib/css-syntax-error.js",
-		"/E/labs/waltzRevolution/node_modules/grunt/node_modules/findup-sync/node_modules/glob/node_modules/minimatch/test/extglob-ending-with-state-char.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-autoprefixer/node_modules/autoprefixer-core/node_modules/caniuse-db/features-json/speech-synthesis.json",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/glob/sync.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/inquirer/node_modules/cli-color/node_modules/es5-ext/reg-exp/#/search/implement.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/handlebars/coverage/lcov-report/spec/helpers.js.html",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/inquirer/node_modules/cli-color/node_modules/es5-ext/string/#/camel-to-hyphen.js",
-		"/E/labs/waltzRevolution/node_modules/grunt/node_modules/colors/colors.js",
-		"/E/labs/waltzRevolution/node_modules/bower/templates/helpers/colors.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-mocha/node_modules/grunt-lib-phantomjs/node_modules/phantomjs/lib/phantom/examples/colorwheel.coffee",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/inquirer/node_modules/cli-color/node_modules/es5-ext/math/hypot/implement.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/configstore/node_modules/js-yaml/node_modules/argparse/node_modules/lodash/collection/eachRight.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/configstore/node_modules/js-yaml/node_modules/argparse/node_modules/lodash/array/dropRightWhile.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/mout/collection.js",
-		"/E/labs/waltzRevolution/bower_components/modernizr/feature-detects/css-objectfit.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-contrib-sass/CHANGELOG",
-		"/E/labs/waltzRevolution/node_modules/grunt-autoprefixer/node_modules/autoprefixer-core/node_modules/caniuse-db/features-json/html5semantic.json",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/configstore/node_modules/js-yaml/node_modules/argparse/node_modules/lodash/internal/initCloneArray.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-svgmin/node_modules/svgo/node_modules/js-yaml/node_modules/argparse/lib/action_container.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/configstore/node_modules/js-yaml/node_modules/argparse/node_modules/lodash/internal/baseMap.js",
-		"/E/labs/waltzRevolution/node_modules/bower/node_modules/.bin/semver",
-		"/E/labs/waltzRevolution/node_modules/grunt-contrib-sass/docs/sass-examples.md",
-		"/E/labs/waltzRevolution/bower_components/modernizr/feature-detects/script-async.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-contrib-sass/tasks/sass.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-contrib-concat/node_modules/source-map/build/assert-shim.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-svgmin/node_modules/chalk/node_modules/ansi-styles/ansi-styles.js",
-		"/E/labs/waltzRevolution/node_modules/grunt-contrib-sass/node_modules/async/lib/async.js",
-		"/E/labs/waltzRevolution/node_modules/jshint-stylish/node_modules/text-table/example/align.js",
-		"/E/labs/intertap/app/styles/main.scss",
-		"/E/labs/waltzRevolution/app/js/song.js",
-		"/E/labs/waltzRevolution/app/index.html",
-		"/E/labs/waltzRevolution/app/js/jquery.ba-throttle-debounce.min.js",
-		"/C/Users/Leivvi/Desktop/main.js",
-		"/C/Users/Leivvi/Downloads/dmauro-Keypress-2.1.0-1-g06deea7/dmauro-Keypress-06deea7/keypress.js",
-		"/E/labs/waltzRevolution/app/css/main.scss",
-		"/E/labs/waltzRevolution/app/js/waltz.json",
-		"/E/labs/waltzRevolution/app/js/score.js",
-		"/C/Users/Leivvi/Desktop/120527.xml",
-		"/E/labs/waltzRevolution/app/js/main_.js",
-		"/E/labs/waltzRevolution/.editorconfig",
-		"/E/labs/waltzRevolution/test/bower.json",
-		"/E/labs/waltzRevolution/Gruntfile.js",
-		"/E/labs/waltzRevolution/bower.json",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/song.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/css/main.scss",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/labs/s5-style.js",
+		"/E/VictoriaBackup/Documents/_campagnes/IMPACT/2015/05/Fiat/custom/prototype.html",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/waltz.json",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/TODO.txt",
+		"/E/VictoriaBackup/Documents/_campagnes/IMPACT/2015/04/michelin/custom/js/main.js",
+		"/E/VictoriaBackup/Documents/_campagnes/IMPACT/2015/04/michelin/custom/index.html",
+		"/C/Users/vbissengue.LAP-EBZ30/Downloads/MotionBlurEffect/js/gallery.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Downloads/MotionBlurEffect/index.html",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/grp-converter/app/scripts/main.js",
+		"/E/VictoriaBackup/Documents/_campagnes/IMPACT/2015/04/michelin/custom/js/main_v12.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/audio.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/grp-converter/app/styles/main.css",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/input.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/grp-converter/app/scripts/budget.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/grp-converter/app/scripts/trads.js",
+		"/C/wamp/www/devTests/esprit/studioCompiler.html",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/controller.js",
+		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/esprit/mFooter/css/style.scss",
+		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/esprit/mTab/css/style.scss",
+		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/mac/mFooter/css/style.scss",
+		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/mac/mTab/css/style.scss",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/main.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/main_.js",
+		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/lacoste/mFlow/css/style.scss",
+		"/E/VictoriaBackup/Documents/_campagnes/MOBILE/2015/04/lacoste/mFlow/js/main.js",
+		"/E/VictoriaBackup/Documents/_campagnes/IMPACT/2013/10/wacom/custom/js/main.js",
+		"/E/VictoriaBackup/Documents/_campagnes/IMPACT/2013/10/wacom/custom/js/e360player.js",
+		"/E/VictoriaBackup/Documents/_dev/2015/04/imageFilter/css/main.scss",
+		"/E/VictoriaBackup/Documents/_dev/2015/04/imageFilter/index.html",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/song_.js",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/TODO",
+		"/C/Users/vbissengue.LAP-EBZ30/Documents/waltzRevolution/app/js/score.json",
 		"/E/labs/rhythmGame/bower.json",
 		"/E/labs/rhythmGame/package.json",
 		"/E/labs/rhythmGame/index.html",
@@ -460,6 +449,7 @@
 		"/E/labs/intertap/bower_components/jquery-ui/jquery-ui.js",
 		"/C/Users/Leivvi/Downloads/smartsprites-0.2.10/README.rdoc",
 		"/D/wamp/www/orion9/scripts/spriteAnim/spriteAnim.js",
+		"/E/labs/intertap/app/styles/main.scss",
 		"/E/labs/intertap/app/styles/main.css",
 		"/E/labs/intertap/app/scripts/main.js",
 		"/E/labs/intertap/app/index.html",
@@ -509,7 +499,7 @@
 	],
 	"find":
 	{
-		"height": 43.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -523,47 +513,41 @@
 		"case_sensitive": true,
 		"find_history":
 		[
-			"#706f6e",
-			"#f8f4f0",
-			"\\#d55320",
-			"songEnded",
-			"\\$song.paused",
-			"$song.paused",
-			"songEnded",
-			"grade",
-			"hasEn",
-			"keyCode",
-			"okPerc\\[i\\]",
-			"okPerc[i]",
-			"currentPosition",
-			"staffScale",
-			"noteScale",
+			"fileURL",
+			"this.fileURL",
+			"this.file",
+			"this.currentFile",
+			"this.file",
+			"currentFile",
+			"this.currentFile;",
+			"this.file",
+			"checkInput",
+			"eventt",
+			"touch",
+			"Modernizr.touch",
+			"currentNote",
+			"p\\.",
+			"p.",
+			"p =",
+			"source.name",
+			"p.bgm",
+			"node",
+			"analyserNod",
+			"analyserN",
+			"url",
+			"p =",
+			"var f",
+			"f =",
 			"canvas",
-			"staffScale",
-			"_staffScale",
-			"waltz",
-			"sourceArray",
-			"._notes",
-			".score",
-			"\\.notes",
-			".notes",
-			"\\.notes",
-			".notes",
-			"hn",
-			"hnB",
-			"heldNote",
-			"HeldNote",
-			"hnBeat",
-			"isHeldNote",
-			": false",
-			"noteSca",
-			"score",
-			"callba",
-			"BGM",
-			".tmp/styles",
-			"<%= config.app %>/images",
-			"<%= config.app %>/styles",
-			"<%= config.app %>/scripts",
+			"lineTo",
+			"1e3",
+			"stopMomentum()",
+			"localStorage",
+			"\",",
+			"songLength",
+			"getSongLength",
+			"unmute",
+			"mute",
 			"keyfra",
 			"clearpro",
 			"maxPi",
@@ -656,28 +640,8 @@
 		"regex": true,
 		"replace_history":
 		[
-			"$darkGrey",
-			"$offWhite",
-			"$orange",
-			"gameComplete",
-			"rank",
-			"okPerc[closestNoteIndex]",
-			"\\.score",
-			"\\.notes",
-			"\\._notes",
-			"._notes",
-			"tn",
-			"tnB",
-			"tiedNote",
-			"TiedNote",
-			"tnBeat",
-			"isTiedNote",
-			":false",
-			"song",
-			".tmp/css",
-			"<%= config.app %>/img",
-			"<%= config.app %>/css",
-			"<%= config.app %>/js",
+			"',\n",
+			"unMute",
 			"init",
 			"crossfading",
 			"audioEngine",
@@ -704,124 +668,124 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "app/js/audio.js",
+					"file": "app/index.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8310,
+						"buffer_size": 9448,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2911,
-								2916
+								4498,
+								4498
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1771.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "TODO.txt",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 649,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								525,
-								525
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 756.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "app/css/main.scss",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2877,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								58,
-								58
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
+					"buffer": 1,
 					"file": "app/js/main.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 12348,
+						"buffer_size": 13481,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5581,
-								5581
+								4147,
+								4114
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 3938.0,
+						"translation.y": 1389.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/js/game.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14481,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1333,
+								1333
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 523.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/js/audio.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9444,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3028,
+								3028
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1596.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -830,15 +794,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7494,
+						"buffer_size": 8701,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3150,
-								3150
+								7048,
+								7082
 							]
 						],
 						"settings":
@@ -847,28 +811,28 @@
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": -0.0,
-						"translation.y": 2110.0,
+						"translation.x": 0.0,
+						"translation.y": 2982.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "app/js/controller.js",
+					"file": "app/js/input.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2947,
+						"buffer_size": 3879,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								597,
-								609
+								0,
+								0
 							]
 						],
 						"settings":
@@ -877,38 +841,38 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 210.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
 					"buffer": 6,
+					"file": "TODO.txt",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 284,
+						"buffer_size": 1606,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								39,
-								39
+								911,
+								911
 							]
 						],
 						"settings":
 						{
-							"auto_name": "L R L R L",
 							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 420.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -916,7 +880,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 26.0
+		"height": 22.0
 	},
 	"input":
 	{
@@ -949,15 +913,17 @@
 	{
 		"height": 0.0
 	},
+	"pinned_build_system": "",
 	"project": "waltzRevolution.sublime-project",
 	"replace":
 	{
-		"height": 80.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -966,6 +932,7 @@
 	"select_project":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -974,6 +941,7 @@
 	"select_symbol":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 		],
@@ -987,7 +955,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 294.0,
+	"side_bar_width": 270.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

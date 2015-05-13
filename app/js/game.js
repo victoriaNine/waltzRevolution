@@ -63,6 +63,9 @@ Game.prototype.start = function() {
 }
 
 Game.prototype.launch = function() {
+	var fileName = $game.song.url.slice($game.song.url.lastIndexOf("/")+1, $game.song.url.lastIndexOf("."));
+	$audioEngine.BGM.setFile(fileName);
+
 	checkFocus(function() {
 		$game.start();
 		drawAudioVisualizer();
@@ -371,7 +374,10 @@ Game.prototype.gameOver = function() {
 
 	$audioEngine.BGM.setCrossfade(0);
 	TweenMax.to(this.song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
-		onComplete:function() { game.toResults(); }
+		onComplete:function() { 
+			cancelAnimationFrame(draw);
+			game.toResults();
+		}
 	});
 }
 
