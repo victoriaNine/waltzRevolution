@@ -34,12 +34,9 @@ function Game(songFile) {
 
 Game.prototype.loadSong = function() {
 	var game = this;
-	this.song = new Song(this.songFile, function() {
-		$audioEngine.BGM.addSource(game.song.fileURL, function() {
-			game.start();
-			drawAudioVisualizer();
-		});
 
+	this.song = new Song(this.songFile, function() {
+		$audioEngine.BGM.addSource(game.song.fileURL, game.launch);
 		game.initValues();
 	});
 
@@ -63,6 +60,13 @@ Game.prototype.start = function() {
 
 	if(!mobilecheck()) this.song.start();
 	this.ready = true;
+}
+
+Game.prototype.launch = function() {
+	checkFocus(function() {
+		$game.start();
+		drawAudioVisualizer();
+	})
 }
 
 //===============================
@@ -150,7 +154,7 @@ Game.prototype.detectInputAccuracy = function(key) {
 		if(note.hasTiedNote && note.pressed && note.key == keyName) {
 			if(note.tnSongPosition >= $audioEngine.BGM.currentPosition()) {
 				var noteAmount = (note.tnSongPosition - note.songPosition) / $game.song.baseNoteLength;
-				this.incrementScore(Math.ceil(note.score / noteAmount), true);
+				$game.incrementScore(Math.ceil(note.score / noteAmount), true);
 				return true;
 			}
 			else if(note.tnSongPosition + $game.song.baseNoteLength >= $audioEngine.BGM.currentPosition()) {
@@ -183,7 +187,7 @@ Game.prototype.detectInputAccuracy = function(key) {
 	okNotes = $game.song.notes.filter(regularNote);
 	if(okNotes.length == 0) {
 		// THEN THERE IS NO NOTE TO PLAY : LOSE POINTS
-		this.decrementHP(10, true);
+		$game.decrementHP(10, true);
 		return;
 	}
 
@@ -196,31 +200,31 @@ Game.prototype.detectInputAccuracy = function(key) {
 		$game.accuracy[0]++;
 		$game.points[0] += closestNote.score;
 
-		this.incrementHP(15, true);
+		$game.incrementHP(15, true);
 	}
 	else if(closestNote.score >= 50 && closestNote.score <= 79) {
 		closestNote.accuracy = "cool";
 		$game.accuracy[1]++;
 		$game.points[1] += closestNote.score;
 
-		this.incrementHP(10, true);
+		$game.incrementHP(10, true);
 	}
 	else if(closestNote.score >= 30 && closestNote.score <= 49) {
 		closestNote.accuracy = "okay";
 		$game.accuracy[2]++;
 		$game.points[2] += closestNote.score;
 
-		this.incrementHP(5, true);
+		$game.incrementHP(5, true);
 	}
 	else if(closestNote.score >= 1 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
 		$game.accuracy[3]++;
 		$game.points[3] += closestNote.score;
 
-		this.decrementHP(5, true);
+		$game.decrementHP(5, true);
 	}
 
-	this.incrementScore(closestNote.score, true);
+	$game.incrementScore(closestNote.score, true);
 	closestNote.pressed = true;
 
 	if(closestNote.accuracy == "great" || closestNote.accuracy == "cool")
@@ -230,8 +234,8 @@ Game.prototype.detectInputAccuracy = function(key) {
 		$game.combo = 0;
 	}
 
-	this.updateProgress();
-	this.showAccuracy(closestNote);
+	$game.updateProgress();
+	$game.showAccuracy(closestNote);
 }
 
 
@@ -358,7 +362,7 @@ Game.prototype.updateProgress = function() {
 // PARTY COMPLETED
 //===============================
 Game.prototype.gameComplete = function() {
-	this.toResults();
+	$game.toResults();
 }
 
 Game.prototype.gameOver = function() {

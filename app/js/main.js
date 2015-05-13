@@ -145,6 +145,16 @@ function loadGame() {
 	});
 }
 
+function checkFocus(callback) {
+	var waitForFocus = function() {
+		callback();
+		$(window).off("focus", waitForFocus);
+	};
+
+	if(document["hasFocus"]()) callback();
+	else $(window).on("focus", waitForFocus);
+}
+
 function launchGame() {
 	// REMOVE LOADING SCREEN HERE
 	//TweenMax.to($("#loading"), 1, {opacity:0,
