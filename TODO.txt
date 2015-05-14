@@ -52,8 +52,8 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! high scores
  ! credits
  ! how to play
- ~ main menu canvas
- - "retry" feature
+ ! main menu canvas
+ ! "retry" feature
  - bgm implementation
  - sfx implementation
  - loading

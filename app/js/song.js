@@ -34,9 +34,11 @@ function Song(url, callback) {
 
   this.currentNoteIndex = 0;
   this.paused = false;
+
+  this.load(url);
 }
 
-Song.prototype.loadSong = function(url) {
+Song.prototype.load = function(url) {
   // Load song asynchronously
   var request = new XMLHttpRequest();
   request.open("GET", url, true);
@@ -86,8 +88,6 @@ Song.prototype.loadSong = function(url) {
   request.send();
 }
 
-Song.prototype.load = function() { this.loadSong(this.url); }
-
 Song.prototype.start = function() {
   var rAF = function() { requestAnimationFrame(draw); }
 
@@ -103,7 +103,7 @@ Song.prototype.start = function() {
       onUpdateParams:["{self}", 'left'],
       onComplete: function() {
         TweenMax.ticker.removeEventListener("tick", rAF);
-        $(document).trigger("songEnded");
+        $game.gameComplete();
       }
   });
 }
@@ -226,13 +226,11 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
   }
 
   this.checkInput = function() {
-    if((this.songPosition + $game.song.baseNoteLength) < $audioEngine.BGM.currentPosition()) {
-      console.log(this);
-      if(this.index == $game.song.currentNoteIndex) {
+    var songPosition = this.hasTiedNote ? this.tnSongPosition : this.songPosition;
+    if((songPosition + $game.song.baseNoteLength) < $audioEngine.BGM.currentPosition() && this.index == $game.song.currentNoteIndex) {
         $game.song.currentNoteIndex = this.index + 1;
-        console.log(this);
-      }
-      if(!this.accuracy && !this.pressed) $game.missedNote(this);
+
+        if(!this.accuracy && !this.pressed) $game.missedNote(this);
     }
   }
 }
@@ -242,9 +240,9 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 function draw() {
 //===============================
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
-  //var noteIndex = $gameOver ? 0 : $game.song.currentNoteIndex;
+  var startIndex = $game.song.currentNoteIndex;
 
-  for(var i = 0; i < $game.song.score.length; i++) {
+  for(var i = startIndex; i < $game.song.score.length; i++) {
     $game.song.notes[i].draw();
     if(!$game.isGameOver) $game.song.notes[i].checkInput();
   }

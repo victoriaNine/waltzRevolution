@@ -36,17 +36,18 @@ Game.prototype.loadSong = function() {
 	var game = this;
 
 	this.song = new Song(this.songFile, function() {
-		$audioEngine.BGM.addSource(game.song.fileURL, game.launch);
 		game.initValues();
-	});
 
-  	this.song.load();
+		var fileName = this.url.slice(this.url.lastIndexOf("/")+1, this.url.lastIndexOf("."));
+		$audioEngine.BGM.setFile(fileName);
+		$audioEngine.BGM.addSource(this.fileURL, game.launch);
+	});
 }
 
 Game.prototype.initValues = function() {
 	$("#songInfo .title").html(this.song.title);
 	$("#songInfo .artist").html(this.song.artist);
-	$("#progressBar .markers").removeClass("passed");
+	$("#progressBar .marker").removeClass("passed");
 
 	this.totalNotes = this.song.notes.length;
 
@@ -63,14 +64,35 @@ Game.prototype.start = function() {
 }
 
 Game.prototype.launch = function() {
-	var fileName = $game.song.url.slice($game.song.url.lastIndexOf("/")+1, $game.song.url.lastIndexOf("."));
-	$audioEngine.BGM.setFile(fileName);
-
 	checkFocus(function() {
 		$game.start();
 		drawAudioVisualizer();
 	})
 }
+
+Game.prototype.retry = function() {
+	cancelAnimationFrame(draw);
+
+	if(!this.isGameOver) {
+		this.isGameOver = true;
+		$audioEngine.BGM.hasEnded = true;
+
+		this.removeListeners();
+	}
+
+	Game.instance = null;
+	newGame();
+}
+
+Game.instance = null;
+
+Game.getInstance = function(songFile) {  
+  if (this.instance == null) {  
+      this.instance = new Game(songFile);  
+  }  
+  
+  return this.instance;  
+} 
 
 //===============================
 // EVENT LISTENERS
@@ -79,7 +101,7 @@ Game.prototype.addListeners = function() {
 //===============================
 	var game = this;
 
-	$(window).keydown(function(e) {
+	game.onKeydown = function(e) {
 		e.preventDefault();
 
 		if(game.isGameOver) return;
@@ -93,7 +115,9 @@ Game.prototype.addListeners = function() {
 			for(var key in game.keyMap)
 				if(game.keyMap[key].pressed) game.detectInputAccuracy(game.keyMap[key]);
 		}
-	}).keyup(function(e) {
+	}
+
+	game.onKeyup = function(e) {
 		e.preventDefault();
 
 		if(e.which == 38) $("#keys .keyUp").removeClass("pressed");
@@ -106,15 +130,19 @@ Game.prototype.addListeners = function() {
 			game.keyMap[e.which].pressed = false;
 			game.keyMap[e.which].when = 0;
 		}
-	}).resize(function() {
+	}
+
+	game.onResize = function() {
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 		requestAnimationFrame(draw);
-	}).on("blur", function() {
+	}
+
+	game.onBlur = function() {
 		if($audioEngine.ready && game.ready && !game.song.paused)
 			game.song.pause();
-	});
+	}
 
-	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', function(e) {
+	game.onTouchevent = function(e) {
 		e.preventDefault();
 
 		var type;
@@ -131,9 +159,18 @@ Game.prototype.addListeners = function() {
 		var _e = $.Event(type);
 		_e.which = _e.keyCode = code;
 		$(window).trigger(_e);
-	});
+	}
 
-	$(document).on("songEnded", this.gameComplete);
+	$(window).keydown(this.onKeydown).keyup(this.onKeyup).resize(this.onResize).blur(this.onBlur);
+	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', this.onTouchevent);
+	//$(document).on("songEnded", this.gameComplete);
+}
+
+
+Game.prototype.removeListeners = function() {
+	$(window).off("keydown", this.onKeydown).off("keyup", this.onKeyup).off("resize", this.onResize).off("blur", this.onBlur);
+	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").off('touchstart touchend', this.onTouchevent);
+	//$(document).off("songEnded", this.gameComplete);
 }
 
 
@@ -365,7 +402,7 @@ Game.prototype.updateProgress = function() {
 // PARTY COMPLETED
 //===============================
 Game.prototype.gameComplete = function() {
-	$game.toResults();
+	setTimeout($game.showResults, $game.song.barLength);
 }
 
 Game.prototype.gameOver = function() {
@@ -375,95 +412,102 @@ Game.prototype.gameOver = function() {
 	$audioEngine.BGM.setCrossfade(0);
 	TweenMax.to(this.song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
 		onComplete:function() { 
-			cancelAnimationFrame(draw);
-			game.toResults();
+			game.showResults();
 		}
 	});
 }
 
-Game.prototype.toResults = function() {
-	this.song.pause(true);
+Game.prototype.showResults = function() {
+	cancelAnimationFrame(draw);
+	$game.removeListeners();
+
+	$game.song.pause(true);
 	$audioEngine.BGM.hasEnded = true;
 
-	if(this.progress == 100) {
-		this.rank = "perfect"; // S
-		this.stars = 5;
+	if($game.progress == 100) {
+		$game.rank = "perfect"; // S
+		$game.stars = 5;
 	}
-	else if(this.progress >= 90 && this.progress <= 99) {
-		this.rank = "great"; // A
-		this.stars = 4;
+	else if($game.progress >= 90 && $game.progress <= 99) {
+		$game.rank = "great"; // A
+		$game.stars = 4;
 	}
-	else if(this.progress >= 75 && this.progress <= 89) {
-		this.rank = "cool"; // B
-		this.stars = 3;
+	else if($game.progress >= 75 && $game.progress <= 89) {
+		$game.rank = "cool"; // B
+		$game.stars = 3;
 	}
-	else if(this.progress >= 60 && this.progress <= 74) {
-		this.rank = "okay"; // C
-		this.stars = 2;
+	else if($game.progress >= 60 && $game.progress <= 74) {
+		$game.rank = "okay"; // C
+		$game.stars = 2;
 	}
-	else if(this.progress >= 0 && this.progress <= 59) {
-		this.rank = "poor"; // D
-		this.stars = 1;
+	else if($game.progress >= 0 && $game.progress <= 59) {
+		$game.rank = "poor"; // D
+		$game.stars = 1;
 	}
 
-	var maxCombo = Math.max.apply(Math, this.comboArray);
+	if($game.isGameOver) {
+		$game.rank = "drop out"; // E
+		$game.stars = 0;
+	}
+
+	var maxCombo = Math.max.apply(Math, $game.comboArray);
 	if(isNaN(maxCombo) || !isFinite(maxCombo)) maxCombo = 0;
 
-	var newScore = [this.score, this.progress, this.rank, this.stars, new Date()];
+	var newScore = [$game.score, $game.progress, $game.rank, $game.stars, new Date()];
 	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
 	var newRecord = false;
 
 	for(var i = 0; i < highScores.length; i++) {
-		if(highScores[i][0] == undefined || this.score > highScores[i][0]) {
+		if(highScores[i][0] == undefined || $game.score > highScores[i][0]) {
 			for(var j = highScores.length - 2; j >= i; j--) {
 				highScores[j+1] = highScores[j];
 			}
 
 			highScores[i] = newScore;
 			setLocalStorage("highScores", highScores);
-			if(i == 0) newRecord = true;
+			if(i == 0 && highScores[i][0] > 0) newRecord = true;
 			break;
 		}
 	}
 
-	if(this.rank == "poor") $("#screen_results").find("h2").html("stage failed...");
+	if($game.stars < 2) $("#screen_results").find("h2").html("stage failed...");
 	else $("#screen_results").find("h2").html("stage cleared!");
 
-	$("#results_totalNotes").find(".nb").html(this.totalNotes);
+	$("#results_totalNotes").find(".nb").html($game.totalNotes);
 	$("#results_maxCombo").find(".nb").html(maxCombo);
 
-	var percentGreat = (this.accuracy[0] * 100 / this.totalNotes).toFixed(1);
-	$("#results_great").find(".nb").html(this.accuracy[0]);
-	$("#results_great").find(".points").html(this.points[0]+"pts");
+	var percentGreat = ($game.accuracy[0] * 100 / $game.totalNotes).toFixed(1);
+	$("#results_great").find(".nb").html($game.accuracy[0]);
+	$("#results_great").find(".points").html($game.points[0]+"pts");
 	$("#results_great").find(".percent").html(percentGreat+"%");
 
-	var percentNice = (this.accuracy[1] * 100 / this.totalNotes).toFixed(1);
-	$("#results_nice").find(".nb").html(this.accuracy[1]);
-	$("#results_nice").find(".points").html(this.points[1]+"pts");
+	var percentNice = ($game.accuracy[1] * 100 / $game.totalNotes).toFixed(1);
+	$("#results_nice").find(".nb").html($game.accuracy[1]);
+	$("#results_nice").find(".points").html($game.points[1]+"pts");
 	$("#results_nice").find(".percent").html(percentNice+"%");
 
-	$("#results_cool").find(".nb").html(this.accuracy[2]);
-	$("#results_cool").find(".points").html(this.points[2]+"pts");
-	$("#results_poor").find(".nb").html(this.accuracy[3]);
-	$("#results_poor").find(".points").html(this.points[3]+"pts");
-	$("#results_miss").find(".nb").html(this.accuracy[4]);
+	$("#results_cool").find(".nb").html($game.accuracy[2]);
+	$("#results_cool").find(".points").html($game.points[2]+"pts");
+	$("#results_poor").find(".nb").html($game.accuracy[3]);
+	$("#results_poor").find(".points").html($game.points[3]+"pts");
+	$("#results_miss").find(".nb").html($game.accuracy[4]);
 
-	$("#results_totalCompletion").find(".percent").html(this.progress+"%");
+	$("#results_totalCompletion").find(".percent").html($game.progress+"%");
 
 	$("#results_score").find(".newRecord").removeClass("visible");
-	$("#results_score").find(".points").html(this.score+"pts");
+	$("#results_score").find(".points").html($game.score+"pts");
 	$("#results_highScore").find(".points").html(highScores[0][0]+"pts");
 	if(newRecord) $("#results_score").find(".newRecord").addClass("visible");
 
-	$("#screen_results").find(".title").html(this.song.title);
-   	$("#screen_results").find(".artist").html("by "+this.song.artist);
+	$("#screen_results").find(".title").html($game.song.title);
+   	$("#screen_results").find(".artist").html("by "+$game.song.artist);
 
 
-   	var rank = this.rank.replace(this.rank.charAt(0), this.rank.charAt(0).toUpperCase());
+   	var rank = $game.rank.replace($game.rank.charAt(0), $game.rank.charAt(0).toUpperCase());
    	$("#screen_results").find(".rank").html(rank);
 
    	$("#screen_results .stars i").removeClass("on");
-   	for(var i = 0; i < this.stars; i++)
+   	for(var i = 0; i < $game.stars; i++)
    		$("#screen_results .stars").find("i").eq(i).addClass("on");
 
 	$("#screen_results").addClass("open");

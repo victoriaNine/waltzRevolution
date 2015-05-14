@@ -99,18 +99,12 @@ function showHighScores() {
 }
 
 function newGame() {
-
 	// INTRO ANIMATIONS HERE
 	// TweenMax.from($("#loading img"), .75, {opacity:0});
 	// TweenMax.from($("#loading img+span"), .75, {opacity:0, repeat:-1, yoyo:true});
 	// TweenMax.from($("#loading .info"), .75, {bottom:"-100px", opacity:0, ease:Bounce.easeOut});
 
-	$game = new Game("js/waltz.json");
-}
-
-function retryGame() {
-	$(".screen").removeClass("open");
-	newGame();
+	$game = Game.getInstance("js/waltz.json");
 }
 
 function loadGame() {
@@ -291,6 +285,7 @@ function o(dataArray) {
 	c.restore();
 }
 
+
 //===============================
 // LOCAL STORAGE
 //===============================
@@ -299,15 +294,18 @@ function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(ke
 
 
 //===============================
-// LOCAL STORAGE
+// GUI INTERACTION
 //===============================
 
 $(".nav .resume").on(eventtype, function() {
-	$game.song.resume();
+	if($game) $game.song.resume();
 });
 
 $(".nav .retry").on(eventtype, function() {
-	retryGame();
+	if($game) {
+		$(".screen.open").removeClass("open");
+		$game.retry();
+	}
 });
 
 
