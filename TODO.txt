@@ -59,6 +59,7 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! screen transitions
  - screen animations
  ~ sfx implementation
+ - bgm loop fix
  - loading
  - fix arrows visibility
 - clean code
