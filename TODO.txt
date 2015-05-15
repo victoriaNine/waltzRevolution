@@ -34,7 +34,7 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 ! check synchronicity
 ! save high scores (new gameplay)
 
-=> 05/08/2015 - 05/09/2015
+=> 05/08/2015 - 05/16/2015
 ! screens & UI (CSS) :
  ! play
  ! pause
@@ -62,14 +62,15 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ~ sfx implementation
  - bgm loop fix
  - "retry" debug (bug : play > main menu > play > gameover + "cannot read property 'pause' of undefined   song.js:113")
- - crossbrowser check
  - fix arrows visibility
 - clean code
 
 
-=> 05/09/2015 - 05/11/2015
+=> 05/17/2015 - 05/18/2015
+- crossbrowser check
 - responsive
 - clean code
+- checklist
 
 
 ----------

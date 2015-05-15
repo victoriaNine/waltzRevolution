@@ -109,11 +109,11 @@ Song.prototype.start = function() {
 }
 
 Song.prototype.pause = function(noScreen) {
-  if(!this.paused) {
-    this.staffScroll.pause();
+  if(!$game.song.paused) {
+    $game.song.staffScroll.pause();
     $audioEngine.BGM.pause();
 
-    this.paused = true;
+    $game.song.paused = true;
     $game.noInput = true;
 
     if(!noScreen) {
@@ -124,22 +124,28 @@ Song.prototype.pause = function(noScreen) {
 }
 
 Song.prototype.resume = function() {
-  if(this.paused) {
-    this.staffScroll.resume();
-    $audioEngine.BGM.resume();
+  if($game.song.paused) {
+    var resume = function() {
+      $game.song.staffScroll.resume();
+      $audioEngine.BGM.resume();
 
-    this.paused = false;
-    $game.noInput = false;
+      $game.song.paused = false;
+      $game.noInput = false;
+    }
 
     if($("#screen_pause").hasClass("active")) {
       leaveMenu();
       $("#screen_pause").removeClass("active");
+
+      // PB RESUME DOUBLE
+      setTimeout(resume, 600);
     }
+    else resume();
   }
 }
 
 Song.prototype.triggerPause = function() {
-  this.paused ? this.resume() : this.pause();
+  $game.song.paused ? $game.song.resume() : $game.song.pause();
 }
 
 //===============================

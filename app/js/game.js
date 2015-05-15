@@ -29,6 +29,12 @@ function Game(songFile) {
 	this.isGameOver = false;
 	this.ready = false;
 
+	this.intro = new TimelineMax({ paused:true });
+	this.intro.staggerFrom(["#life", "#progress"], .4, { opacity:0, top:"20px", ease:Power4.easeOut, clearProps: "all" }, .2);
+	this.intro.from("#lifeSphere", .4, { opacity:0, transform:"scale(1.25)", ease:Power4.easeOut, clearProps: "all" }, 0);
+	this.intro.from("#progressBar", 1, { opacity:0, width:"0", ease:Power4.easeOut, clearProps: "all" });
+	this.intro.from("#score", .4, { opacity:0, top:"20px", ease:Power4.easeOut, clearProps: "all" }, "-=.2");
+
 	this.loadSong();
 }
 
@@ -54,9 +60,12 @@ Game.prototype.initValues = function() {
 	this.updateScore();
 	this.updateHP();
 	this.updateProgress();
+
+	this.intro.play();
 }
 
 Game.prototype.start = function() {
+	$("#screen_play").addClass("ready");
 	this.addListeners();
 
 	if(!mobilecheck()) this.song.start();
@@ -72,8 +81,9 @@ Game.prototype.launch = function() {
 	});
 }
 
-Game.prototype.abort = function() {
+Game.prototype.stop = function() {
 	cancelAnimationFrame(draw);
+	$("#screen_play").removeClass("ready");
 
 	if(!this.isGameOver) {
 		this.isGameOver = true;
@@ -86,12 +96,12 @@ Game.prototype.abort = function() {
 }
 
 Game.prototype.retry = function() {
-	this.abort();
+	this.stop();
 	newGame();
 }
 
 Game.prototype.quit = function() {
-	this.abort();
+	this.stop();
 	toMainMenu();
 }
 

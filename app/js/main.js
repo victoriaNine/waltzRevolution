@@ -30,7 +30,7 @@ var autoMuteSound = false;
 var $game;
 
 var audioVisualizer = document.getElementById("audioVisualizer");
-var c = audioVisualizer.getContext("2d");
+var audioVisualizerCtx = audioVisualizer.getContext("2d");
 
 
 //===============================
@@ -89,6 +89,7 @@ function toGameScreen() {
 	leaveMenu().add(toggleAudioVisualizer(false));
 
 	$audioEngine.BGM.setCrossfade(0, function() {
+		cancelAnimationFrame(drawAudioVisualizer);
 		$(window).off("blur", $audioEngine.BGM.pause).off("focus", $audioEngine.BGM.resume);
 
 		$("#screen_play").addClass("active");
@@ -220,7 +221,7 @@ function launchGameMobile() {
 function drawAudioVisualizer() {
 	requestAnimationFrame(drawAudioVisualizer);
 
-    c.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    audioVisualizerCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     var dataArray = new Uint8Array($audioEngine.BGM.analyserNode.frequencyBinCount);
     $audioEngine.BGM.analyserNode.getByteFrequencyData(dataArray);
 
@@ -252,23 +253,23 @@ function oscilloscope(dataArray) {
     var maxHeight = 255 * zoom;
     var top = $(window).height();
 
-    c.save();
-    c.beginPath();
+    audioVisualizerCtx.save();
+    audioVisualizerCtx.beginPath();
 
-	c.fillStyle = "#161515";
-	c.strokeStyle = "#161515";
-    c.lineTo(0, top);
+	audioVisualizerCtx.fillStyle = "#161515";
+	audioVisualizerCtx.strokeStyle = "#161515";
+    audioVisualizerCtx.lineTo(0, top);
 
     for (var i = 0; i <= nbEQband; i++)
-    	c.lineTo(i * bandWidth, top - dataArray[i] * zoom);
+    	audioVisualizerCtx.lineTo(i * bandWidth, top - dataArray[i] * zoom);
 
-    c.lineTo(parseFloat($(window).width()), top - dataArray[nbEQband] * zoom);
-    c.lineTo(parseFloat($(window).width()), top);
-    c.fill();
-    c.stroke();
+    audioVisualizerCtx.lineTo(parseFloat($(window).width()), top - dataArray[nbEQband] * zoom);
+    audioVisualizerCtx.lineTo(parseFloat($(window).width()), top);
+    audioVisualizerCtx.fill();
+    audioVisualizerCtx.stroke();
 
-    c.closePath();
-    c.restore();
+    audioVisualizerCtx.closePath();
+    audioVisualizerCtx.restore();
 }
 
 function waveform(dataArray) {
@@ -279,44 +280,44 @@ function waveform(dataArray) {
     var maxHeight = 255 * zoom;
     var top = $(window).height() - maxHeight / 4;
 
-    c.save();
-	c.fillStyle = "#D55320";
+    audioVisualizerCtx.save();
+	audioVisualizerCtx.fillStyle = "#D55320";
 
     for (var i = 0; i <= nbEQband; i++)
-    	c.fillRect(i * bandWidth, top - dataArray[i], 2, 2);
+    	audioVisualizerCtx.fillRect(i * bandWidth, top - dataArray[i], 2, 2);
 
-    c.restore();
+    audioVisualizerCtx.restore();
 }
 
 function n(dataArray) {
     var nbEQband = 75;
     var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
 
-    c.save();
-    c.lineWidth = 1;
+    audioVisualizerCtx.save();
+    audioVisualizerCtx.lineWidth = 1;
 
     for (var i = 0; i <= nbEQband; t++) {
-    	c.moveTo(i * bandWidth + dataArray[i], dataArray[i]);
-    	c.lineTo(-dataArray[i] + 500, -i * a - dataArray[i] + 500);
+    	audioVisualizerCtx.moveTo(i * bandWidth + dataArray[i], dataArray[i]);
+    	audioVisualizerCtx.lineTo(-dataArray[i] + 500, -i * a - dataArray[i] + 500);
     }
 
-    c.stroke();
-	c.restore();
+    audioVisualizerCtx.stroke();
+	audioVisualizerCtx.restore();
 }
 
 function o(dataArray) {
     var nbEQband = 100;
 
-    c.save();
-    c.lineWidth = 1;
+    audioVisualizerCtx.save();
+    audioVisualizerCtx.lineWidth = 1;
 
     for (var i = 0; i <= nbEQband; i++) {
-    	c.moveTo(1e3 * dataArray[i], 2 * dataArray[i]);
-    	c.lineTo(1e3 * -dataArray[i], -1 * dataArray[i]);
+    	audioVisualizerCtx.moveTo(1e3 * dataArray[i], 2 * dataArray[i]);
+    	audioVisualizerCtx.lineTo(1e3 * -dataArray[i], -1 * dataArray[i]);
     }
 
-    c.stroke();
-	c.restore();
+    audioVisualizerCtx.stroke();
+	audioVisualizerCtx.restore();
 }
 
 
@@ -376,7 +377,8 @@ $(".bt_credits").on(eventtype, function() {
 $(".bt_resume").on(eventtype, function() {
 	if($game) {
 		leaveMenu();
-		$game.song.resume();
+		
+		setTimeout($game.song.resume, 600);
 	}
 });
 
@@ -385,7 +387,7 @@ $(".bt_retry").on(eventtype, function() {
 		leaveMenu();
 		$(".overlay.active").removeClass("active");
 
-		$game.retry();
+		setTimeout($game.retry, 600);
 	}
 });
 
@@ -394,7 +396,7 @@ $(".bt_mainMenu").on(eventtype, function() {
 		leaveMenu();
 		$(".overlay.active").removeClass("active");
 
-		$game.quit();
+		setTimeout($game.quit, 600);
 	}
 });
 
@@ -412,8 +414,8 @@ function toggleTitle(state) {
 	var screenType = $.find(".overlay.active").length > 0 ? ".overlay" : ".screen";
 
 	$(screenType+".active h1").removeAttr("style");
-	if(state) tween = TweenMax.fromTo($(screenType+".active h1"), .6, { opacity:0, letterSpacing:"8px", transform:"scaleX(1.2)" }, { opacity:1, letterSpacing:"0px", transform:"scaleX(1)", ease:Power4.easeOut });
-	else tween = TweenMax.fromTo($(screenType+".active h1"), .6, { opacity:1, letterSpacing:"0px", transform:"scaleX(1)" }, { opacity:0, letterSpacing:"8px", transform:"scaleX(1.2)", ease:Power4.easeOut });
+	if(state) tween = TweenMax.fromTo($(screenType+".active h1"), .6, { opacity:0, letterSpacing:"8px", transform:"scaleX(1.25)" }, { opacity:1, letterSpacing:"0px", transform:"scaleX(1)", ease:Power4.easeOut });
+	else tween = TweenMax.fromTo($(screenType+".active h1"), .6, { opacity:1, letterSpacing:"0px", transform:"scaleX(1)" }, { opacity:0, letterSpacing:"8px", transform:"scaleX(1.25)", ease:Power4.easeOut });
 
 	return tween;
 }
