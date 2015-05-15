@@ -57,10 +57,12 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! bgm switch implementation
  ! wait for last note
  ! screen transitions
- - screen animations
+ ! screen animations
+ - loading
  ~ sfx implementation
  - bgm loop fix
- - loading
+ - "retry" debug (bug : play > main menu > play > gameover + "cannot read property 'pause' of undefined   song.js:113")
+ - crossbrowser check
  - fix arrows visibility
 - clean code
 

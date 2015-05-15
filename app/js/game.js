@@ -66,7 +66,9 @@ Game.prototype.start = function() {
 Game.prototype.launch = function() {
 	checkFocus(function() {
 		$game.start();
+
 		drawAudioVisualizer();
+		toggleAudioVisualizer(true);
 	});
 }
 
@@ -519,4 +521,5 @@ Game.prototype.showResults = function() {
    		$("#screen_results .stars").find("i").eq(i).addClass("on");
 
 	$("#screen_results").addClass("active");
+	enterMenu();
 }

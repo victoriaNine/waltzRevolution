@@ -73,16 +73,21 @@ function toMainMenu() {
 	$audioEngine.BGM.setFile("junction_loop");
 	$audioEngine.BGM.addSource("audio/bgm/junction_loop.mp3", function() {
 		checkFocus(function() {
-			$("#screen_mainMenu").addClass("active");
 			$audioEngine.BGM.play();
 			drawAudioVisualizer();
 
 			$(window).on("blur", $audioEngine.BGM.pause).on("focus", $audioEngine.BGM.resume);
+
+			$("#screen_mainMenu").addClass("active");
+
+			enterMenu().add(toggleAudioVisualizer(true), .4);
 		});
 	});
 }
 
 function toGameScreen() {
+	leaveMenu().add(toggleAudioVisualizer(false));
+
 	$audioEngine.BGM.setCrossfade(0, function() {
 		$(window).off("blur", $audioEngine.BGM.pause).off("focus", $audioEngine.BGM.resume);
 
@@ -124,6 +129,7 @@ function showHighScores() {
 	}
 
 	$("#screen_highScores").addClass("active");
+	toggleTitle(true);
 }
 
 function newGame() {
@@ -335,6 +341,7 @@ $(".bt_highScores").on(eventtype, function() {
 
 $(".bt_howToPlay").on(eventtype, function() {
 	$("#screen_howToPlay").addClass("active");
+	toggleTitle(true);
 
 	$(window).on("keydown", howToPlay_onKeydown).on("keyup", howToPlay_onKeyup);
 });
@@ -363,22 +370,30 @@ var howToPlay_onKeyup = function(e) {
 
 $(".bt_credits").on(eventtype, function() {
 	$("#screen_credits").addClass("active");
+	toggleTitle(true);
 });
 
 $(".bt_resume").on(eventtype, function() {
-	if($game) $game.song.resume();
+	if($game) {
+		leaveMenu();
+		$game.song.resume();
+	}
 });
 
 $(".bt_retry").on(eventtype, function() {
 	if($game) {
+		leaveMenu();
 		$(".overlay.active").removeClass("active");
+
 		$game.retry();
 	}
 });
 
 $(".bt_mainMenu").on(eventtype, function() {
 	if($game) {
+		leaveMenu();
 		$(".overlay.active").removeClass("active");
+
 		$game.quit();
 	}
 });
@@ -388,8 +403,57 @@ $(".bt_back").on(eventtype, function() {
 		$(window).off("keydown", howToPlay_onKeydown).off("keyup", howToPlay_onKeyup);
 	}
 
+	toggleTitle(false);
 	$(".overlay.active").removeClass("active");
 });
+
+function toggleTitle(state) {
+	var tween;
+	var screenType = $.find(".overlay.active").length > 0 ? ".overlay" : ".screen";
+
+	$(screenType+".active h1").removeAttr("style");
+	if(state) tween = TweenMax.fromTo($(screenType+".active h1"), .6, { opacity:0, letterSpacing:"8px", transform:"scaleX(1.2)" }, { opacity:1, letterSpacing:"0px", transform:"scaleX(1)", ease:Power4.easeOut });
+	else tween = TweenMax.fromTo($(screenType+".active h1"), .6, { opacity:1, letterSpacing:"0px", transform:"scaleX(1)" }, { opacity:0, letterSpacing:"8px", transform:"scaleX(1.2)", ease:Power4.easeOut });
+
+	return tween;
+}
+
+function toggleNav(state) {
+	var tween;
+	var screenType = $.find(".overlay.active").length > 0 ? ".overlay" : ".screen";
+
+	$(screenType+".active .nav li").removeAttr("style");
+	if(state) tween = TweenMax.staggerFrom($(screenType+".active .nav li"), .4, { opacity:0, top:"20px", ease:Power4.easeOut }, .1);
+	else tween = TweenMax.staggerTo($(screenType+".active .nav li"), .4, { opacity:0, top:"20px", ease:Power4.easeOut }, -.1);
+
+	return tween;
+}
+
+function toggleAudioVisualizer(state) {
+	var tween;
+
+	$("#audioVisualizer").removeAttr("style");
+	if(state) tween = TweenMax.from("#audioVisualizer", .6, { opacity:0, top:"40px", ease:Power4.easeOut });
+	else tween = TweenMax.to("#audioVisualizer", .6, { opacity:0, top:"40px", ease:Power4.easeOut });
+
+	return tween;
+}
+
+function enterMenu() {
+	var timeline = new TimelineMax();
+    timeline.add(toggleTitle(true));
+    timeline.add(toggleNav(true), "-=.4");
+
+    return timeline;
+}
+
+function leaveMenu() {
+	var timeline = new TimelineMax();
+    timeline.add(toggleNav(false));
+    timeline.add(toggleTitle(false), "-=.4");
+
+    return timeline;
+}
 
 
 //===============================
