@@ -53,7 +53,7 @@ $(document).ready(function() {
         }
     };
 
-    $audioEngine = new AudioEngine();
+    $audioEngine = AudioEngine.getInstance();
     toMainMenu();
 
     /*var loadedFiles = 0;
@@ -76,16 +76,20 @@ function toMainMenu() {
 			$("#screen_mainMenu").addClass("active");
 			$audioEngine.BGM.play();
 			drawAudioVisualizer();
+
+			$(window).on("blur", $audioEngine.BGM.pause).on("focus", $audioEngine.BGM.resume);
 		});
 	});
 }
 
 function toGameScreen() {
 	$audioEngine.BGM.setCrossfade(0, function() {
+		$(window).off("blur", $audioEngine.BGM.pause).off("focus", $audioEngine.BGM.resume);
+
 		$("#screen_play").addClass("active");
 		newGame();
 	});
-	
+
 	$("#screen_mainMenu").removeClass("active");
 }
 

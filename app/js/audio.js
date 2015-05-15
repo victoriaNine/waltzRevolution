@@ -60,10 +60,11 @@ function AudioEngine() {
 	this.muted = false;
 	this.ready = false;
 	this.BGM = BGM.getInstance();
+	this.SFX = SFX.getInstance();
 
 	this.init = function() {
 		this.BGM.init();
-		SFX.init();
+		this.SFX.init();
 
 		//this.audioFiles = BGM.filesNb() + SFX.filesNb();
 	};
@@ -73,33 +74,41 @@ function AudioEngine() {
 	};
 
 	this.mute = function() {
-		BGM.mute();
-		SFX.mute();
+		this.BGM.mute();
+		this.SFX.mute();
 
 		//$("#soundSwitch").attr("class","off");
 		this.muted = true;
 	};
 
 	this.unMute = function() {
-		BGM.unMute();
-		SFX.unMute();
+		this.BGM.unMute();
+		this.SFX.unMute();
 
 		//$("#soundSwitch").attr("class","on");
 		this.muted = false;
 	};
 
 	this.toggleMute = function() {
-		BGM.toggleMute();
-		SFX.toggleMute();
+		this.BGM.toggleMute();
+		this.SFX.toggleMute();
 
 		//$("#soundSwitch").toggleClass("on off");
 		this.muted = !this.muted;
 	};
 
-	this.isMuted = function() { return this.muted; };
-
 	this.init();
 };
+
+AudioEngine.instance = null;
+
+AudioEngine.getInstance = function() {  
+  if (this.instance == null) {  
+      this.instance = new AudioEngine();  
+  }  
+  
+  return this.instance;  
+}
 
 
 //===============================
@@ -148,6 +157,7 @@ function BGM() {
 	}
 
 	this.addSource = function(url, callback) {
+		$audioEngine.ready = false;
 		this.fileLoaded = false;
 		this.fileURL = url;
 
@@ -159,12 +169,15 @@ function BGM() {
 
 	this.setSources = function(bufferList) {
 		var bgm = $audioEngine.BGM;
+
 		for(var i = 0; i < bufferList.length; i++) {
 			var source = bgm.createSource(bufferList[i], i);
 			bgm.sourceArray[source.name] = source;
 		}
 
 		bgm.fileLoaded = true;
+		if($audioEngine.SFX.filesLoaded) $audioEngine.ready = true;
+
 		if(bgm.callback && typeof bgm.callback === "function") bgm.callback();
 	}
 
@@ -235,26 +248,30 @@ function BGM() {
 		}
 	}
 
-	/*function mute(state) {
+	this.triggerMute = function(state) {
 		if(state == true || state == false) {
-			if(state == muted) return;
-			muted = state;
+			if(state == this.muted) return;
+			this.muted = state;
 		}
-		else if(state == "toggle") muted = !muted;
+		else if(state == "toggle") this.muted = !this.muted;
 
-		if(muted) {
-			if(!crossfading) {
-				crossfadeArray = [];
-				prepareCrossfade(sourceArray[currentFile].gainNode.gain.value);
+		if(this.muted) {
+			if(!this.crossfading) {
+				this.crossfadeArray = [];
+				this.prepareCrossfade(this.sourceArray[currentFile].gainNode.gain.value);
 			}
 
-			setCrossfade(0);
+			this.setCrossfade(0);
 		}
 		else {
-			playCrossfade();
-			if(!crossfading) crossfadeArray = [];
+			this.playCrossfade();
+			if(!this.crossfading) this.crossfadeArray = [];
 		}
-	}*/
+	}
+
+	this.mute = function() { $audioEngine.BGM.triggerMute(true) }
+	this.unMute = function() { $audioEngine.BGM.triggerMute(false) };
+	this.toggleMute = function() { $audioEngine.BGM.triggerMute("toggle") };
 
 	this.triggerPause = function(state) {
 		if(this.hasEnded) return;
@@ -277,9 +294,9 @@ function BGM() {
 		}
 	}
 
-	this.pause = function() { this.triggerPause(true) }
-	this.unPause = function() { this.triggerPause(false) };
-	this.togglePause = function() { this.triggerPause("toggle") };
+	this.pause = function() { $audioEngine.BGM.triggerPause(true) }
+	this.resume = function() { $audioEngine.BGM.triggerPause(false) };
+	this.togglePause = function() { $audioEngine.BGM.triggerPause("toggle") };
 };
 
 BGM.instance = null;
@@ -295,78 +312,82 @@ BGM.getInstance = function() {
 
 //===============================
 // SFX
-var SFX = (function() {
+function SFX() {
 //===============================
-	var audioCtx;
-	var bufferArray = [];
+	this.audioCtx;
+	this.bufferArray = [];
 
-	var files = ['audio/sfx/button.mp3'];
-	var filesLoaded = false;
-	var muted = false;
+	this.files = ['audio/sfx/button.mp3'];
+	this.filesLoaded = false;
+	this.muted = false;
 
-	function init() {
+	this.init = function() {
+		this.filesLoaded = false;
+
 	    // Fix up for prefixing
 	    window.AudioContext = window.AudioContext||window.webkitAudioContext;
-	    audioCtx = new AudioContext();
+	    this.audioCtx = new AudioContext();
 
-	    var bufferLoader = new BufferLoader(audioCtx, files, setBuffer);
+	    var bufferLoader = new BufferLoader(this.audioCtx, this.files, this.setBuffer);
 	  	bufferLoader.load();
 	}
 
-	function setBuffer(bufferList) {
+	this.setBuffer = function(bufferList) {
+		var sfx = $audioEngine.SFX || this;
+
 		for(var i = 0; i < bufferList.length; i++) {
-			bufferArray[i] = bufferList[i];
+			sfx.bufferArray[i] = bufferList[i];
 		}
 
-		filesLoaded = true;
-		if($audioEngine.BGM.filesLoaded) {
-			audioEngine.ready = true;
-			$(document).trigger("allSoundsLoaded");
-		}
+		sfx.filesLoaded = true;
+		if($audioEngine.BGM.fileLoaded) $audioEngine.ready = true;
 	}
 
-	function createSource(buffer) {
-		var source = audioCtx.createBufferSource();
-		var gainNode = audioCtx.createGain ? audioCtx.createGain() : audioCtx.createGainNode();
+	this.createSource = function(buffer) {
+		var source = this.audioCtx.createBufferSource();
+		var gainNode = this.audioCtx.createGain ? this.audioCtx.createGain() : this.audioCtx.createGainNode();
 
 	    source.buffer = buffer;
 		source.connect(gainNode);
-	    gainNode.connect(audioCtx.destination);
+	    gainNode.connect(this.audioCtx.destination);
 
 	    gainNode.gain.value = .3;
 	    source.start(0);
 	}
 
-	function play(sfxName) {
+	this.play = function(sfxName) {
 		var sfx;
 
-		if(sfxName == "confirm") sfx = bufferArray[0];
+		if(sfxName == "input") sfx = this.bufferArray[0];
 
-		if(!muted) createSource(sfx);
+		if(!this.muted) this.createSource(sfx);
 	}
 
-	function mute(state) {
+	this.mute = function(state) {
 		if(state == true || state == false) {
-			if(state == mute) return;
-			muted = state;
+			if(state == this.muted) return;
+			this.muted = state;
 		}
-		else if(state == "toggle") muted = !muted;
+		else if(state == "toggle") this.muted = !this.muted;
 	}
 
-	return {
-		init:init,
-		play:play,
-		mute:function() { mute(true); },
-		unMute:function() { mute(false); },
-		toggleMute:function() { mute("toggle"); },
-		isMuted:function() { return muted; },
-		filesLoaded:function() { return filesLoaded; },
-		filesNb:function() { return files.length; }
-	};
-})();
+	this.mute = function() { $audioEngine.SFX.triggerMute(true) }
+	this.unMute = function() { $audioEngine.SFX.triggerMute(false) };
+	this.toggleMute = function() { $audioEngine.SFX.triggerMute("toggle") };
+};
+
+SFX.instance = null;
+
+SFX.getInstance = function() {  
+  if (this.instance == null) {  
+      this.instance = new SFX();  
+  }  
+  
+  return this.instance;  
+}
 
 $(document).ready(function() {
 	/*$("#soundSwitch").on(eventtype, function() {
-		audioEngine.toggleMute();
+		$audioEngine.toggleMute();
 	});*/
 });

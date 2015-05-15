@@ -226,6 +226,8 @@ Game.prototype.detectInputAccuracy = function(key) {
 			okPerc.push(percentage);
 			okIndex.push(note.index);
 
+			$audioEngine.SFX.play("input");
+
 			return true;
 		}
 	};

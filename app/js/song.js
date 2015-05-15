@@ -122,7 +122,7 @@ Song.prototype.pause = function(noScreen) {
 Song.prototype.resume = function() {
   if(this.paused) {
     this.staffScroll.resume();
-    $audioEngine.BGM.unPause();
+    $audioEngine.BGM.resume();
 
     this.paused = false;
     if($("#screen_pause").hasClass("active")) $("#screen_pause").removeClass("active");
