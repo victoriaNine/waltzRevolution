@@ -67,10 +67,10 @@ Game.prototype.launch = function() {
 	checkFocus(function() {
 		$game.start();
 		drawAudioVisualizer();
-	})
+	});
 }
 
-Game.prototype.retry = function() {
+Game.prototype.abort = function() {
 	cancelAnimationFrame(draw);
 
 	if(!this.isGameOver) {
@@ -81,7 +81,16 @@ Game.prototype.retry = function() {
 	}
 
 	Game.instance = null;
+}
+
+Game.prototype.retry = function() {
+	this.abort();
 	newGame();
+}
+
+Game.prototype.quit = function() {
+	this.abort();
+	toMainMenu();
 }
 
 Game.instance = null;
@@ -138,8 +147,7 @@ Game.prototype.addListeners = function() {
 	}
 
 	game.onBlur = function() {
-		if($audioEngine.ready && game.ready && !game.song.paused)
-			game.song.pause();
+		if(game.ready && !game.song.paused) game.song.pause();
 	}
 
 	game.onTouchevent = function(e) {
@@ -163,14 +171,12 @@ Game.prototype.addListeners = function() {
 
 	$(window).keydown(this.onKeydown).keyup(this.onKeyup).resize(this.onResize).blur(this.onBlur);
 	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', this.onTouchevent);
-	//$(document).on("songEnded", this.gameComplete);
 }
 
 
 Game.prototype.removeListeners = function() {
 	$(window).off("keydown", this.onKeydown).off("keyup", this.onKeyup).off("resize", this.onResize).off("blur", this.onBlur);
 	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").off('touchstart touchend', this.onTouchevent);
-	//$(document).off("songEnded", this.gameComplete);
 }
 
 
@@ -402,7 +408,7 @@ Game.prototype.updateProgress = function() {
 // PARTY COMPLETED
 //===============================
 Game.prototype.gameComplete = function() {
-	setTimeout($game.showResults, $game.song.barLength);
+	setTimeout($game.showResults, $game.song.barLength * 1000);
 }
 
 Game.prototype.gameOver = function() {
@@ -510,5 +516,5 @@ Game.prototype.showResults = function() {
    	for(var i = 0; i < $game.stars; i++)
    		$("#screen_results .stars").find("i").eq(i).addClass("on");
 
-	$("#screen_results").addClass("open");
+	$("#screen_results").addClass("active");
 }

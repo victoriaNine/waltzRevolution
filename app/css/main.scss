@@ -360,7 +360,7 @@ a:hover { color:$orange; }
   text-align:center;
 }
 
-#keys li.pressed { background:$orange; color:$offWhite; }
+#keys li.pressed, li.pressed .note, li:hover .note { background:$orange; color:$offWhite; }
 #keys i, .note i { line-height: 1.5em; font-size:1.5em; }
 
 #accuracy { left:48px; top: -20px; }
@@ -421,20 +421,21 @@ a:hover { color:$orange; }
   height: 100%;
   font-size:24px;
   z-index: 1;
-}
 
-.overlay {
-  z-index: 9999;
-  background: rgba(0,0,0,.95);
   pointer-events:none;
   opacity:0;
 
   transition:opacity .2s ease-out;
 }
 
-.overlay.open {
+.screen.active {
   pointer-events:auto;
   opacity:1;
+}
+
+.overlay {
+  z-index: 9999;
+  background: rgba(0,0,0,.95);
 }
 
 .screen .container {
@@ -498,8 +499,7 @@ a:hover { color:$orange; }
 #screen_highScores .stars { display:inline-block; width: 150px; text-align: right; }
 
 #screen_howToPlay p { font-size: 22px; margin-bottom:32px; }
-
-#screen_howToPlay li { display: inline-table; width: 32.9%; }
+#screen_howToPlay li { display: inline-table; width: 32.9%; cursor:pointer; }
 #screen_howToPlay li:nth-child(1), #screen_howToPlay li:nth-child(2), #screen_howToPlay li:nth-child(3) { margin-bottom:16px; }
 #screen_howToPlay .note, #screen_howToPlay .label { display: inline-block; }
 #screen_howToPlay .note { width: 32px; height: 32px; margin-right:16px; }
@@ -512,6 +512,8 @@ a:hover { color:$orange; }
   height: 100%;
   line-height: 32px;
 }
+
+#screen_howToPlay li.pressed .label, #screen_howToPlay li:hover .label { color:$orange; }
 
 .fa-p:before {
   content: "P";

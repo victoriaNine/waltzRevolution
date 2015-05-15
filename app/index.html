@@ -12,19 +12,19 @@
   </head>
   <body>
     <div id="wrapper">
-      <section id="screen_loading" class="screen" style="display:none;">
+      <section id="screen_loading" class="screen">
         <div class="container">
           <h1>Loading<span class="midGrey percent">97%</span></h1>
         </div>
       </section>
-      <section id="screen_main" class="screen" style="display:none;">
+      <section id="screen_mainMenu" class="screen">
         <div class="container">
           <h1><span class="midGrey">Waltz Waltz</span> Revolution</h1>
           <ul class="nav">
-            <li>Play</li>
-            <li>High scores</li>
-            <li>How to play</li>
-            <li>Credits</li>
+            <li class="bt_play">Play</li>
+            <li class="bt_highScores">High scores</li>
+            <li class="bt_howToPlay">How to play</li>
+            <li class="bt_credits">Credits</li>
           </ul>
         </div>
       </section>
@@ -41,7 +41,7 @@
           <div class="row"><span class="label">#08</span><span class="date beige">-</span></div>
           <div class="row"><span class="label">#09</span><span class="date beige">-</span></div>
           <div class="row"><span class="label">#10</span><span class="date beige">-</span></div>
-          <div class="button">Back</div>
+          <div class="button bt_back">Back</div>
         </div>
       </section>
       <section id="screen_howToPlay" class="screen overlay">
@@ -57,15 +57,15 @@
             </p>
             <div class="panel">
               <ul>
-                <li><span class="note"><i class="fa fa-arrow-left"></i></span><span class="label">left arrow</span></li>
-                <li><span class="note"><i class="fa fa-arrow-up"></i></span><span class="label">up arrow</span></li>
-                <li><span class="note"><i class="fa fa-exclamation"></i></span><span class="label">space</span></li>
-                <li><span class="note"><i class="fa fa-arrow-right"></i></span><span class="label">right arrow</span></li>
-                <li><span class="note"><i class="fa fa-arrow-down"></i></span><span class="label">down arrow</span></li>
-                <li><span class="note"><i class="fa fa-p"></i></span><span class="label">pause</span></li>
+                <li class="keyLeft"><span class="note"><i class="fa fa-arrow-left"></i></span><span class="label">left arrow</span></li>
+                <li class="keyUp"><span class="note"><i class="fa fa-arrow-up"></i></span><span class="label">up arrow</span></li>
+                <li class="keySpace"><span class="note"><i class="fa fa-exclamation"></i></span><span class="label">space</span></li>
+                <li class="keyRight"><span class="note"><i class="fa fa-arrow-right"></i></span><span class="label">right arrow</span></li>
+                <li class="keyDown"><span class="note"><i class="fa fa-arrow-down"></i></span><span class="label">down arrow</span></li>
+                <li class="keyPause"><span class="note"><i class="fa fa-p"></i></span><span class="label">pause</span></li>
               </ul>
             </div>
-            <div class="button">Back</div>
+            <div class="button bt_back">Back</div>
           </div>
         </div>
       </section>
@@ -80,16 +80,16 @@
             Hatsune Miku -Project DIVA-f<br />
             <br />
           </p>
-          <div class="button">Back</div>
+          <div class="button bt_back">Back</div>
         </div>
       </section>
       <section id="screen_pause" class="screen overlay">
         <div class="container">
           <h1>Pause</h1>
           <ul class="nav">
-            <li class="resume">Resume</li>
-            <li class="retry">Retry</li>
-            <li>Main menu</li>
+            <li class="bt_resume">Resume</li>
+            <li class="bt_retry">Retry</li>
+            <li class="bt_mainMenu">Main menu</li>
           </ul>
         </div>
       </section>
@@ -127,8 +127,8 @@
               <i class="fa fa-star"></i>
             </div>
             <ul class="nav">
-              <li class="retry">Retry</li>
-              <li>Main menu</li>
+              <li class="bt_retry">Retry</li>
+              <li class="bt_mainMenu">Main menu</li>
             </ul>
           </div>
         </div>

@@ -54,10 +54,12 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! how to play
  ! main menu canvas
  ! "retry" feature
- - bgm implementation
+ ! bgm switch implementation
+ ! wait for last note
+ ! screen transitions
+ - screen animations
  - sfx implementation
  - loading
- - screens transitions & animations
  - fix arrows visibility
 - clean code
 

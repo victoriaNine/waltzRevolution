@@ -114,7 +114,7 @@ Song.prototype.pause = function(noScreen) {
     $audioEngine.BGM.pause();
 
     this.paused = true;
-    if(!noScreen) $("#screen_pause").addClass("open");
+    if(!noScreen) $("#screen_pause").addClass("active");
     $game.noInput = true;
   }
 }
@@ -125,7 +125,7 @@ Song.prototype.resume = function() {
     $audioEngine.BGM.unPause();
 
     this.paused = false;
-    if($("#screen_pause").hasClass("open")) $("#screen_pause").removeClass("open");
+    if($("#screen_pause").hasClass("active")) $("#screen_pause").removeClass("active");
     $game.noInput = false;
   }
 }

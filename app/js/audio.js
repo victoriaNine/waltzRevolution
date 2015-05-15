@@ -59,7 +59,7 @@ function AudioEngine() {
 	//this.audioFiles = 0;
 	this.muted = false;
 	this.ready = false;
-	this.BGM = new BGM();
+	this.BGM = BGM.getInstance();
 
 	this.init = function() {
 		this.BGM.init();
@@ -181,7 +181,8 @@ function BGM() {
 	    gainNode.connect(this.audioCtx.destination);
 	    gainNode.connect(this.analyserNode);
 
-	    if(source.name == "waltz") source.gainNode.gain.value = .8;
+	    if(buffer.name == "junction_loop") source.loop = true;
+	    if(buffer.name == "waltz") gainNode.gain.value = .8;
 
 	    return {
 	      source: source,
@@ -212,13 +213,14 @@ function BGM() {
 		this.songLength = 0;
 	}
 
-	this.setCrossfade = function(gain) {
+	this.setCrossfade = function(gain, callback) {
 		this.crossfading = true;
 
 		if(gain != -1) {
 			TweenMax.to(this.sourceArray[this.currentFile].gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
 				onComplete:function() {
 					this.crossfading = false;
+					if(callback && typeof callback == "function") callback();
 				}
 			});
 		}
@@ -278,29 +280,17 @@ function BGM() {
 	this.pause = function() { this.triggerPause(true) }
 	this.unPause = function() { this.triggerPause(false) };
 	this.togglePause = function() { this.triggerPause("toggle") };
-
-	/*return {
-		init:init,
-		play:play,
-		setCrossfade:setCrossfade,
-		prepareCrossfade:prepareCrossfade,
-		playCrossfade:playCrossfade,
-		mute:function() { mute(true); },
-		unMute:function() { mute(false); },
-		toggleMute:function() { mute("toggle"); },
-		isMuted:function() { return muted; },
-		filesLoaded:function() { return filesLoaded; },
-		filesNb:function() { return files.length; },
-		isCrossfading:function() { return crossfading; },
-		getCurrentPosition:function() { return currentPosition(); },
-		getSongLength:function() { return songLength; },
-		pause:function() { pause(true); },
-		unPause:function() { pause(false); },
-		togglePause:function() { pause("toggle"); },
-		isPaused:function() { return paused; },
-		hasEnded:function() { hasEnded = true; }
-	};*/
 };
+
+BGM.instance = null;
+
+BGM.getInstance = function() {  
+  if (this.instance == null) {  
+      this.instance = new BGM();  
+  }  
+  
+  return this.instance;  
+}
 
 
 //===============================

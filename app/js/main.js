@@ -54,7 +54,7 @@ $(document).ready(function() {
     };
 
     $audioEngine = new AudioEngine();
-    newGame();
+    toMainMenu();
 
     /*var loadedFiles = 0;
 	var totalFiles = loadingArray.length;
@@ -66,6 +66,28 @@ $(document).ready(function() {
 $(window).resize(function() {
 	$(audioVisualizer).attr("width", window.innerWidth).attr("height", window.innerHeight);
 });
+
+function toMainMenu() {
+	if($("#screen_play").hasClass("active")) $("#screen_play").removeClass("active");
+
+	$audioEngine.BGM.setFile("junction_loop");
+	$audioEngine.BGM.addSource("audio/bgm/junction_loop.mp3", function() {
+		checkFocus(function() {
+			$("#screen_mainMenu").addClass("active");
+			$audioEngine.BGM.play();
+			drawAudioVisualizer();
+		});
+	});
+}
+
+function toGameScreen() {
+	$audioEngine.BGM.setCrossfade(0, function() {
+		$("#screen_play").addClass("active");
+		newGame();
+	});
+	
+	$("#screen_mainMenu").removeClass("active");
+}
 
 function showHighScores() {
 	var highScores = getLocalStorage("highScores") || [[], [], [], [], [], [], [], [], [], []];
@@ -96,6 +118,8 @@ function showHighScores() {
 
    		$("#screen_highScores .row").eq(i).empty().append(label, date, points, percent, stars, rank);
 	}
+
+	$("#screen_highScores").addClass("active");
 }
 
 function newGame() {
@@ -297,15 +321,70 @@ function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(ke
 // GUI INTERACTION
 //===============================
 
-$(".nav .resume").on(eventtype, function() {
+$(".bt_play").on(eventtype, function() {
+	toGameScreen();
+});
+
+$(".bt_highScores").on(eventtype, function() {
+	showHighScores();
+});
+
+$(".bt_howToPlay").on(eventtype, function() {
+	$("#screen_howToPlay").addClass("active");
+
+	$(window).on("keydown", howToPlay_onKeydown).on("keyup", howToPlay_onKeyup);
+});
+
+var howToPlay_onKeydown = function(e) {
+	e.preventDefault();
+
+	if(e.which == 38) $("#screen_howToPlay .keyUp").addClass("pressed");
+	if(e.which == 39) $("#screen_howToPlay .keyRight").addClass("pressed");
+	if(e.which == 37) $("#screen_howToPlay .keyLeft").addClass("pressed");
+	if(e.which == 40) $("#screen_howToPlay .keyDown").addClass("pressed");
+	if(e.which == 32) $("#screen_howToPlay .keySpace").addClass("pressed");
+	if(e.which == 80) $("#screen_howToPlay .keyPause").addClass("pressed");
+}
+
+var howToPlay_onKeyup = function(e) {
+	e.preventDefault();
+
+	if(e.which == 38) $("#screen_howToPlay .keyUp").removeClass("pressed");
+	if(e.which == 39) $("#screen_howToPlay .keyRight").removeClass("pressed");
+	if(e.which == 37) $("#screen_howToPlay .keyLeft").removeClass("pressed");
+	if(e.which == 40) $("#screen_howToPlay .keyDown").removeClass("pressed");
+	if(e.which == 32) $("#screen_howToPlay .keySpace").removeClass("pressed");
+	if(e.which == 80) $("#screen_howToPlay .keyPause").removeClass("pressed");
+}
+
+$(".bt_credits").on(eventtype, function() {
+	$("#screen_credits").addClass("active");
+});
+
+$(".bt_resume").on(eventtype, function() {
 	if($game) $game.song.resume();
 });
 
-$(".nav .retry").on(eventtype, function() {
+$(".bt_retry").on(eventtype, function() {
 	if($game) {
-		$(".screen.open").removeClass("open");
+		$(".overlay.active").removeClass("active");
 		$game.retry();
 	}
+});
+
+$(".bt_mainMenu").on(eventtype, function() {
+	if($game) {
+		$(".overlay.active").removeClass("active");
+		$game.quit();
+	}
+});
+
+$(".bt_back").on(eventtype, function() {
+	if($("#screen_howToPlay").hasClass("active")) {
+		$(window).off("keydown", howToPlay_onKeydown).off("keyup", howToPlay_onKeyup);
+	}
+
+	$(".overlay.active").removeClass("active");
 });
 
 
