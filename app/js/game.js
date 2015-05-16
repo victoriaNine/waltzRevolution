@@ -16,24 +16,29 @@ function Game(songFile) {
 	this.comboArray = [];
 	this.combo = 0;
 
-	this.noInput = false;
 	this.keyMap = {
-		32: {name: "space", pressed: false, when:0, gamePad : true},
-		37: {name: "left", pressed: false, when:0, gamePad : true},
-		38: {name: "up", pressed: false, when:0, gamePad : true},
-		39: {name: "right", pressed: false, when:0, gamePad : true},
-		40: {name: "down", pressed: false, when:0, gamePad : true},
-		80: {name: "P", pressed: false, when:0}
+		32: { name: "space", pressed: false, when:0, gamePad : true },
+		37: { name: "left", pressed: false, when:0, gamePad : true },
+		38: { name: "up", pressed: false, when:0, gamePad : true },
+		39: { name: "right", pressed: false, when:0, gamePad : true },
+		40: { name: "down", pressed: false, when:0, gamePad : true },
+		80: { name: "P", pressed: false, when:0 }
 	};
 
-	this.isGameOver = false;
 	this.ready = false;
+	this.paused = false;
+	this.isCompleted = false;
+	this.isGameOver = false;
 
-	this.intro = new TimelineMax({ paused:true });
-	this.intro.staggerFrom(["#life", "#progress"], .4, { opacity:0, top:"20px", ease:Power4.easeOut, clearProps: "all" }, .2);
-	this.intro.from("#lifeSphere", .4, { opacity:0, transform:"scale(1.25)", ease:Power4.easeOut, clearProps: "all" }, 0);
-	this.intro.from("#progressBar", 1, { opacity:0, width:"0", ease:Power4.easeOut, clearProps: "all" });
-	this.intro.from("#score", .4, { opacity:0, top:"20px", ease:Power4.easeOut, clearProps: "all" }, "-=.2");
+	this.intro = new TimelineMax({ paused:true, onComplete:function() { $(document).trigger("introComplete") } });
+	this.intro.from("#songInfo .title", 1, { opacity:0, left:"-20px", ease:Power4.easeOut });
+	this.intro.from("#songInfo .artist", 1, { opacity:0, top:"-20px", ease:Power4.easeOut }, .25);
+	this.intro.staggerFrom(["#life", "#progress"], .5, { opacity:0, top:"20px", ease:Power4.easeOut }, .5, 0);
+	this.intro.from("#lifeSphere", 1, { opacity:0, transform:"scale(1.25)", ease:Power4.easeOut }, 0);
+	this.intro.from("#progressBar", 1, { opacity:0, width:"0", ease:Power4.easeOut }, .75);
+	this.intro.from("#score", .5, { opacity:0, top:"20px", ease:Power4.easeOut }, "-=.5");
+	this.intro.from("#staff", 1, { opacity:0, right:"-20px", ease:Power4.easeOut });
+	this.intro.from("#notes", 1, { opacity:0, ease: RoughEase.ease.config({ template: Power0.easeNone, strength: 1, points: 20, taper: "none", randomize: true, clamp: true }) }, "-=.5");
 
 	this.loadSong();
 }
@@ -41,7 +46,7 @@ function Game(songFile) {
 Game.prototype.loadSong = function() {
 	var game = this;
 
-	this.song = new Song(this.songFile, function() {
+	this.song = Song.getInstance(this.songFile, function() {
 		game.initValues();
 
 		var fileName = this.url.slice(this.url.lastIndexOf("/")+1, this.url.lastIndexOf("."));
@@ -65,44 +70,101 @@ Game.prototype.initValues = function() {
 }
 
 Game.prototype.start = function() {
-	$("#screen_play").addClass("ready");
 	this.addListeners();
+	this.ready = true;
+
+	$("#screen_play").addClass("ready");
 
 	if(!mobilecheck()) this.song.start();
-	this.ready = true;
 }
 
 Game.prototype.launch = function() {
-	checkFocus(function() {
-		$game.start();
+	var launch = function() {
+		$(document).off("introComplete");
+		clearProps($game.intro);
 
-		drawAudioVisualizer();
-		toggleAudioVisualizer(true);
-	});
-}
+		checkFocus(function() {
+			$game.start();
 
-Game.prototype.stop = function() {
-	cancelAnimationFrame(draw);
-	$("#screen_play").removeClass("ready");
-
-	if(!this.isGameOver) {
-		this.isGameOver = true;
-		$audioEngine.BGM.hasEnded = true;
-
-		this.removeListeners();
+			$audioEngine.BGM.drawAudioVisualizer();
+			toggleAudioVisualizer(true);
+		});
 	}
 
-	Game.instance = null;
+	if($game.intro.progress() == 1) launch();
+	else $(document).on("introComplete", launch);
+}
+
+Game.prototype.pause = function(noScreen) {
+  if(!$game.paused) {
+    $game.song.staffScroll.pause();
+    $audioEngine.BGM.pause();
+
+    $game.paused = true;
+    $("#screen_play").removeClass("ready");
+
+    if(!noScreen) {
+      $("#screen_pause").addClass("active");
+      enterMenu();
+    }
+  }
+}
+
+Game.prototype.resume = function() {
+  if($game.paused) {
+    var resume = function() {
+      $game.song.staffScroll.resume();
+      $audioEngine.BGM.resume();
+
+      $game.paused = false;
+      $("#screen_play").addClass("ready");
+    }
+
+    if($("#screen_pause").hasClass("active")) {
+      leaveMenu();
+      $("#screen_pause").removeClass("active");
+
+      setTimeout(resume, 600);
+    }
+    else resume();
+  }
+}
+
+Game.prototype.triggerPause = function() {
+  $game.paused ? $game.resume() : $game.pause();
+}
+
+Game.prototype.stop = function(callback) {
+	$("#screen_play").removeClass("ready active");
+
+	var timeline = new TimelineMax();
+	timeline.add(toggleAudioVisualizer(false));
+	timeline.to("#notes", 1, { opacity:0, clearProps:"all", ease: RoughEase.ease.config({ template: Power0.easeNone, strength: 1, points: 20, taper: "none", randomize: true, clamp: true }),
+		onComplete:function() {
+			cancelAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
+
+			if(!$game.isCompleted || !$game.isGameOver) {
+				$audioEngine.BGM.hasEnded = true;
+				$game.song.stopRAF();
+				$game.removeListeners();
+			}
+
+			Song.instance = null;
+			$game.song = null;
+			Game.instance = null;
+			$game = null;
+
+			callback();
+		}
+	}, 0);
 }
 
 Game.prototype.retry = function() {
-	this.stop();
-	newGame();
+	$game.stop(newGame);
 }
 
 Game.prototype.quit = function() {
-	this.stop();
-	toMainMenu();
+	$game.stop(toMainMenu);
 }
 
 Game.instance = null;
@@ -153,13 +215,8 @@ Game.prototype.addListeners = function() {
 		}
 	}
 
-	game.onResize = function() {
-		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
-		requestAnimationFrame(draw);
-	}
-
 	game.onBlur = function() {
-		if(game.ready && !game.song.paused) game.song.pause();
+		if(game.ready && !game.paused) game.pause();
 	}
 
 	game.onTouchevent = function(e) {
@@ -181,13 +238,13 @@ Game.prototype.addListeners = function() {
 		$(window).trigger(_e);
 	}
 
-	$(window).keydown(this.onKeydown).keyup(this.onKeyup).resize(this.onResize).blur(this.onBlur);
+	$(window).keydown(this.onKeydown).keyup(this.onKeyup).blur(this.onBlur);
 	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', this.onTouchevent);
 }
 
 
 Game.prototype.removeListeners = function() {
-	$(window).off("keydown", this.onKeydown).off("keyup", this.onKeyup).off("resize", this.onResize).off("blur", this.onBlur);
+	$(window).off("keydown", this.onKeydown).off("keyup", this.onKeyup).off("blur", this.onBlur);
 	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").off('touchstart touchend', this.onTouchevent);
 }
 
@@ -201,9 +258,8 @@ Game.prototype.detectInputAccuracy = function(key) {
 	var gamePad = key.gamePad;
 	var inputDelay = (new Date().getTime() - key.when) / 1000;
 
-
-	if(keyName == "P") $game.song.triggerPause();
-	if($game.noInput || !gamePad) return;
+	if(keyName == "P") $game.triggerPause();
+	if($game.paused || !gamePad) return;
 
 	$("#keys .key"+keyNameFirstLetterUppercase).addClass("pressed");
 	var okPerc = [], okNotes = [], okIndex = [], okTiedNotes = [];
@@ -422,6 +478,7 @@ Game.prototype.updateProgress = function() {
 // PARTY COMPLETED
 //===============================
 Game.prototype.gameComplete = function() {
+	$game.isCompleted = true;
 	setTimeout($game.showResults, $game.song.barLength * 1000);
 }
 
@@ -431,17 +488,17 @@ Game.prototype.gameOver = function() {
 
 	$audioEngine.BGM.setCrossfade(0);
 	TweenMax.to(this.song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
-		onComplete:function() { 
+		onComplete:function() {
+			game.song.stopRAF();
 			game.showResults();
 		}
 	});
 }
 
 Game.prototype.showResults = function() {
-	cancelAnimationFrame(draw);
 	$game.removeListeners();
 
-	$game.song.pause(true);
+	$game.pause(true);
 	$audioEngine.BGM.hasEnded = true;
 
 	if($game.progress == 100) {

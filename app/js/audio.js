@@ -1,3 +1,6 @@
+var audioVisualizer = document.getElementById("audioVisualizer");
+var audioVisualizerCtx = audioVisualizer.getContext("2d");
+
 //===============================
 // BUFFERLOADER CLASS
 function BufferLoader(context, urlList, callback) {
@@ -297,6 +300,109 @@ function BGM() {
 	this.pause = function() { $audioEngine.BGM.triggerPause(true) }
 	this.resume = function() { $audioEngine.BGM.triggerPause(false) };
 	this.togglePause = function() { $audioEngine.BGM.triggerPause("toggle") };
+
+	this.drawAudioVisualizer = function() {
+		requestAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
+
+	    audioVisualizerCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+	    var dataArray = new Uint8Array($audioEngine.BGM.analyserNode.frequencyBinCount);
+	    $audioEngine.BGM.analyserNode.getByteFrequencyData(dataArray);
+
+	    // p = array for AnalyserNode-s
+	    // p.bgm = AnalyserNode used for the bgm
+
+	    /*switch (p.bgm.getByteFrequencyData(e), d) {
+	        case 0: // oscilloscope
+	            t(e);
+	            break;
+	        case 1: // dots
+	            a(e);
+	            break;
+	        case 2: // diagonal lines
+	            n(e);
+	            break;
+	        case 3: // horizontal lines
+	        	o(e)*/
+	            $audioEngine.BGM.waveform(dataArray);
+	            $audioEngine.BGM.oscilloscope(dataArray);
+	    //}
+	}
+
+	this.oscilloscope = function(dataArray) {
+	    var nbEQband = 75;
+	    var bandWidth = Math.ceil($(window).width() / nbEQband);
+	    
+	    var zoom = 1;
+	    var maxHeight = 255 * zoom;
+	    var top = $(window).height() + 1;
+
+	    audioVisualizerCtx.save();
+	    audioVisualizerCtx.beginPath();
+
+		audioVisualizerCtx.fillStyle = "#161515";
+		audioVisualizerCtx.strokeStyle = "#161515";
+	    audioVisualizerCtx.lineTo(0, top);
+
+	    for (var i = 0; i <= nbEQband; i++)
+	    	audioVisualizerCtx.lineTo(i * bandWidth, top - dataArray[i] * zoom);
+
+	    //audioVisualizerCtx.lineTo($(window).width(), top - dataArray[nbEQband] * zoom);
+	    audioVisualizerCtx.lineTo($(window).width(), top);
+	    audioVisualizerCtx.fill();
+	    audioVisualizerCtx.stroke();
+
+	    audioVisualizerCtx.closePath();
+	    audioVisualizerCtx.restore();
+	}
+
+	this.waveform = function(dataArray) {
+	    var nbEQband = 75;
+	    var bandWidth = Math.ceil($(window).width() / nbEQband);
+
+	    var zoom = 1;
+	    var maxHeight = 255 * zoom;
+	    var top = ($(window).height() + 1) - maxHeight / 4;
+
+	    audioVisualizerCtx.save();
+		audioVisualizerCtx.fillStyle = "#D55320";
+
+	    for (var i = 0; i <= nbEQband; i++)
+	    	audioVisualizerCtx.fillRect(i * bandWidth, top - dataArray[i], 2, 2);
+
+	    //audioVisualizerCtx.fillRect($(window).width() - 2, top - dataArray[nbEQband], 2, 2);
+	    audioVisualizerCtx.restore();
+	}
+
+	this.n = function(dataArray) {
+	    var nbEQband = 75;
+	    var bandWidth = Math.round($(window).width() / nbEQband);
+
+	    audioVisualizerCtx.save();
+	    audioVisualizerCtx.lineWidth = 1;
+
+	    for (var i = 0; i <= nbEQband; t++) {
+	    	audioVisualizerCtx.moveTo(i * bandWidth + dataArray[i], dataArray[i]);
+	    	audioVisualizerCtx.lineTo(-dataArray[i] + 500, -i * a - dataArray[i] + 500);
+	    }
+
+	    audioVisualizerCtx.stroke();
+		audioVisualizerCtx.restore();
+	}
+
+	this.o = function(dataArray) {
+	    var nbEQband = 100;
+
+	    audioVisualizerCtx.save();
+	    audioVisualizerCtx.lineWidth = 1;
+
+	    for (var i = 0; i <= nbEQband; i++) {
+	    	audioVisualizerCtx.moveTo(1e3 * dataArray[i], 2 * dataArray[i]);
+	    	audioVisualizerCtx.lineTo(1e3 * -dataArray[i], -1 * dataArray[i]);
+	    }
+
+	    audioVisualizerCtx.stroke();
+		audioVisualizerCtx.restore();
+	}
 };
 
 BGM.instance = null;

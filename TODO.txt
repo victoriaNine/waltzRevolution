@@ -58,10 +58,11 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! wait for last note
  ! screen transitions
  ! screen animations
+ ! "retry" debug (bug : play > main menu > play > gameover + "cannot read property 'pause' of undefined   song.js:113")
+ ! bgm loop fix
+ - audio visualizer fix
  - loading
  ~ sfx implementation
- - bgm loop fix
- - "retry" debug (bug : play > main menu > play > gameover + "cannot read property 'pause' of undefined   song.js:113")
  - fix arrows visibility
 - clean code
 

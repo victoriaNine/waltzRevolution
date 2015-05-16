@@ -1,10 +1,6 @@
 var canvas = document.getElementById("notes");
 var ctx = canvas.getContext("2d"); 
 
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
-
-
 //===============================
 // SONG CLASS
 function Song(url, callback) {
@@ -33,7 +29,6 @@ function Song(url, callback) {
   this.staffScrollDuration;
 
   this.currentNoteIndex = 0;
-  this.paused = false;
 
   this.load(url);
 }
@@ -89,63 +84,52 @@ Song.prototype.load = function(url) {
 }
 
 Song.prototype.start = function() {
-  var rAF = function() { requestAnimationFrame(draw); }
-
   $audioEngine.BGM.play();
-  draw();
+
+  this.draw();
+  TweenMax.ticker.addEventListener("tick", this.rAF);
 
   var song = this;
-  TweenMax.ticker.addEventListener("tick", rAF);
+
   this.staffScroll = TweenMax.to($("<div>").css("left","0px"), this.staffScrollDuration, {left:this.staffLength+"px", ease:Power0.easeNone,
       onUpdate:function(tween, prop) {
         song.currentStaffPosition = parseFloat($(tween.target).css(prop));
       },
       onUpdateParams:["{self}", 'left'],
       onComplete: function() {
-        TweenMax.ticker.removeEventListener("tick", rAF);
+        song.stopRAF();
         $game.gameComplete();
       }
   });
 }
 
-Song.prototype.pause = function(noScreen) {
-  if(!$game.song.paused) {
-    $game.song.staffScroll.pause();
-    $audioEngine.BGM.pause();
 
-    $game.song.paused = true;
-    $game.noInput = true;
+//===============================
+// UPDATE CANVAS
+Song.prototype.draw = function() {
+//===============================
+  ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
+  if(!$game) return;
 
-    if(!noScreen) {
-      $("#screen_pause").addClass("active");
-      enterMenu();
-    }
+  var startIndex = $game.song.currentNoteIndex;
+
+  for(var i = startIndex; i < $game.song.score.length; i++) {
+    $game.song.notes[i].draw();
+    if(!$game.isGameOver) $game.song.notes[i].checkInput();
   }
 }
 
-Song.prototype.resume = function() {
-  if($game.song.paused) {
-    var resume = function() {
-      $game.song.staffScroll.resume();
-      $audioEngine.BGM.resume();
+Song.prototype.rAF = function() { requestAnimationFrame($game.song.draw); }
+Song.prototype.stopRAF = function() { TweenMax.ticker.removeEventListener("tick", this.rAF); cancelAnimationFrame(this.draw); }
 
-      $game.song.paused = false;
-      $game.noInput = false;
-    }
+Song.instance = null;
 
-    if($("#screen_pause").hasClass("active")) {
-      leaveMenu();
-      $("#screen_pause").removeClass("active");
-
-      // PB RESUME DOUBLE
-      setTimeout(resume, 600);
-    }
-    else resume();
-  }
-}
-
-Song.prototype.triggerPause = function() {
-  $game.song.paused ? $game.song.resume() : $game.song.pause();
+Song.getInstance = function(url, callback) {  
+  if (this.instance == null) {  
+      this.instance = new Song(url, callback);  
+  }  
+  
+  return this.instance;  
 }
 
 //===============================
@@ -249,18 +233,6 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
   }
 }
 
-//===============================
-// UPDATE CANVAS
-function draw() {
-//===============================
-  ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
-  var startIndex = $game.song.currentNoteIndex;
-
-  for(var i = startIndex; i < $game.song.score.length; i++) {
-    $game.song.notes[i].draw();
-    if(!$game.isGameOver) $game.song.notes[i].checkInput();
-  }
-}
 
 //===============================
 // GET CSS PROPERTIES

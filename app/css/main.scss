@@ -1,7 +1,7 @@
 $orange: #D55320;
 $beige: #E1D7CE;
 $offWhite: #F8F4F0;
-$red:#C32B44;
+$red: #C32B44;
 
 $lightGrey: #706F6E;
 $midGrey: #363535;
@@ -324,8 +324,7 @@ a:hover { color:$orange; }
   transition:background .2s ease-out;
 }
 
-#progressBar .marker.passed { background: $red; }
-
+#progressBar .marker.passed { background: $midGrey; }
 #progressBar .marker.p60 { left: 60%; }
 #progressBar .marker.p75 { left: 75%; }
 #progressBar .marker.p90 { left: 90%; }
@@ -596,7 +595,7 @@ a:hover { color:$orange; }
 .screen .newRecord.visible { opacity:1; }
 
 #screen_results .nav { position:absolute; right:40px; bottom:0px; }
-.screen .title, .screen .artist { text-transform:none; font-size:32px; }
+.screen .title, .screen .artist { text-transform:none; font-size:32px; position:relative; }
 .screen .title { color:$orange; margin-bottom:10px; }
 .screen .artist { color:$beige; }
 

@@ -1,6 +1,5 @@
-var $currentScreen,
-    $requestScreen,
-    $isTransitioning = false;
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
 var support = {animations : Modernizr.cssanimations},
   animEndEventNames = {'WebkitAnimation' : 'webkitAnimationEnd', 'OAnimation' : 'oAnimationEnd', 'msAnimation' : 'MSAnimationEnd', 'animation' : 'animationend'},
@@ -25,12 +24,8 @@ var loadingArray = [/*"images/planet.svg",
 		            "images/meteor.svg",
 		            "images/filters.svg"*/];
 
-var $audioEngine;
-var autoMuteSound = false;
 var $game;
-
-var audioVisualizer = document.getElementById("audioVisualizer");
-var audioVisualizerCtx = audioVisualizer.getContext("2d");
+var $audioEngine;
 
 
 //===============================
@@ -41,9 +36,6 @@ $(document).ready(function() {
 	if(phonecheck()) $("html").addClass("isPhone");
 	if(tabletcheck()) $("html").addClass("isTablet");
 
-	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
-	$(audioVisualizer).attr("width", window.innerWidth).attr("height", window.innerHeight);
-
 	if(navigator.appName == 'Microsoft Internet Explorer') {
         var agent = navigator.userAgent;
 
@@ -52,6 +44,17 @@ $(document).ready(function() {
             $("html").addClass("ie"+version);
         }
     };
+
+	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
+	$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
+
+	$(window).resize(function() {
+		$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
+		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
+
+		if($audioEngine.BGM) requestAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
+		if($game) requestAnimationFrame($game.song.draw);
+	});
 
     $audioEngine = AudioEngine.getInstance();
     toMainMenu();
@@ -63,18 +66,12 @@ $(document).ready(function() {
 	}*/
 });
 
-$(window).resize(function() {
-	$(audioVisualizer).attr("width", window.innerWidth).attr("height", window.innerHeight);
-});
-
 function toMainMenu() {
-	if($("#screen_play").hasClass("active")) $("#screen_play").removeClass("active");
-
 	$audioEngine.BGM.setFile("junction_loop");
 	$audioEngine.BGM.addSource("audio/bgm/junction_loop.mp3", function() {
 		checkFocus(function() {
 			$audioEngine.BGM.play();
-			drawAudioVisualizer();
+			$audioEngine.BGM.drawAudioVisualizer();
 
 			$(window).on("blur", $audioEngine.BGM.pause).on("focus", $audioEngine.BGM.resume);
 
@@ -87,16 +84,14 @@ function toMainMenu() {
 
 function toGameScreen() {
 	leaveMenu().add(toggleAudioVisualizer(false));
+	$("#screen_mainMenu").removeClass("active");
 
 	$audioEngine.BGM.setCrossfade(0, function() {
-		cancelAnimationFrame(drawAudioVisualizer);
+		cancelAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
 		$(window).off("blur", $audioEngine.BGM.pause).off("focus", $audioEngine.BGM.resume);
 
-		$("#screen_play").addClass("active");
 		newGame();
 	});
-
-	$("#screen_mainMenu").removeClass("active");
 }
 
 function showHighScores() {
@@ -134,11 +129,7 @@ function showHighScores() {
 }
 
 function newGame() {
-	// INTRO ANIMATIONS HERE
-	// TweenMax.from($("#loading img"), .75, {opacity:0});
-	// TweenMax.from($("#loading img+span"), .75, {opacity:0, repeat:-1, yoyo:true});
-	// TweenMax.from($("#loading .info"), .75, {bottom:"-100px", opacity:0, ease:Bounce.easeOut});
-
+	$("#screen_play").addClass("active");
 	$game = Game.getInstance("js/waltz.json");
 }
 
@@ -218,108 +209,6 @@ function launchGameMobile() {
 	//});
 }
 
-function drawAudioVisualizer() {
-	requestAnimationFrame(drawAudioVisualizer);
-
-    audioVisualizerCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    var dataArray = new Uint8Array($audioEngine.BGM.analyserNode.frequencyBinCount);
-    $audioEngine.BGM.analyserNode.getByteFrequencyData(dataArray);
-
-    // p = array for AnalyserNode-s
-    // p.bgm = AnalyserNode used for the bgm
-
-    /*switch (p.bgm.getByteFrequencyData(e), d) {
-        case 0: // oscilloscope
-            t(e);
-            break;
-        case 1: // dots
-            a(e);
-            break;
-        case 2: // diagonal lines
-            n(e);
-            break;
-        case 3: // horizontal lines
-        	o(e)*/
-            waveform(dataArray);
-            oscilloscope(dataArray);
-    //}
-}
-
-function oscilloscope(dataArray) {
-    var nbEQband = 75;
-    var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
-    
-    var zoom = 1;
-    var maxHeight = 255 * zoom;
-    var top = $(window).height();
-
-    audioVisualizerCtx.save();
-    audioVisualizerCtx.beginPath();
-
-	audioVisualizerCtx.fillStyle = "#161515";
-	audioVisualizerCtx.strokeStyle = "#161515";
-    audioVisualizerCtx.lineTo(0, top);
-
-    for (var i = 0; i <= nbEQband; i++)
-    	audioVisualizerCtx.lineTo(i * bandWidth, top - dataArray[i] * zoom);
-
-    audioVisualizerCtx.lineTo(parseFloat($(window).width()), top - dataArray[nbEQband] * zoom);
-    audioVisualizerCtx.lineTo(parseFloat($(window).width()), top);
-    audioVisualizerCtx.fill();
-    audioVisualizerCtx.stroke();
-
-    audioVisualizerCtx.closePath();
-    audioVisualizerCtx.restore();
-}
-
-function waveform(dataArray) {
-    var nbEQband = 75;
-    var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
-
-    var zoom = 1;
-    var maxHeight = 255 * zoom;
-    var top = $(window).height() - maxHeight / 4;
-
-    audioVisualizerCtx.save();
-	audioVisualizerCtx.fillStyle = "#D55320";
-
-    for (var i = 0; i <= nbEQband; i++)
-    	audioVisualizerCtx.fillRect(i * bandWidth, top - dataArray[i], 2, 2);
-
-    audioVisualizerCtx.restore();
-}
-
-function n(dataArray) {
-    var nbEQband = 75;
-    var bandWidth = Math.round(parseFloat($(window).width()) / nbEQband);
-
-    audioVisualizerCtx.save();
-    audioVisualizerCtx.lineWidth = 1;
-
-    for (var i = 0; i <= nbEQband; t++) {
-    	audioVisualizerCtx.moveTo(i * bandWidth + dataArray[i], dataArray[i]);
-    	audioVisualizerCtx.lineTo(-dataArray[i] + 500, -i * a - dataArray[i] + 500);
-    }
-
-    audioVisualizerCtx.stroke();
-	audioVisualizerCtx.restore();
-}
-
-function o(dataArray) {
-    var nbEQband = 100;
-
-    audioVisualizerCtx.save();
-    audioVisualizerCtx.lineWidth = 1;
-
-    for (var i = 0; i <= nbEQband; i++) {
-    	audioVisualizerCtx.moveTo(1e3 * dataArray[i], 2 * dataArray[i]);
-    	audioVisualizerCtx.lineTo(1e3 * -dataArray[i], -1 * dataArray[i]);
-    }
-
-    audioVisualizerCtx.stroke();
-	audioVisualizerCtx.restore();
-}
-
 
 //===============================
 // LOCAL STORAGE
@@ -375,11 +264,7 @@ $(".bt_credits").on(eventtype, function() {
 });
 
 $(".bt_resume").on(eventtype, function() {
-	if($game) {
-		leaveMenu();
-		
-		setTimeout($game.song.resume, 600);
-	}
+	if($game) $game.resume();
 });
 
 $(".bt_retry").on(eventtype, function() {
@@ -457,6 +342,16 @@ function leaveMenu() {
     return timeline;
 }
 
+
+function clearProps(timeline) {
+	var targets = timeline.getChildren();
+	timeline.kill();
+
+	for (var i=0; i<targets.length; i++) {
+	  if(targets[i].target != null)
+	  	TweenMax.set(targets[i].target, {clearProps:"all"});
+	}
+}
 
 //===============================
 // MOBILE DETECTION
