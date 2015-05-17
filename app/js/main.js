@@ -67,8 +67,8 @@ $(document).ready(function() {
 });
 
 function toMainMenu() {
-	$audioEngine.BGM.setFile("junction_loop");
-	$audioEngine.BGM.addSource("audio/bgm/junction_loop.mp3", function() {
+	$audioEngine.BGM.setFile("junction");
+	$audioEngine.BGM.addSource("audio/bgm/junction", function() {
 		checkFocus(function() {
 			$audioEngine.BGM.play();
 			$audioEngine.BGM.drawAudioVisualizer();

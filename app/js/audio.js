@@ -199,7 +199,7 @@ function BGM() {
 	    gainNode.connect(this.analyserNode);
 	    gainNode.gain.value = this.muted ? 0 : .75;
 
-	    if(buffer.name == "junction_loop") source.loop = true;
+	    if(buffer.name == "junction") source.loop = true;
 
 	    return {
 	      source: source,
