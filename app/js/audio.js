@@ -13,7 +13,8 @@ function BufferLoader(context, urlList, callback) {
 }
 
 BufferLoader.prototype.loadBuffer = function(url, index) {
-  if(!url.match(".mp3|.ogg|.wav")) url += Modernizr.audio.ogg ? '.ogg' : '.mp3';
+  if(!url.match(".ogg|.mp3|.wav")) url += Modernizr.audio.ogg ? '.ogg' :
+  										  Modernizr.audio.mp3 ? '.mp3' :'.wav';
 
   // Load buffer asynchronously
   var request = new XMLHttpRequest();
@@ -196,9 +197,9 @@ function BGM() {
 		source.connect(gainNode);
 	    gainNode.connect(this.audioCtx.destination);
 	    gainNode.connect(this.analyserNode);
+	    gainNode.gain.value = this.muted ? 0 : .75;
 
 	    if(buffer.name == "junction_loop") source.loop = true;
-	    if(buffer.name == "waltz") gainNode.gain.value = .8;
 
 	    return {
 	      source: source,
@@ -217,12 +218,8 @@ function BGM() {
 	this.setFile = function(file) {
 		this.currentFile = file;
 
-		this.muted = false;
 		this.paused = false;
 		this.hasEnded = false;
-
-		this.crossfadeArray = [];
-		this.crossfading = false;
 
 		this.startedAt = 0;
 		this.pausedAt = 0;
@@ -230,14 +227,26 @@ function BGM() {
 	}
 
 	this.setCrossfade = function(gain, callback) {
-		this.crossfading = true;
+		if(gain >= 0) {
+			this.crossfading = true;
 
-		if(gain != -1) {
-			TweenMax.to(this.sourceArray[this.currentFile].gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
-				onComplete:function() {
-					this.crossfading = false;
-					if(callback && typeof callback == "function") callback();
-				}
+			var crossfade, bgm = this;
+			var jumpToEnd = function() { crossfade.seek(crossfade.totalDuration(), false); };
+
+			checkFocus(function() {
+				TweenMax.lagSmoothing(0);
+				crossfade = TweenMax.to(bgm.sourceArray[bgm.currentFile].gainNode.gain, 3, {value: gain, ease: Circ.easeOut,
+					onStart:function() { 
+						$(window).on("blur", jumpToEnd);
+					},
+					onComplete:function() {
+						bgm.crossfading = false;
+						TweenMax.lagSmoothing(1000, 16);
+
+						$(window).off("blur", jumpToEnd);
+						if(callback && typeof callback == "function") callback();
+					}
+				});
 			});
 		}
 	}
@@ -261,7 +270,7 @@ function BGM() {
 		if(this.muted) {
 			if(!this.crossfading) {
 				this.crossfadeArray = [];
-				this.prepareCrossfade(this.sourceArray[currentFile].gainNode.gain.value);
+				this.prepareCrossfade(this.sourceArray[this.currentFile].gainNode.gain.value);
 			}
 
 			this.setCrossfade(0);
@@ -423,7 +432,20 @@ function SFX() {
 	this.audioCtx;
 	this.bufferArray = [];
 
-	this.files = ['audio/sfx/button.mp3'];
+	this.files = ['audio/sfx/back',
+				  'audio/sfx/confirm',
+				  'audio/sfx/count',
+				  'audio/sfx/hover',
+				  'audio/sfx/noteInput',
+				  'audio/sfx/noteInputTied',
+				  'audio/sfx/pauseOpen',
+				  'audio/sfx/pauseClose',
+				  'audio/sfx/play',
+				  'audio/sfx/stageComplete',
+				  'audio/sfx/stageCompleteRecord',
+				  'audio/sfx/stageFailed',
+				  'audio/sfx/star'];
+
 	this.filesLoaded = false;
 	this.muted = false;
 
@@ -457,19 +479,32 @@ function SFX() {
 		source.connect(gainNode);
 	    gainNode.connect(this.audioCtx.destination);
 
-	    gainNode.gain.value = .3;
+	    gainNode.gain.value = .25;
 	    source.start(0);
 	}
 
 	this.play = function(sfxName) {
+		if(this.muted) return;
 		var sfx;
 
-		if(sfxName == "input") sfx = this.bufferArray[0];
+		if(sfxName == "back") sfx = this.bufferArray[0];
+		if(sfxName == "confirm") sfx = this.bufferArray[1];
+		if(sfxName == "count") sfx = this.bufferArray[2];
+		if(sfxName == "hover") sfx = this.bufferArray[3];
+		if(sfxName == "noteInput") sfx = this.bufferArray[4];
+		if(sfxName == "noteInputTied") sfx = this.bufferArray[5];
+		if(sfxName == "pauseOpen") sfx = this.bufferArray[6];
+		if(sfxName == "pauseClose") sfx = this.bufferArray[7];
+		if(sfxName == "play") sfx = this.bufferArray[8];
+		if(sfxName == "stageComplete") sfx = this.bufferArray[9];
+		if(sfxName == "stageCompleteRecord") sfx = this.bufferArray[10];
+		if(sfxName == "stageFailed") sfx = this.bufferArray[11];
+		if(sfxName == "star") sfx = this.bufferArray[12];
 
-		if(!this.muted) this.createSource(sfx);
+		if(sfx) this.createSource(sfx);
 	}
 
-	this.mute = function(state) {
+	this.triggerMute = function(state) {
 		if(state == true || state == false) {
 			if(state == this.muted) return;
 			this.muted = state;

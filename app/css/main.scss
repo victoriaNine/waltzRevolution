@@ -573,8 +573,10 @@ a:hover { color:$orange; }
   text-align: center;
   line-height: 28px;
   font-size: 18px;
-  left:32px;
-  opacity:0;
+  left: 48px;
+  opacity: 0;
+
+  transition: none;
 }
 
 .screen .newRecord:before {
@@ -592,15 +594,15 @@ a:hover { color:$orange; }
   top: 4px;
 }
 
-.screen .newRecord.visible { opacity:1; }
+.screen .newRecord.visible { left:32px; opacity:1; transition: all .5s ease-out; }
 
 #screen_results .nav { position:absolute; right:40px; bottom:0px; }
 .screen .title, .screen .artist { text-transform:none; font-size:32px; position:relative; }
 .screen .title { color:$orange; margin-bottom:10px; }
 .screen .artist { color:$beige; }
 
-#screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:60px; color:$beige; margin:150px 0 10px; }
-.screen .stars { color:$midGrey; }
+#screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:60px; color:$beige; margin:150px 0 10px; position:relative; }
+.screen .stars { color:$midGrey; position:relative; }
 .screen .stars i.on { color:$orange; }
 
 #screen_results .stars { font-size:32px; }

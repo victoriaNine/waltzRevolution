@@ -76,7 +76,6 @@ function toMainMenu() {
 			$(window).on("blur", $audioEngine.BGM.pause).on("focus", $audioEngine.BGM.resume);
 
 			$("#screen_mainMenu").addClass("active");
-
 			enterMenu().add(toggleAudioVisualizer(true), .4);
 		});
 	});
@@ -165,16 +164,6 @@ function loadGame() {
 	});
 }
 
-function checkFocus(callback) {
-	var waitForFocus = function() {
-		callback();
-		$(window).off("focus", waitForFocus);
-	};
-
-	if(document["hasFocus"]()) callback();
-	else $(window).on("focus", waitForFocus);
-}
-
 function launchGame() {
 	// REMOVE LOADING SCREEN HERE
 	//TweenMax.to($("#loading"), 1, {opacity:0,
@@ -238,6 +227,7 @@ $(".bt_howToPlay").on(eventtype, function() {
 
 var howToPlay_onKeydown = function(e) {
 	e.preventDefault();
+	$audioEngine.SFX.play("noteInput");
 
 	if(e.which == 38) $("#screen_howToPlay .keyUp").addClass("pressed");
 	if(e.which == 39) $("#screen_howToPlay .keyRight").addClass("pressed");
@@ -294,6 +284,21 @@ $(".bt_back").on(eventtype, function() {
 	$(".overlay.active").removeClass("active");
 });
 
+$(".button, .nav li, a").on(eventtype, function() {
+	if($(this).hasClass("bt_play")) $audioEngine.SFX.play("play");
+	else if($(this).hasClass("bt_back")) $audioEngine.SFX.play("back");
+	else if($(this).hasClass("bt_resume")) $audioEngine.SFX.play("pauseClose");
+	else $audioEngine.SFX.play("confirm");
+});
+
+$(".button, .nav li, #screen_howToPlay .panel li, a").mouseenter(function() {
+	$audioEngine.SFX.play("hover");
+});
+
+//===============================
+// ANIMATIONS
+// 
+//===============================
 function toggleTitle(state) {
 	var tween;
 	var screenType = $.find(".overlay.active").length > 0 ? ".overlay" : ".screen";
@@ -342,6 +347,33 @@ function leaveMenu() {
     return timeline;
 }
 
+function scrollToValue(target, from, to, toFixed, fadeIn, text, noSFX) {
+	var tween;
+	var text = text || "";
+
+	tween = TweenMax.to($({someValue: from}), .4, {someValue: to, ease:Power3.easeInOut,
+		onStart:function() {
+			if(fadeIn) TweenMax.from(target, .2, { opacity:0, ease:Power4.easeOut, clearProps:"all" });
+		},
+		onUpdate:function(tween) {
+			if(!noSFX && parseFloat(target.html()) != tween.target[0].someValue) $audioEngine.SFX.play("count");
+			target.html((tween.target[0].someValue).toFixed(toFixed)+text);
+		},
+		onUpdateParams:["{self}"]
+	});
+
+	return tween;
+}
+
+function checkFocus(callback) {
+	var waitForFocus = function() {
+		callback();
+		$(window).off("focus", waitForFocus);
+	};
+
+	if(document["hasFocus"]()) callback();
+	else $(window).on("focus", waitForFocus);
+}
 
 function clearProps(timeline) {
 	var targets = timeline.getChildren();

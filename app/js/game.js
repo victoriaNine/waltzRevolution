@@ -84,10 +84,12 @@ Game.prototype.launch = function() {
 		clearProps($game.intro);
 
 		checkFocus(function() {
-			$game.start();
+			setTimeout(function() {
+				$game.start();
 
-			$audioEngine.BGM.drawAudioVisualizer();
-			toggleAudioVisualizer(true);
+				$audioEngine.BGM.drawAudioVisualizer();
+				toggleAudioVisualizer(true);
+			}, 1000);
 		});
 	}
 
@@ -105,6 +107,7 @@ Game.prototype.pause = function(noScreen) {
 
     if(!noScreen) {
       $("#screen_pause").addClass("active");
+      $audioEngine.SFX.play("pauseOpen");
       enterMenu();
     }
   }
@@ -121,8 +124,9 @@ Game.prototype.resume = function() {
     }
 
     if($("#screen_pause").hasClass("active")) {
-      leaveMenu();
       $("#screen_pause").removeClass("active");
+      $audioEngine.SFX.play("pauseClose");
+      leaveMenu();
 
       setTimeout(resume, 600);
     }
@@ -142,10 +146,10 @@ Game.prototype.stop = function(callback) {
 	timeline.to("#notes", 1, { opacity:0, clearProps:"all", ease: RoughEase.ease.config({ template: Power0.easeNone, strength: 1, points: 20, taper: "none", randomize: true, clamp: true }),
 		onComplete:function() {
 			cancelAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
+			$game.song.stopRAF();
 
 			if(!$game.isCompleted || !$game.isGameOver) {
 				$audioEngine.BGM.hasEnded = true;
-				$game.song.stopRAF();
 				$game.removeListeners();
 			}
 
@@ -269,6 +273,12 @@ Game.prototype.detectInputAccuracy = function(key) {
 			if(note.tnSongPosition >= $audioEngine.BGM.currentPosition()) {
 				var noteAmount = (note.tnSongPosition - note.songPosition) / $game.song.baseNoteLength;
 				$game.incrementScore(Math.ceil(note.score / noteAmount), true);
+
+				var HPbonus = note.accuracy == "great" ? 10 : note.accuracy == "cool" ? 5 : 1;
+				$game.incrementHP(Math.ceil(HPbonus / noteAmount), true);
+
+				$audioEngine.SFX.play("noteInputTied");
+
 				return true;
 			}
 			else if(note.tnSongPosition + $game.song.baseNoteLength >= $audioEngine.BGM.currentPosition()) {
@@ -294,7 +304,7 @@ Game.prototype.detectInputAccuracy = function(key) {
 			okPerc.push(percentage);
 			okIndex.push(note.index);
 
-			$audioEngine.SFX.play("input");
+			$audioEngine.SFX.play("noteInput");
 
 			return true;
 		}
@@ -303,7 +313,7 @@ Game.prototype.detectInputAccuracy = function(key) {
 	okNotes = $game.song.notes.filter(regularNote);
 	if(okNotes.length == 0) {
 		// THEN THERE IS NO NOTE TO PLAY : LOSE POINTS
-		$game.decrementHP(10, true);
+		$game.decrementHP(15, true);
 		return;
 	}
 
@@ -316,28 +326,26 @@ Game.prototype.detectInputAccuracy = function(key) {
 		$game.accuracy[0]++;
 		$game.points[0] += closestNote.score;
 
-		$game.incrementHP(15, true);
+		$game.incrementHP(10, true);
 	}
 	else if(closestNote.score >= 50 && closestNote.score <= 79) {
 		closestNote.accuracy = "cool";
 		$game.accuracy[1]++;
 		$game.points[1] += closestNote.score;
 
-		$game.incrementHP(10, true);
+		$game.incrementHP(5, true);
 	}
 	else if(closestNote.score >= 30 && closestNote.score <= 49) {
 		closestNote.accuracy = "okay";
 		$game.accuracy[2]++;
 		$game.points[2] += closestNote.score;
-
-		$game.incrementHP(5, true);
 	}
 	else if(closestNote.score >= 1 && closestNote.score <= 29) {
 		closestNote.accuracy = "poor";
 		$game.accuracy[3]++;
 		$game.points[3] += closestNote.score;
 
-		$game.decrementHP(5, true);
+		$game.decrementHP(10, true);
 	}
 
 	$game.incrementScore(closestNote.score, true);
@@ -367,7 +375,7 @@ Game.prototype.missedNote = function(note) {
 		this.combo = 0;
 	}
 
-	this.decrementHP(15, true);
+	this.decrementHP(20, true);
 	this.showAccuracy(note);
 }
 
@@ -404,13 +412,7 @@ Game.prototype.decrementScore = function(value, update) {
 
 Game.prototype.updateScore = function() {
 	var currentValue = $("#score .value").html() || 0;
-
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: this.score, ease:Power3.easeInOut,
-		onUpdate:function(tween) {
-			$("#score .value").html(Math.ceil(tween.target[0].someValue));
-		},
-		onUpdateParams:["{self}"]
-	});
+	scrollToValue($("#score .value"), currentValue, this.score, false, false, "", true);
 }
 
 
@@ -437,13 +439,7 @@ Game.prototype.updateHP = function() {
 	var percentage = this.HP * 100 / this.maxHP;
 	var currentValue = parseFloat($("#life .value").html()) || 0;
 
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: percentage, ease:Power3.easeInOut,
-		onUpdate:function(tween) {
-			$("#life .value").html((tween.target[0].someValue).toFixed(1)+"%");
-		},
-		onUpdateParams:["{self}"]
-	});
-
+	scrollToValue($("#life .value"), currentValue, percentage, true, false, "%", true);
 	TweenMax.to($("#lifeSphere .bar"), .4, {height: percentage+"%", ease:Power3.easeInOut});
 
 	if(percentage <= 25) $("#lifeSphere").addClass("critical");
@@ -458,13 +454,7 @@ Game.prototype.updateProgress = function() {
 	var progress = (this.accuracy[0] + this.accuracy[1]) * 100 / this.totalNotes;
 	var currentValue = parseFloat($("#progress .value").html()) || 0;
 
-	TweenMax.to($({someValue: currentValue}), .4, {someValue: progress, ease:Power3.easeInOut,
-		onUpdate:function(tween) {
-			$("#progress .value").html((tween.target[0].someValue).toFixed(1)+"%");
-		},
-		onUpdateParams:["{self}"]
-	});
-
+	scrollToValue($("#progress .value"), currentValue, progress, true, false, "%", true);
 	TweenMax.to($("#progressBar .bar"), .4, {width: progress+"%", ease:Power3.easeInOut});
 
 	this.progress = progress.toFixed(1);
@@ -489,7 +479,6 @@ Game.prototype.gameOver = function() {
 	$audioEngine.BGM.setCrossfade(0);
 	TweenMax.to(this.song.staffScroll, 3, {timeScale:0, ease:Power3.easeOut,
 		onComplete:function() {
-			game.song.stopRAF();
 			game.showResults();
 		}
 	});
@@ -527,6 +516,11 @@ Game.prototype.showResults = function() {
 		$game.stars = 0;
 	}
 
+	if($game.combo > 0) {
+		$game.comboArray.push($game.combo);
+		$game.combo = 0;
+	}
+
 	var maxCombo = Math.max.apply(Math, $game.comboArray);
 	if(isNaN(maxCombo) || !isFinite(maxCombo)) maxCombo = 0;
 
@@ -550,31 +544,15 @@ Game.prototype.showResults = function() {
 	if($game.stars < 2) $("#screen_results").find("h2").html("stage failed...");
 	else $("#screen_results").find("h2").html("stage cleared!");
 
+	$("#screen_results").find(".nb, .points, .percent").empty();
+	$("#results_okay .percent, #results_poor .percent, #results_miss .percent, #results_miss .points").html("-");
 	$("#results_totalNotes").find(".nb").html($game.totalNotes);
-	$("#results_maxCombo").find(".nb").html(maxCombo);
 
 	var percentGreat = ($game.accuracy[0] * 100 / $game.totalNotes).toFixed(1);
-	$("#results_great").find(".nb").html($game.accuracy[0]);
-	$("#results_great").find(".points").html($game.points[0]+"pts");
-	$("#results_great").find(".percent").html(percentGreat+"%");
-
-	var percentNice = ($game.accuracy[1] * 100 / $game.totalNotes).toFixed(1);
-	$("#results_nice").find(".nb").html($game.accuracy[1]);
-	$("#results_nice").find(".points").html($game.points[1]+"pts");
-	$("#results_nice").find(".percent").html(percentNice+"%");
-
-	$("#results_cool").find(".nb").html($game.accuracy[2]);
-	$("#results_cool").find(".points").html($game.points[2]+"pts");
-	$("#results_poor").find(".nb").html($game.accuracy[3]);
-	$("#results_poor").find(".points").html($game.points[3]+"pts");
-	$("#results_miss").find(".nb").html($game.accuracy[4]);
-
-	$("#results_totalCompletion").find(".percent").html($game.progress+"%");
+	var percentCool = ($game.accuracy[1] * 100 / $game.totalNotes).toFixed(1);
 
 	$("#results_score").find(".newRecord").removeClass("visible");
-	$("#results_score").find(".points").html($game.score+"pts");
 	$("#results_highScore").find(".points").html(highScores[0][0]+"pts");
-	if(newRecord) $("#results_score").find(".newRecord").addClass("visible");
 
 	$("#screen_results").find(".title").html($game.song.title);
    	$("#screen_results").find(".artist").html("by "+$game.song.artist);
@@ -588,5 +566,43 @@ Game.prototype.showResults = function() {
    		$("#screen_results .stars").find("i").eq(i).addClass("on");
 
 	$("#screen_results").addClass("active");
-	enterMenu();
+
+	var timeline = new TimelineMax({ paused:true, onComplete:function() { clearProps(this) } });
+	timeline.add(toggleTitle(true));
+	timeline.add(scrollToValue($("#results_maxCombo .nb"), 0, maxCombo, false, true));
+
+	timeline.add(scrollToValue($("#results_great .nb").fadeIn(), 0, $game.accuracy[0], false, true), "-=.1");
+	timeline.add(scrollToValue($("#results_cool .nb"), 0, $game.accuracy[1], false, true), "-=.1");
+	timeline.add(scrollToValue($("#results_okay .nb"), 0, $game.accuracy[2], false, true), "-=.1");
+	timeline.add(scrollToValue($("#results_poor .nb"), 0, $game.accuracy[3], false, true), "-=.1");
+	timeline.add(scrollToValue($("#results_miss .nb"), 0, $game.accuracy[4], false, true), "-=.1");
+
+	timeline.add(scrollToValue($("#results_great .points").fadeIn(), 0, $game.points[0], false, true, "pts"));
+	timeline.add(scrollToValue($("#results_cool .points"), 0, $game.points[1], false, true, "pts"), "-=.1");
+	timeline.add(scrollToValue($("#results_okay .points"), 0, $game.points[2], false, true, "pts"), "-=.1");
+	timeline.add(scrollToValue($("#results_poor .points"), 0, $game.points[3], false, true, "pts"), "-=.1");
+
+	timeline.add(scrollToValue($("#results_great .percent").fadeIn(), 0, percentGreat, true, true, "%"));
+	timeline.add(scrollToValue($("#results_cool .percent"), 0, percentCool, true, true, "%"), "-=.1");
+
+	timeline.add(scrollToValue($("#results_totalCompletion .percent"), 0, $game.progress, true, true, "%"));
+
+	timeline.add(scrollToValue($("#results_score .points"), 0, $game.score, false, true, "pts"));
+	timeline.call(function() {
+		if(newRecord) $("#results_score").find(".newRecord").addClass("visible");
+	});
+
+	timeline.staggerFrom($("#screen_results .stars i"), .2, { opacity:0, transform:"scale(2)", ease:Power4.easeOut,
+		onComplete:function() { $audioEngine.SFX.play("star"); }
+	}, .1);
+	timeline.from($("#screen_results .rank"), 1, { opacity:0, right:"-20px", ease:Power4.easeOut,
+		onStart:function() { 
+			if($game.stars < 2) $audioEngine.SFX.play("stageFailed");
+			else newRecord ? $audioEngine.SFX.play("stageCompleteRecord") : $audioEngine.SFX.play("stageComplete");
+		}
+	});
+
+	timeline.add(toggleNav(true), "-=.5");
+
+	setTimeout(function() { timeline.play(); }, 300);
 }
