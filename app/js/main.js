@@ -51,12 +51,6 @@ $(document).ready(function() {
 
     $audioEngine = AudioEngine.getInstance();
     toMainMenu();
-
-    /*var loadedFiles = 0;
-	var totalFiles = loadingArray.length;
-	var loadedPercentage = function() {
-		return Math.ceil(loadedFiles * 100 / totalFiles);
-	}*/
 });
 
 function toMainMenu() {
@@ -155,72 +149,6 @@ function newGame() {
 	$game = Game.getInstance("js/waltz.json");
 }
 
-function loadGame() {
-	$(document).on("soundLoaded", function() {
-		$audioEngine.loadedFiles++;
-		loadedFiles++;
-
-		$(document).trigger("fileLoaded");
-	});
-	
-	for(var i = 0; i < loadingArray.length; i++) {
-		$("<div>").load(loadingArray[i], function() {
-			loadedFiles++;
-			$(document).trigger("fileLoaded");
-		});
-	}
-
-	$(document).on("fileLoaded", function() {
-		// LOADING ANIMATION HERE
-		// TweenMax.to($("#loading .loadingBar"), .3, {width:loadedPercentage()+"%", ease:Power4.easeOut});
-		if(loadedPercentage() == 100) $(document).trigger("allFilesLoaded");
-	});
-
-	$(document).on("allFilesLoaded", function() {
-		var waitForFocus = function() {
-			mobilecheck() ? launchGameMobile() : launchGame();
-			 $(window).off("focus", waitForFocus);
-		};
-
-		if(document["hasFocus"]()) mobilecheck() ? launchGameMobile() : launchGame();
-		else $(window).on("focus", waitForFocus);
-	});
-}
-
-function launchGame() {
-	// REMOVE LOADING SCREEN HERE
-	//TweenMax.to($("#loading"), 1, {opacity:0,
-		//onComplete:function() {
-			$(document).off("soundLoaded allSoundsLoaded fileLoaded allFilesLoaded");	
-			// $("body").find("#loading").remove();
-
-			//$requestScreen = "Menu";
-			//switchScreen();
-
-			
-		//}
-	//});
-}
-
-function launchGameMobile() {
-	// MOBILE DEVICES : BGM LAUNCH ANIMATION HERE
-	//TweenMax.to($("#loading img+span"), .75, {opacity:0, 
-		//onComplete: function() {
-			// $("#loading img+span").html("Tap to launch the experience");
-			// TweenMax.to($("#loading img+span"), .75, {opacity:1});
-
-			var startSong = function() {
-				$game.song.start();
-				$("body").off(eventtype, startSong);
-
-				launchGame();
-			};
-
-			$("body").on(eventtype, startSong);
-		//}
-	//});
-}
-
 
 //===============================
 // GUI INTERACTION
@@ -299,14 +227,14 @@ $(".bt_back").on(eventtype, function() {
 	$(".overlay.active").removeClass("active");
 });
 
-$(".button, .nav li, a").on(eventtype, function() {
+$("button, a").on(eventtype, function() {
 	if($(this).hasClass("bt_play")) $audioEngine.SFX.play("play");
 	else if($(this).hasClass("bt_back")) $audioEngine.SFX.play("back");
 	else if($(this).hasClass("bt_resume")) $audioEngine.SFX.play("pauseClose");
 	else $audioEngine.SFX.play("confirm");
 });
 
-$(".button, .nav li, #screen_howToPlay .panel li, a").mouseenter(function() {
+$("button, a, #screen_howToPlay .panel li").mouseenter(function() {
 	$audioEngine.SFX.play("hover");
 });
 
@@ -329,9 +257,9 @@ function toggleNav(state) {
 	var tween;
 	var screenType = $.find(".overlay.active").length > 0 ? ".overlay" : ".screen";
 
-	$(screenType+".active .nav li").removeAttr("style");
-	if(state) tween = TweenMax.staggerFrom($(screenType+".active .nav li"), .4, { opacity:0, top:"20px", ease:Power4.easeOut }, .1);
-	else tween = TweenMax.staggerTo($(screenType+".active .nav li"), .4, { opacity:0, top:"20px", ease:Power4.easeOut }, -.1);
+	$(screenType+".active nav button").removeAttr("style");
+	if(state) tween = TweenMax.staggerFrom($(screenType+".active nav button"), .4, { opacity:0, top:"20px", ease:Power4.easeOut }, .1);
+	else tween = TweenMax.staggerTo($(screenType+".active nav button"), .4, { opacity:0, top:"20px", ease:Power4.easeOut }, -.1);
 
 	return tween;
 }

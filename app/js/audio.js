@@ -41,8 +41,6 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
         loader.bufferList[index] = buffer;
         if (loader.loadCount == loader.urlList.length) 
           loader.onload(loader.bufferList);
-
-      	$(document).trigger("soundLoaded");
       },
       function(error) { 
       	if(url.match(".wav")) {
@@ -106,8 +104,6 @@ BufferLoader.prototype.load = function() {
 // AUDIOENGINE CLASS
 function AudioEngine() {
 //===============================
-	//this.loadedFiles = 0;
-	//this.audioFiles = 0;
 	this.muted = false;
 	this.ready = false;
 	this.BGM = BGM.getInstance();
@@ -121,8 +117,6 @@ function AudioEngine() {
 	this.init = function() {
 		this.BGM.init();
 		this.SFX.init();
-
-		//this.audioFiles = BGM.filesNb() + SFX.filesNb();
 	};
 
 	this.loadedPercentage = function() {
@@ -133,7 +127,6 @@ function AudioEngine() {
 		this.BGM.mute();
 		this.SFX.mute();
 
-		//$("#soundSwitch").attr("class","off");
 		this.muted = true;
 	};
 
@@ -141,7 +134,6 @@ function AudioEngine() {
 		this.BGM.unMute();
 		this.SFX.unMute();
 
-		//$("#soundSwitch").attr("class","on");
 		this.muted = false;
 	};
 
@@ -149,7 +141,6 @@ function AudioEngine() {
 		this.BGM.toggleMute();
 		this.SFX.toggleMute();
 
-		//$("#soundSwitch").toggleClass("on off");
 		this.muted = !this.muted;
 	};
 
@@ -384,24 +375,8 @@ function BGM() {
 	    var dataArray = new Uint8Array($audioEngine.BGM.analyserNode.frequencyBinCount);
 	    $audioEngine.BGM.analyserNode.getByteFrequencyData(dataArray);
 
-	    // p = array for AnalyserNode-s
-	    // p.bgm = AnalyserNode used for the bgm
-
-	    /*switch (p.bgm.getByteFrequencyData(e), d) {
-	        case 0: // oscilloscope
-	            t(e);
-	            break;
-	        case 1: // dots
-	            a(e);
-	            break;
-	        case 2: // diagonal lines
-	            n(e);
-	            break;
-	        case 3: // horizontal lines
-	        	o(e)*/
-	            $audioEngine.BGM.waveform(dataArray);
-	            $audioEngine.BGM.oscilloscope(dataArray);
-	    //}
+	    $audioEngine.BGM.waveform(dataArray);
+	    $audioEngine.BGM.oscilloscope(dataArray);
 	}
 
 	this.oscilloscope = function(dataArray) {
@@ -422,7 +397,6 @@ function BGM() {
 	    for (var i = 0; i <= nbEQband; i++)
 	    	audioVisualizerCtx.lineTo(i * bandWidth, top - dataArray[i] * zoom);
 
-	    //audioVisualizerCtx.lineTo($(window).width(), top - dataArray[nbEQband] * zoom);
 	    audioVisualizerCtx.lineTo($(window).width(), top);
 	    audioVisualizerCtx.fill();
 	    audioVisualizerCtx.stroke();
@@ -445,11 +419,10 @@ function BGM() {
 	    for (var i = 0; i <= nbEQband; i++)
 	    	audioVisualizerCtx.fillRect(i * bandWidth, top - dataArray[i], 2, 2);
 
-	    //audioVisualizerCtx.fillRect($(window).width() - 2, top - dataArray[nbEQband], 2, 2);
 	    audioVisualizerCtx.restore();
 	}
 
-	this.n = function(dataArray) {
+	this.diagonalLines = function(dataArray) {
 	    var nbEQband = 75;
 	    var bandWidth = Math.round($(window).width() / nbEQband);
 
@@ -465,7 +438,7 @@ function BGM() {
 		audioVisualizerCtx.restore();
 	}
 
-	this.o = function(dataArray) {
+	this.horizontalLines = function(dataArray) {
 	    var nbEQband = 100;
 
 	    audioVisualizerCtx.save();
@@ -594,9 +567,3 @@ SFX.getInstance = function() {
   
   return this.instance;  
 }
-
-$(document).ready(function() {
-	/*$("#soundSwitch").on(eventtype, function() {
-		$audioEngine.toggleMute();
-	});*/
-});

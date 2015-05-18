@@ -432,11 +432,12 @@ a:hover { color:$orange; }
 
 
 /*******/
-.button {
+button {
   width:vw(160px);
   height:vw(50px);
   background:$darkGrey;
   color:$beige;
+  border:none;
   border-radius:$borderRadius;
   padding-left:vw(16px);
   line-height:vw(50px);
@@ -450,7 +451,7 @@ a:hover { color:$orange; }
   transition:letter-spacing .2s ease-out;
 }
 
-.button:hover { background:$midGrey; letter-spacing: 1px; }
+button:hover { background:$midGrey; letter-spacing: 1px; }
 
 .screen {
   position: absolute;
@@ -509,12 +510,8 @@ a:hover { color:$orange; }
 #screen_results h1 { margin-bottom:vw(50px); }
 .screen p { line-height: 1.25em; }
 
-.screen .nav li {
-  @extend .button;
-  margin: 0 vw(50px) 0 0;
-}
-
-.screen .nav li:last-child { margin-right:0; }
+.screen nav button { margin: 0 vw(50px) 0 0; }
+.screen nav button:last-child { margin-right:0; }
 
 .screen .left, .screen .right { height: calc(100% - #{vw(130px)}); width:calc(50% - #{vw(40px)}); }
 .screen .right { text-align:right; }
@@ -572,7 +569,7 @@ a:hover { color:$orange; }
   font-weight: 600;
 }
 
-#screen_credits .button:after {
+#screen_credits button:after {
   content:"- Thanks for playing!";
   font-family: "Press Start 2P", cursive;
   color:$orange;
@@ -587,7 +584,7 @@ a:hover { color:$orange; }
   transition:all.2s ease-out;
 }
 
-#screen_credits .button:hover:after { transform:translateY(0); opacity:1; }
+#screen_credits button:hover:after { transform:translateY(0); opacity:1; }
 
 #screen_results .label { width:40%; }
 #screen_results .nb { width: 10%; }
@@ -628,7 +625,7 @@ a:hover { color:$orange; }
 
 .screen .newRecord.visible { left:vw(32px); opacity:1; transition: all .5s ease-out; }
 
-#screen_results .nav { position:absolute; right:vw(40px); bottom:0; }
+#screen_results nav { position:absolute; right:vw(40px); bottom:0; }
 .screen .title, .screen .artist { text-transform:none; font-size:$fontSize32px; position:relative; }
 .screen .title { color:$orange; margin-bottom:vw(10px); }
 .screen .artist { color:$beige; }

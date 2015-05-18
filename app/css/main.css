@@ -441,11 +441,12 @@ a:hover {
   left: 16px; }
 
 /*******/
-.button, .screen .nav li {
+button {
   width: 10vw;
   height: 3.125vw;
   background: #161515;
   color: #E1D7CE;
+  border: none;
   border-radius: 0.625vw;
   padding-left: 1vw;
   line-height: 3.125vw;
@@ -457,7 +458,7 @@ a:hover {
   position: relative;
   transition: letter-spacing .2s ease-out; }
 
-.button:hover, .screen .nav li:hover {
+button:hover {
   background: #363535;
   letter-spacing: 1px; }
 
@@ -509,10 +510,10 @@ a:hover {
 .screen p {
   line-height: 1.25em; }
 
-.screen .nav li {
+.screen nav button {
   margin: 0 3.125vw 0 0; }
 
-.screen .nav li:last-child {
+.screen nav button:last-child {
   margin-right: 0; }
 
 .screen .left, .screen .right {
@@ -548,7 +549,7 @@ a:hover {
   text-align: right; }
 
 #screen_loading .percent {
-  width: 15.625vw;
+  width: 18.75vw;
   display: inline-block; }
 
 #screen_highScores .label {
@@ -615,7 +616,7 @@ a:hover {
   font-family: Oswald;
   font-weight: 600; }
 
-#screen_credits .button:after, #screen_credits .screen .nav li:after, .screen .nav #screen_credits li:after {
+#screen_credits button:after {
   content: "- Thanks for playing!";
   font-family: "Press Start 2P", cursive;
   color: #D55320;
@@ -628,7 +629,7 @@ a:hover {
   white-space: nowrap;
   transition: all 0.2s ease-out; }
 
-#screen_credits .button:hover:after, #screen_credits .screen .nav li:hover:after, .screen .nav #screen_credits li:hover:after {
+#screen_credits button:hover:after {
   transform: translateY(0);
   opacity: 1; }
 
@@ -680,7 +681,7 @@ a:hover {
   opacity: 1;
   transition: all .5s ease-out; }
 
-#screen_results .nav {
+#screen_results nav {
   position: absolute;
   right: 2.5vw;
   bottom: 0; }
