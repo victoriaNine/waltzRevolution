@@ -394,6 +394,7 @@ a:hover { color:$orange; }
   width:vw(36px);
   height:vw(36px);
   margin-bottom:vw(4px);
+  font-size: inherit;
 }
 
 #keys li.pressed, li.pressed .note, li:hover .note { background:$orange; color:$offWhite; }

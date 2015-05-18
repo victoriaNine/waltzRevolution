@@ -393,7 +393,8 @@ a:hover {
 .note {
   width: 2.25vw;
   height: 2.25vw;
-  margin-bottom: 0.25vw; }
+  margin-bottom: 0.25vw;
+  font-size: inherit; }
 
 #keys li.pressed, li.pressed .note, li:hover .note {
   background: #D55320;
