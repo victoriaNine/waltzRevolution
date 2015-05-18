@@ -447,6 +447,7 @@ button {
   background: #161515;
   color: #E1D7CE;
   border: none;
+  outline: none;
   border-radius: 0.625vw;
   padding-left: 1vw;
   line-height: 3.125vw;

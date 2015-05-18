@@ -147,19 +147,21 @@ function AudioEngine() {
 	this.init();
 };
 
-AudioEngine.instance = null;
 
-AudioEngine.getInstance = function() {  
-  if (this.instance == null) {  
-      this.instance = new AudioEngine();  
-  }  
-  
+//===============================
+// SINGLETON
+AudioEngine.getInstance = function() {
+//===============================
+  if(this.instance == null)
+  	this.instance = new AudioEngine();
   return this.instance;  
 }
 
+AudioEngine.instance = null;
+
 
 //===============================
-// BGM
+// BGM CLASS
 function BGM() {
 //===============================
 	this.audioCtx;
@@ -454,19 +456,21 @@ function BGM() {
 	}
 };
 
-BGM.instance = null;
 
+//===============================
+// SINGLETON
 BGM.getInstance = function() {  
-  if (this.instance == null) {  
-      this.instance = new BGM();  
-  }  
-  
+//===============================
+  if(this.instance == null) 
+  	this.instance = new BGM(); 
   return this.instance;  
 }
 
+BGM.instance = null;
+
 
 //===============================
-// SFX
+// SFX CLASS
 function SFX() {
 //===============================
 	this.audioCtx;
@@ -558,12 +562,14 @@ function SFX() {
 	this.toggleMute = function() { $audioEngine.SFX.triggerMute("toggle") };
 };
 
-SFX.instance = null;
 
+//===============================
+// SINGLETON
 SFX.getInstance = function() {  
-  if (this.instance == null) {  
-      this.instance = new SFX();  
-  }  
-  
+//===============================
+  if(this.instance == null)
+  	this.instance = new SFX();  
   return this.instance;  
 }
+
+SFX.instance = null;

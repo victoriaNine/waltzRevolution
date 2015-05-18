@@ -3,6 +3,7 @@ var ctx = canvas.getContext("2d");
 
 //===============================
 // SONG CLASS
+// - Paint the staff in sync with the music
 function Song(url, callback) {
 //===============================
   this.url = url;
@@ -122,15 +123,6 @@ Song.prototype.draw = function() {
 Song.prototype.rAF = function() { requestAnimationFrame($game.song.draw); }
 Song.prototype.stopRAF = function() { TweenMax.ticker.removeEventListener("tick", this.rAF); cancelAnimationFrame(this.draw); }
 
-Song.instance = null;
-
-Song.getInstance = function(url, callback) {  
-  if (this.instance == null) {  
-      this.instance = new Song(url, callback);  
-  }  
-  
-  return this.instance;  
-}
 
 //===============================
 // NOTE CLASS
@@ -235,31 +227,12 @@ function Note(key, bar, beat, beatPosition, beatDivision, hasTiedNote, tnBeat, t
 
 
 //===============================
-// GET CSS PROPERTIES
-function getStyle(selector, property, valueOnly) {
+// SINGLETON
+Song.getInstance = function(url, callback) {
 //===============================
-  var styleSheets = document.styleSheets;
-  var classes = [];
+  if(this.instance == null) 
+    this.instance = new Song(url, callback);   
+  return this.instance;  
+}
 
-  for(var i = 0; i < styleSheets.length; i++) {
-    if(!styleSheets[i].ownerNode.attributes.href.value.match("http|//")) {
-      var rules = styleSheets[i].rules || styleSheets[i].cssRules;
-      if(rules) classes.push(rules);
-    }
-  }
-
-  for(var i = 0; i < classes.length; i++) {
-    for(var j = 0; j < classes[i].length; j++) {
-        if(classes[i][j].selectorText && classes[i][j].selectorText.indexOf(selector) != -1) {
-            if(property) {
-              if(valueOnly) return parseFloat(classes[i][j].style[property]);
-              else return classes[i][j].style[property];
-            }
-            else {
-              if(classes[i][j].cssText) return classes[i][j].cssText
-              else return classes[i][j].style.cssText;
-            }
-        }
-    }
-  }
-};
+Song.instance = null;

@@ -1,4 +1,8 @@
+//===============================
+// GAME CLASS
+// - Game engine
 function Game(songFile) {
+//===============================
 	this.songFile = songFile;
 	this.song;
 
@@ -11,8 +15,8 @@ function Game(songFile) {
 	this.rank;
 	this.stars = 0;
 
-	this.accuracy = [0, 0, 0, 0, 0] // great, nice, cool, poor, miss
-	this.points = [0, 0, 0, 0] // great, nice, cool, poor
+	this.accuracy = [0, 0, 0, 0, 0] // great, cool, okay, poor, miss
+	this.points = [0, 0, 0, 0] // great, cool, okay, poor
 	this.totalNotes;
 	this.comboArray = [];
 	this.combo = 0;
@@ -76,6 +80,10 @@ Game.prototype.loadSong = function() {
 	});
 }
 
+
+//===============================
+// LAUNCH, PAUSE, STOP
+//===============================
 Game.prototype.initValues = function() {
 	$("#songInfo .title").html(this.song.title);
 	$("#songInfo .artist").html(this.song.artist);
@@ -97,7 +105,7 @@ Game.prototype.start = function() {
 
 	$("#screen_play").addClass("ready");
 
-	if(!mobilecheck()) this.song.start();
+	if(!mobileCheck()) this.song.start();
 }
 
 Game.prototype.launch = function() {
@@ -116,7 +124,7 @@ Game.prototype.launch = function() {
 
 		checkFocus(function() {
 			setTimeout(function() {
-				mobilecheck() ? function() {
+				mobileCheck() ? function() {
 					$("body").on(eventtype, startSong);
 				} : startSong();
 			}, 1000);
@@ -193,23 +201,9 @@ Game.prototype.stop = function(callback) {
 	}, 0);
 }
 
-Game.prototype.retry = function() {
-	$game.stop(newGame);
-}
+Game.prototype.retry = function() { $game.stop(newGame); }
+Game.prototype.quit = function() { $game.stop(toMainMenu); }
 
-Game.prototype.quit = function() {
-	$game.stop(toMainMenu);
-}
-
-Game.instance = null;
-
-Game.getInstance = function(songFile) {  
-  if (this.instance == null) {  
-      this.instance = new Game(songFile);  
-  }  
-  
-  return this.instance;  
-} 
 
 //===============================
 // EVENT LISTENERS
@@ -495,7 +489,7 @@ Game.prototype.updateProgress = function() {
 
 
 //===============================
-// PARTY COMPLETED
+// END OF GAME
 //===============================
 Game.prototype.gameComplete = function() {
 	$game.isCompleted = true;
@@ -636,3 +630,15 @@ Game.prototype.showResults = function() {
 
 	setTimeout(function() { timeline.play(); }, 300);
 }
+
+
+//===============================
+// SINGLETON
+//===============================
+Game.getInstance = function(songFile) {  
+  if(this.instance == null) 
+  	this.instance = new Game(songFile);
+  return this.instance;  
+} 
+
+Game.instance = null;

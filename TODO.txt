@@ -74,14 +74,14 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 - fix arrows visibility
 - responsive (add on-screen pause button)
 ! favicon
-- clean code
+! clean code
 - checklist
 
 ----------
 
 Checklist :
 - Clean Code (organization, cohesion)
-- Semantics (Markup)
+! Semantics (Markup)
 - Web Technologies
 - Accessibility
 - SEO
