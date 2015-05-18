@@ -73,6 +73,7 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 - audio visualizer fix
 - fix arrows visibility
 - responsive
+- favicon
 - clean code
 - checklist
 
