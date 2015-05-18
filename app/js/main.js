@@ -200,16 +200,8 @@ function launchGameMobile() {
 
 
 //===============================
-// LOCAL STORAGE
-//===============================
-function setLocalStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(key)); }
-
-
-//===============================
 // GUI INTERACTION
 //===============================
-
 $(".bt_play").on(eventtype, function() {
 	toGameScreen();
 });
@@ -295,9 +287,9 @@ $(".button, .nav li, #screen_howToPlay .panel li, a").mouseenter(function() {
 	$audioEngine.SFX.play("hover");
 });
 
+
 //===============================
 // ANIMATIONS
-// 
 //===============================
 function toggleTitle(state) {
 	var tween;
@@ -365,6 +357,10 @@ function scrollToValue(target, from, to, toFixed, fadeIn, text, noSFX) {
 	return tween;
 }
 
+
+//===============================
+// USEFUL FUNCTIONS
+//===============================
 function checkFocus(callback) {
 	var waitForFocus = function() {
 		callback();
@@ -403,6 +399,14 @@ function toVw(em, context) {
 function toVwPixelValue(pixels, contextEm, contextVw) {
 	return Math.round(toVw(toEm(pixels, contextEm), contextVw));
 }
+
+
+//===============================
+// LOCAL STORAGE
+//===============================
+function setLocalStorage(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+function getLocalStorage(key)        { return JSON.parse(localStorage.getItem(key)); }
+
 
 //===============================
 // MOBILE DETECTION
