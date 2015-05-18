@@ -17,13 +17,6 @@ var support = {animations : Modernizr.cssanimations},
   },
   eventtype = mobilecheck() ? 'touchend' : 'click';
 
-var loadingArray = [/*"images/planet.svg",
-		            "images/gas.svg",
-		            "images/moon.svg",
-		            "images/craters.svg",
-		            "images/meteor.svg",
-		            "images/filters.svg"*/];
-
 var $game;
 var $audioEngine;
 
@@ -67,17 +60,48 @@ $(document).ready(function() {
 });
 
 function toMainMenu() {
+	var bgmURL = "audio/bgm/junction";
+
+	if(!$audioEngine.BGM.hasBeenLoaded(bgmURL)) {
+		$("#screen_loading .percent").html(0);
+		$("#screen_loading").addClass("active");
+
+		TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
+	}
+
 	$audioEngine.BGM.setFile("junction");
-	$audioEngine.BGM.addSource("audio/bgm/junction", function() {
+	$audioEngine.BGM.addSource(bgmURL, function() {
+		TweenMax.from($("#screen_loading .label"), .75, {opacity:1, clearProps:"all"});
+
 		checkFocus(function() {
-			$audioEngine.BGM.play();
-			$audioEngine.BGM.drawAudioVisualizer();
+			var showMainMenu = function() {
+				$audioEngine.BGM.play();
+				$audioEngine.BGM.drawAudioVisualizer();
 
-			$(window).on("blur", $audioEngine.BGM.pause).on("focus", $audioEngine.BGM.resume);
+				$(window).on("blur", $audioEngine.BGM.pause).on("focus", $audioEngine.BGM.resume);
 
-			$("#screen_mainMenu").addClass("active");
-			enterMenu().add(toggleAudioVisualizer(true), .4);
+				$("#screen_mainMenu").addClass("active");
+				enterMenu().add(toggleAudioVisualizer(true), .4);
+			}
+
+			if($("#screen_loading").hasClass("active")) {
+				$("#screen_loading").removeClass("active");
+				setTimeout(showMainMenu, 600);
+			}
+			else showMainMenu();
 		});
+	});
+
+	$(document).on("loadingBGM loadingSFX", function(e) {
+		var percentBGM = ($audioEngine.loadBGM * 100 / $audioEngine.loadBGMTotal);
+		var percentSFX = ($audioEngine.loadSFX * 100 / $audioEngine.loadSFXTotal);
+
+		if(isNaN(percentBGM) || !isFinite(percentBGM)) percentBGM = 0;
+		if(isNaN(percentSFX) || !isFinite(percentSFX)) percentSFX = 0;
+
+		var totalPercent = (percentBGM + percentSFX) / 2;
+		var currentValue = parseFloat($("#screen_loading .percent").html());
+		scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, true, "%", true);
 	});
 }
 
@@ -128,7 +152,6 @@ function showHighScores() {
 }
 
 function newGame() {
-	$("#screen_play").addClass("active");
 	$game = Game.getInstance("js/waltz.json");
 }
 
@@ -359,7 +382,7 @@ function scrollToValue(target, from, to, toFixed, fadeIn, text, noSFX) {
 
 
 //===============================
-// USEFUL FUNCTIONS
+// TOOLBOX
 //===============================
 function checkFocus(callback) {
 	var waitForFocus = function() {

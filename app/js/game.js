@@ -2,8 +2,9 @@ function Game(songFile) {
 	this.songFile = songFile;
 	this.song;
 
-	this.HP = 500;
 	this.maxHP = 1000;
+	this.HP = this.maxHP / 2;
+	
 
 	this.score = 0;
 	this.progress = 0;
@@ -46,12 +47,32 @@ function Game(songFile) {
 Game.prototype.loadSong = function() {
 	var game = this;
 
-	this.song = Song.getInstance(this.songFile, function() {
-		game.initValues();
+	if(!$audioEngine.BGM.hasBeenLoaded(this.fileURL)) {
+		$("#screen_loading .percent").html(0);
+		$("#screen_loading").addClass("active");
 
+		TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
+	}
+
+	this.song = Song.getInstance(this.songFile, function() {
 		var fileName = this.url.slice(this.url.lastIndexOf("/")+1, this.url.lastIndexOf("."));
 		$audioEngine.BGM.setFile(fileName);
-		$audioEngine.BGM.addSource(this.fileURL, game.launch);
+		$audioEngine.BGM.addSource(this.fileURL, function() {
+			TweenMax.from($("#screen_loading .label"), .75, {opacity:1, clearProps:"all"});
+
+			if($("#screen_loading").hasClass("active")) {
+				$("#screen_loading").removeClass("active");
+
+				setTimeout(function() {
+					game.initValues();
+					game.launch();
+				}, 600);
+			}
+			else {
+				game.initValues();
+				game.launch();
+			}
+		});
 	});
 }
 
@@ -67,6 +88,7 @@ Game.prototype.initValues = function() {
 	this.updateProgress();
 
 	this.intro.play();
+	$("#screen_play").addClass("active");
 }
 
 Game.prototype.start = function() {
@@ -79,16 +101,24 @@ Game.prototype.start = function() {
 }
 
 Game.prototype.launch = function() {
+	var startSong = function() {
+		$game.start();
+		$("body").off(eventtype, startSong);
+
+
+		$audioEngine.BGM.drawAudioVisualizer();
+		toggleAudioVisualizer(true);
+	}
+
 	var launch = function() {
 		$(document).off("introComplete");
 		clearProps($game.intro);
 
 		checkFocus(function() {
 			setTimeout(function() {
-				$game.start();
-
-				$audioEngine.BGM.drawAudioVisualizer();
-				toggleAudioVisualizer(true);
+				mobilecheck() ? function() {
+					$("body").on(eventtype, startSong);
+				} : startSong();
 			}, 1000);
 		});
 	}

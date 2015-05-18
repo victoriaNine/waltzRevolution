@@ -3,11 +3,14 @@ var audioVisualizerCtx = audioVisualizer.getContext("2d");
 
 //===============================
 // BUFFERLOADER CLASS
-function BufferLoader(context, urlList, callback) {
+function BufferLoader(context, urlList, type, callback) {
 //===============================
   this.context = context;
   this.urlList = urlList;
   this.onload = callback;
+  this.type = type;
+
+  this.requestArray = [];
   this.bufferList = [];
   this.loadCount = 0;
 }
@@ -56,6 +59,38 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
     );
   }
 
+  request.onloadstart = function(e) { 
+  	loader.requestArray[index] = e;
+  }
+
+  request.onprogress = function(e) {
+  	loader.requestArray[index] = e;
+
+  	var loaded = 0;
+  	var total = 0;
+  	var notReady = false;
+
+  	for(var i = 0; i < loader.requestArray.length; i++) {
+  		loaded += loader.requestArray[i].loaded;
+  		total += loader.requestArray[i].total;
+
+  		if(loader.requestArray[i].total == 0) notReady = true;
+  	}
+
+  	if(notReady) return;
+
+  	if(loader.type == "bgm") {
+	  	$audioEngine.loadBGM = loaded;
+	  	$audioEngine.loadBGMTotal = total;
+	}
+	if(loader.type == "sfx") {
+	  	$audioEngine.loadSFX = loaded;
+	  	$audioEngine.loadSFXTotal = total;
+	}
+
+  	$(document).trigger("loading"+loader.type.toUpperCase());
+  }
+
   request.onerror = function() { alert('BufferLoader: XHR error'); }
 
   request.send();
@@ -77,6 +112,11 @@ function AudioEngine() {
 	this.ready = false;
 	this.BGM = BGM.getInstance();
 	this.SFX = SFX.getInstance();
+
+	this.loadBGM = 0;
+	this.loadBGMTotal = 0;
+	this.loadSFX = 0;
+	this.loadSFXTotal = 0;
 
 	this.init = function() {
 		this.BGM.init();
@@ -134,10 +174,11 @@ function BGM() {
 	this.audioCtx;
 	this.analyserNode;
 	
-	this.sourceArray = {};
 	this.fileURL;
 	this.currentFile;
 	this.fileLoaded = false;
+	this.loadingArray = [];
+	this.sourceArray = {};
 	
 	this.muted = false;
 	this.paused = false;
@@ -173,13 +214,23 @@ function BGM() {
 	}
 
 	this.addSource = function(url, callback) {
-		$audioEngine.ready = false;
-		this.fileLoaded = false;
 		this.fileURL = url;
-
 		if(callback && typeof callback === "function") this.callback = callback;
 
-	    var bufferLoader = new BufferLoader(this.audioCtx, [url], this.setSources);
+		// If the BGM buffer has already been loaded before, reuse its source
+		if(this.hasBeenLoaded(url)) {
+			var source = this.createSource(this.sourceArray[this.currentFile].buffer, this.sourceArray[this.currentFile].index);
+			this.sourceArray[this.currentFile] = source;
+
+			if(this.callback) this.callback();
+			return;
+		}
+
+		$audioEngine.ready = false;
+		this.fileLoaded = false;
+
+		this.loadingArray.push(url);
+	    var bufferLoader = new BufferLoader(this.audioCtx, [url], "bgm", this.setSources);
 	  	bufferLoader.load();
 	}
 
@@ -220,6 +271,10 @@ function BGM() {
 	      name: (function() { return buffer.name; })(),
 	      index: (function() { return index; })()
 	    };
+	}
+
+	this.hasBeenLoaded = function(url) {
+		return this.loadingArray.indexOf(url) != -1
 	}
 
 	this.play = function() {
@@ -459,6 +514,7 @@ function SFX() {
 				  'audio/sfx/star'];
 
 	this.filesLoaded = false;
+
 	this.muted = false;
 
 	this.init = function() {
@@ -468,7 +524,7 @@ function SFX() {
 	    window.AudioContext = window.AudioContext||window.webkitAudioContext;
 	    this.audioCtx = new AudioContext();
 
-	    var bufferLoader = new BufferLoader(this.audioCtx, this.files, this.setBuffer);
+	    var bufferLoader = new BufferLoader(this.audioCtx, this.files, "sfx", this.setBuffer);
 	  	bufferLoader.load();
 	}
 
