@@ -571,19 +571,19 @@ Game.prototype.showResults = function() {
 	timeline.add(toggleTitle(true));
 	timeline.add(scrollToValue($("#results_maxCombo .nb"), 0, maxCombo, false, true));
 
-	timeline.add(scrollToValue($("#results_great .nb").fadeIn(), 0, $game.accuracy[0], false, true), "-=.1");
-	timeline.add(scrollToValue($("#results_cool .nb"), 0, $game.accuracy[1], false, true), "-=.1");
-	timeline.add(scrollToValue($("#results_okay .nb"), 0, $game.accuracy[2], false, true), "-=.1");
-	timeline.add(scrollToValue($("#results_poor .nb"), 0, $game.accuracy[3], false, true), "-=.1");
-	timeline.add(scrollToValue($("#results_miss .nb"), 0, $game.accuracy[4], false, true), "-=.1");
+	timeline.add(scrollToValue($("#results_great .nb").fadeIn(), 0, $game.accuracy[0], false, true), "-=.2");
+	timeline.add(scrollToValue($("#results_cool .nb"), 0, $game.accuracy[1], false, true), "-=.2");
+	timeline.add(scrollToValue($("#results_okay .nb"), 0, $game.accuracy[2], false, true), "-=.2");
+	timeline.add(scrollToValue($("#results_poor .nb"), 0, $game.accuracy[3], false, true), "-=.2");
+	timeline.add(scrollToValue($("#results_miss .nb"), 0, $game.accuracy[4], false, true), "-=.2");
 
 	timeline.add(scrollToValue($("#results_great .points").fadeIn(), 0, $game.points[0], false, true, "pts"));
-	timeline.add(scrollToValue($("#results_cool .points"), 0, $game.points[1], false, true, "pts"), "-=.1");
-	timeline.add(scrollToValue($("#results_okay .points"), 0, $game.points[2], false, true, "pts"), "-=.1");
-	timeline.add(scrollToValue($("#results_poor .points"), 0, $game.points[3], false, true, "pts"), "-=.1");
+	timeline.add(scrollToValue($("#results_cool .points"), 0, $game.points[1], false, true, "pts"), "-=.2");
+	timeline.add(scrollToValue($("#results_okay .points"), 0, $game.points[2], false, true, "pts"), "-=.2");
+	timeline.add(scrollToValue($("#results_poor .points"), 0, $game.points[3], false, true, "pts"), "-=.2");
 
 	timeline.add(scrollToValue($("#results_great .percent").fadeIn(), 0, percentGreat, true, true, "%"));
-	timeline.add(scrollToValue($("#results_cool .percent"), 0, percentCool, true, true, "%"), "-=.1");
+	timeline.add(scrollToValue($("#results_cool .percent"), 0, percentCool, true, true, "%"), "-=.2");
 
 	timeline.add(scrollToValue($("#results_totalCompletion .percent"), 0, $game.progress, true, true, "%"));
 

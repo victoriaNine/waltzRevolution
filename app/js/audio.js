@@ -14,7 +14,7 @@ function BufferLoader(context, urlList, callback) {
 
 BufferLoader.prototype.loadBuffer = function(url, index) {
   if(!url.match(".ogg|.mp3|.wav")) url += Modernizr.audio.ogg ? '.ogg' :
-  										  Modernizr.audio.mp3 ? '.mp3' :'.wav';
+  										  Modernizr.audio.mp3 ? '.mp3' : '.wav';
 
   // Load buffer asynchronously
   var request = new XMLHttpRequest();
@@ -24,6 +24,7 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
   var loader = this;
 
   request.onload = function() {
+  	loader.loadCount++;
     // Asynchronously decode the audio file data in request.response
     loader.context.decodeAudioData(
       request.response,
@@ -35,12 +36,23 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
 
         buffer.name = url.slice(url.lastIndexOf("/")+1, url.lastIndexOf("."));
         loader.bufferList[index] = buffer;
-        if (++loader.loadCount == loader.urlList.length) 
+        if (loader.loadCount == loader.urlList.length) 
           loader.onload(loader.bufferList);
 
       	$(document).trigger("soundLoaded");
       },
-      function(error) { console.error('decodeAudioData error', error); }
+      function(error) { 
+      	if(url.match(".wav")) {
+      		console.error('decodeAudioData error', error);
+      		return;
+      	}
+
+      	var newURL = url;
+      	if(url.match(".ogg")) newURL = url.replace(".ogg", ".mp3");
+      	else if(url.match(".mp3")) newURL = url.replace(".mp3", ".wav");
+
+      	loader.loadBuffer(newURL, index);
+      }
     );
   }
 
@@ -342,7 +354,7 @@ function BGM() {
 	    var bandWidth = Math.ceil($(window).width() / nbEQband);
 	    
 	    var zoom = 1;
-	    var maxHeight = 255 * zoom;
+	    var maxHeight = toVwPixelValue(255) * zoom;
 	    var top = $(window).height() + 1;
 
 	    audioVisualizerCtx.save();
@@ -369,7 +381,7 @@ function BGM() {
 	    var bandWidth = Math.ceil($(window).width() / nbEQband);
 
 	    var zoom = 1;
-	    var maxHeight = 255 * zoom;
+	    var maxHeight = toVwPixelValue(255) * zoom;
 	    var top = ($(window).height() + 1) - maxHeight / 4;
 
 	    audioVisualizerCtx.save();

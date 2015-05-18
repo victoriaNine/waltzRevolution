@@ -28,12 +28,6 @@
 .row:after {
   clear: both; }
 
-.device-content {
-  width: 960px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto; }
-
 .col {
   display: block; }
 
@@ -76,15 +70,28 @@
 /*=======================*/
 /* GENERAL RULES
 /*=======================*/
-body {
+html, body {
   width: 100%;
   height: 100%;
   position: absolute;
   overflow: hidden;
   font-family: "Oswald", sans-serif;
   font-weight: 100;
+  font-size: 1rem;
   text-transform: uppercase;
   color: #363535; }
+
+hr {
+  border: none;
+  background: #363535;
+  height: 1px; }
+
+a {
+  color: inherit;
+  text-decoration: none; }
+
+a:hover {
+  color: #D55320; }
 
 ::-moz-selection {
   background: #D55320;
@@ -95,6 +102,9 @@ body {
   background: #D55320;
   color: #FFF;
   text-shadow: none; }
+
+.zoom {
+  zoom: .75; }
 
 .left {
   float: left; }
@@ -107,17 +117,35 @@ body {
   display: table;
   clear: both; }
 
+.beige {
+  color: #E1D7CE; }
+
+.orange {
+  color: #D55320; }
+
+.midGrey {
+  color: #363535; }
+
 #bg {
   width: 100%;
   height: 100%;
   position: absolute;
   background: #F8F4F0 url("../img/bg.jpg") no-repeat;
-  background-size: cover; }
+  background-size: cover;
+  z-index: 0; }
+
+#audioVisualizer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0; }
 
 #wrapper {
   width: 100%;
   height: 100%;
   position: absolute;
+  z-index: 1;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
@@ -130,7 +158,7 @@ body {
   flex-direction: column; }
 
 /*******/
-#playScreen {
+#screen_play {
   position: absolute;
   width: 100%;
   height: 100%; }
@@ -140,44 +168,45 @@ body {
   width: 100%;
   height: 150px;
   position: absolute;
-  padding: 40px;
+  padding: 2.5vw;
   box-sizing: border-box;
-  font-size: 30px;
+  font-size: 1.875vw;
   text-transform: none; }
 
-#songInfo h1 {
-  font-size: 36px;
+#songInfo .title {
+  font-size: 2.25vw;
   vertical-align: super;
   display: inline-block; }
 
-#songInfo h2 {
-  font-size: 30px;
+#songInfo .artist {
+  font-size: 1.875vw;
   color: #706F6E; }
 
 /*******/
 #hud {
   width: 100%;
-  height: 180px;
+  height: 11.25vw;
   position: absolute;
   bottom: 0;
-  padding: 0 40px 40px;
+  padding: 0 2.5vw 2.5vw;
   box-sizing: border-box;
-  font-size: 24px; }
+  font-size: 1.375vw; }
 
 #lifeSphere {
-  width: 120px;
-  height: 120px;
+  width: 7.5vw;
+  height: 7.5vw;
   border-radius: 50%;
   position: absolute;
   overflow: hidden;
-  bottom: 40px; }
+  bottom: 2.5vw;
+  transform: scale(1); }
 
 #lifeSphere:before {
   content: "";
   position: absolute;
   width: 100%;
   height: 100%;
-  border: #363535 6px solid;
+  border: #363535 0.375vw solid;
   border-radius: 50%;
   bottom: 0;
   left: 0;
@@ -255,42 +284,49 @@ body {
   50% {
     background: #C32B44; } }
 #gameInfo {
-  margin-left: 150px;
-  height: 120px;
+  margin-left: 9.375vw;
+  height: 7.5vw;
   position: absolute;
-  width: calc(100% - 230px);
-  bottom: 40px; }
+  width: calc(100% - 14.375vw);
+  bottom: 2.5vw;
+  color: #363535;
+  transition: color .4s ease-out; }
+
+#screen_play.ready #gameInfo {
+  color: #E1D7CE; }
+
+#gameInfo > div {
+  position: relative; }
 
 #life, #progress {
-  height: 30px;
-  margin-top: 15px; }
+  height: 1.875vw;
+  margin-top: 0.9375vw; }
 
 #progress {
   display: inline-block; }
 
 #score {
   display: inline-block;
-  margin-top: -6px; }
+  margin-top: -0.375vw; }
 
 #gameInfo .value {
   color: #D55320;
   font-weight: 500;
-  font-size: 30px;
-  margin-left: 20px;
+  font-size: 1.875vw;
+  margin-left: 1.25vw;
   text-align: right;
   display: inline-block;
-  width: 90px; }
+  width: 5.625vw; }
 
 #score .value {
-  font-size: 48px;
-  width: 120px; }
+  font-size: 3vw;
+  width: 7.5vw; }
 
 #progressBar {
   width: 100%;
-  height: 15px;
-  margin-top: 15px;
-  position: relative;
-  border-radius: 10px;
+  height: 0.9375vw;
+  margin-top: 0.9375vw;
+  border-radius: 0.625vw;
   overflow: hidden; }
 
 #progressBar:before {
@@ -315,7 +351,7 @@ body {
   transition: background .2s ease-out; }
 
 #progressBar .marker.passed {
-  background: #C32B44; }
+  background: #363535; }
 
 #progressBar .marker.p60 {
   left: 60%; }
@@ -328,11 +364,11 @@ body {
 
 /*******/
 #staff {
-  width: calc(100% - 40px);
+  width: calc(100% - 2.5vw);
   height: 195px;
   position: absolute;
   right: 0;
-  top: calc(50% - (195px / 2) - 20px); }
+  top: calc(50% - (195px / 2) - (12.1875vw / 3)); }
 
 #lines {
   width: 100%;
@@ -347,41 +383,45 @@ body {
   z-index: 3;
   position: absolute; }
 
-#keys li, .note {
-  border-radius: 50%;
-  text-align: center; }
-
 #keys li {
   width: 36px;
   height: 36px;
   background: #333;
   color: #706F6E;
-  margin-bottom: 4px; }
+  margin-bottom: 4px;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 16px; }
 
-#keys li.pressed {
+.note {
+  width: 2.25vw;
+  height: 2.25vw;
+  margin-bottom: 0.25vw; }
+
+#keys li.pressed, li.pressed .note, li:hover .note {
   background: #D55320;
   color: #F8F4F0; }
 
-#keys i {
+#keys i, .note i {
   line-height: 1.5em;
   font-size: 1.5em; }
 
 #accuracy {
-  left: 48px;
-  top: -20px; }
+  left: 3vw;
+  top: -1.25vw; }
 
 #accuracy li {
   font-weight: 400;
   color: #D55320;
   font-family: "Press Start 2P", cursive;
-  font-size: 10px;
+  font-size: 0.625vw;
   background: #363535;
-  padding: 8px;
+  padding: 0.5vw;
   box-sizing: border-box;
-  border-radius: 10px;
-  margin-bottom: 8px;
-  line-height: 16px;
-  height: 32px;
+  border-radius: 0.625vw;
+  margin-bottom: 0.5vw;
+  line-height: 1vw;
+  height: 2vw;
   display: table;
   opacity: 0; }
 
@@ -393,21 +433,30 @@ body {
   float: right;
   display: inline-block;
   text-align: right;
-  margin-left: 10px; }
+  margin-left: 0.625vw; }
+
+#notes {
+  width: calc(100% - 16px);
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  left: 16px; }
 
 /*******/
 .button, .screen .nav li {
-  width: 160px;
-  height: 50px;
+  width: 10vw;
+  height: 3.125vw;
   background: #161515;
   color: #E1D7CE;
-  border-radius: 10px;
-  padding-left: 16px;
-  line-height: 50px;
+  border-radius: 0.625vw;
+  padding-left: 1vw;
+  line-height: 3.125vw;
   box-sizing: border-box;
   display: inline-block;
   cursor: pointer;
   text-align: left;
+  margin: 2.5vw 0 0;
+  position: relative;
   transition: letter-spacing .2s ease-out; }
 
 .button:hover, .screen .nav li:hover {
@@ -418,82 +467,254 @@ body {
   position: absolute;
   width: 100%;
   height: 100%;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.95);
-  font-size: 24px; }
-
-.screen {
+  font-size: 1.25vw;
+  z-index: 1;
   pointer-events: none;
   opacity: 0;
+  transition: opacity .2s .4s ease-out; }
+
+.screen.active {
+  pointer-events: auto;
+  opacity: 1;
   transition: opacity .2s ease-out; }
 
-.screen.open {
-  pointer-events: auto;
-  opacity: 1; }
+.overlay {
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.95);
+  transform: scale(1.2);
+  transition: all .2s .4s ease-out; }
+
+.overlay.active {
+  transform: scale(1);
+  transition: all .2s ease-out; }
 
 .screen .container {
-  width: 1200px;
-  height: 665px;
+  width: 75vw;
+  height: 34.375vw;
   position: absolute;
-  left: calc(50% - 1200px/2);
-  top: calc(50% - 665px/2);
-  padding: 0 40px 40px;
+  left: calc(50% - 75vw / 2);
+  top: calc(50% - 34.375vw /2);
+  padding: 0 2.5vw;
   box-sizing: border-box; }
 
 .screen h1 {
   color: #D55320;
-  font-size: 80px;
-  margin-bottom: 80px;
-  font-family: 'Oswald-RegularItalic'; }
+  font-size: 5vw;
+  margin-bottom: 1em;
+  font-family: 'Oswald-RegularItalic';
+  position: relative;
+  transform-origin: 0 0; }
 
-#resultsScreen h1 {
-  margin-bottom: 50px; }
+#screen_results h1 {
+  margin-bottom: 3.125vw; }
+
+.screen p {
+  line-height: 1.25em; }
 
 .screen .nav li {
-  margin-right: 50px; }
+  margin: 0 3.125vw 0 0; }
 
 .screen .nav li:last-child {
   margin-right: 0; }
 
-.screen .panel, .screen .right {
-  height: calc(100% - 130px);
-  width: calc(50% - 40px); }
-
-.panel {
-  background: #161515;
-  border-radius: 10px; }
+.screen .left, .screen .right {
+  height: calc(100% - 8.125vw);
+  width: calc(50% - 2.5vw); }
 
 .screen .right {
   text-align: right; }
 
-#resultsScreen .nav {
+.screen .panel {
+  background: #161515;
+  border-radius: 0.625vw;
+  padding: 0.625vw;
+  box-sizing: border-box;
+  font-size: 1.1875vw; }
+
+.screen .panel h2 {
+  font-family: "Press Start 2P", cursive;
+  text-transform: none;
+  text-align: center;
+  margin: 0.9375vw 0 1.5625vw;
+  color: #E1D7CE; }
+
+.screen .row {
+  line-height: 1.25em;
+  position: relative; }
+
+.screen .row span {
+  display: inline-block;
+  position: relative; }
+
+.screen .nb, .screen .points, .screen .percent {
+  text-align: right; }
+
+#screen_loading .percent {
+  width: 15.625vw;
+  display: inline-block; }
+
+#screen_highScores .label {
+  width: 4.6875vw; }
+
+#screen_highScores .date {
+  width: 12.5vw; }
+
+#screen_highScores .points {
+  width: 7.8125vw; }
+
+#screen_highScores .percent {
+  width: 5.9375vw; }
+
+#screen_highScores .rank {
+  margin-left: 1vw; }
+
+#screen_highScores .stars {
+  display: inline-block;
+  width: 9.375vw;
+  text-align: right; }
+
+#screen_howToPlay p {
+  font-size: 1.25vw;
+  margin-bottom: 2vw; }
+
+#screen_howToPlay ul {
+  display: flex;
+  flex-wrap: wrap; }
+
+#screen_howToPlay li {
+  display: inline-table;
+  width: 33.3333%;
+  cursor: pointer; }
+
+#screen_howToPlay li:nth-child(1), #screen_howToPlay li:nth-child(2), #screen_howToPlay li:nth-child(3) {
+  margin-bottom: 1vw; }
+
+#screen_howToPlay .note, #screen_howToPlay .label {
+  display: inline-block; }
+
+#screen_howToPlay .note {
+  width: 2vw;
+  height: 2vw;
+  margin-right: 1vw; }
+
+#screen_howToPlay .note i {
+  line-height: 1.25em;
+  font-size: 1.25em; }
+
+#screen_howToPlay .label {
+  color: #E1D7CE;
+  font-size: 0.4375vw;
+  font-family: "Press Start 2P", cursive;
+  vertical-align: middle;
+  height: 100%;
+  line-height: 2vw; }
+
+#screen_howToPlay li.pressed .label, #screen_howToPlay li:hover .label {
+  color: #D55320; }
+
+.fa-p:before {
+  content: "P";
+  font-family: Oswald;
+  font-weight: 600; }
+
+#screen_credits .button:after, #screen_credits .screen .nav li:after, .screen .nav #screen_credits li:after {
+  content: "- Thanks for playing!";
+  font-family: "Press Start 2P", cursive;
+  color: #D55320;
+  font-size: 0.4375vw;
+  transform: translateY(0.625vw);
+  opacity: 0;
   position: absolute;
-  right: 40px;
-  bottom: 40px; }
+  top: -2.5vw;
+  left: 0;
+  white-space: nowrap;
+  transition: all 0.2s ease-out; }
+
+#screen_credits .button:hover:after, #screen_credits .screen .nav li:hover:after, .screen .nav #screen_credits li:hover:after {
+  transform: translateY(0);
+  opacity: 1; }
+
+#screen_results .label {
+  width: 40%; }
+
+#screen_results .nb {
+  width: 10%; }
+
+#screen_results .points {
+  width: 25%; }
+
+#screen_results .percent {
+  width: 20%; }
+
+#screen_results #results_totalCompletion {
+  margin-top: 0.875vw; }
+
+.screen .newRecord {
+  width: 1.75vw;
+  height: 1.75vw;
+  position: absolute;
+  border-radius: 50%;
+  background: #363535;
+  color: #D55320;
+  text-align: center;
+  line-height: 1.75vw;
+  font-size: 1.125vw;
+  left: 3vw;
+  opacity: 0;
+  transition: none; }
+
+.screen .newRecord:before {
+  content: "new record!";
+  position: absolute;
+  background: #363535;
+  font-family: "Press Start 2P", cursive;
+  color: #E1D7CE;
+  font-size: 0.4375vw;
+  width: 5.625vw;
+  border-radius: 1.25vw;
+  padding-left: 1.125vw;
+  height: 1.25vw;
+  line-height: 1.25vw;
+  top: 0.25vw; }
+
+.screen .newRecord.visible {
+  left: 2vw;
+  opacity: 1;
+  transition: all .5s ease-out; }
+
+#screen_results .nav {
+  position: absolute;
+  right: 2.5vw;
+  bottom: 0; }
 
 .screen .title, .screen .artist {
   text-transform: none;
-  font-size: 32px; }
+  font-size: 2vw;
+  position: relative; }
 
 .screen .title {
   color: #D55320;
-  margin-bottom: 10px; }
+  margin-bottom: 0.625vw; }
 
 .screen .artist {
   color: #E1D7CE; }
 
-.screen .rank {
+#screen_results .rank {
   font-family: 'Oswald-RegularItalic';
-  font-size: 60px;
+  font-size: 3.75vw;
   color: #E1D7CE;
-  margin: 230px 0 10px; }
+  margin: 9.375vw 0 0.625vw;
+  position: relative; }
 
 .screen .stars {
-  font-size: 32px;
-  color: #363535; }
-
-.screen .stars i:not(:last-child) {
-  margin-right: 4px; }
+  color: #363535;
+  position: relative; }
 
 .screen .stars i.on {
   color: #D55320; }
+
+#screen_results .stars {
+  font-size: 2vw; }
+
+#screen_results .stars i:not(:last-child) {
+  margin-right: 0.25vw; }

@@ -49,11 +49,11 @@ $(document).ready(function() {
 	$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
 
 	$(window).resize(function() {
-		$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
-		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
-
 		if($audioEngine.BGM) requestAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
 		if($game) requestAnimationFrame($game.song.draw);
+
+		$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
+		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	});
 
     $audioEngine = AudioEngine.getInstance();
@@ -383,6 +383,25 @@ function clearProps(timeline) {
 	  if(targets[i].target != null)
 	  	TweenMax.set(targets[i].target, {clearProps:"all"});
 	}
+}
+
+function toEm(pixels, context) {
+  context = context || 16;
+  var newValue = pixels / context;
+
+  return newValue.toFixed(3);
+}
+
+function toVw(em, context) {
+  context = context || 1;
+  var newValue = em / context;
+  var percentage = $(window).width() * em / 100;
+
+  return percentage.toFixed(3);
+}
+
+function toVwPixelValue(pixels, contextEm, contextVw) {
+	return Math.round(toVw(toEm(pixels, contextEm), contextVw));
 }
 
 //===============================
