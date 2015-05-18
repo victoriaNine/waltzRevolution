@@ -62,8 +62,6 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! bgm loop fix
  ! sfx implementation (!!hover, !!confirm, !!back, !!play, !!note input, !!tied note input, !!open pause menu, !!close pause menu, !!points count, !!stage complete, !!new record, !!stage failed)
  ! canvas resize fix
-- clean code
-
 
 => 05/17/2015 - 05/18/2015
 ! crossbrowser check
@@ -75,16 +73,16 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 - responsive (add on-screen pause button)
 ! favicon
 ! clean code
-- checklist
+~ checklist
 
 ----------
 
 Checklist :
 - Clean Code (organization, cohesion)
 ! Semantics (Markup)
-- Web Technologies
+! Web Technologies
 - Accessibility
 - SEO
 - Performance
-- Animations
+! Animations
 - Responsive Design
