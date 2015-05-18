@@ -380,7 +380,7 @@ a:hover {
   z-index: 3;
   position: absolute; }
 
-#keys li {
+#keys li, .note {
   width: 36px;
   height: 36px;
   background: #333;
