@@ -61,16 +61,17 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
  ! "retry" debug (bug : play > main menu > play > gameover + "cannot read property 'pause' of undefined   song.js:113")
  ! bgm loop fix
  ! sfx implementation (!!hover, !!confirm, !!back, !!play, !!note input, !!tied note input, !!open pause menu, !!close pause menu, !!points count, !!stage complete, !!new record, !!stage failed)
+ ! canvas resize fix
 - clean code
 
 
 => 05/17/2015 - 05/18/2015
-- loading
-! canvas resize fix
+! crossbrowser check
+~ crossbrowser audio (FF issues)
+- loading screen
+- audio loop fix
 - audio visualizer fix
 - fix arrows visibility
-! crossbrowser check
-~ crossbrowser audio
 - responsive
 - clean code
 - checklist
