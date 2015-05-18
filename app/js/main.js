@@ -231,14 +231,12 @@ $(".bt_back").on(eventtype, function() {
 	$(".overlay.active").removeClass("active");
 });
 
-$("button, a").on(eventtype, function() {
+$("button, a, #screen_howToPlay .panel li").on(eventtype, function() {
 	if($(this).hasClass("bt_play")) $audioEngine.SFX.play("play");
 	else if($(this).hasClass("bt_back")) $audioEngine.SFX.play("back");
 	else if($(this).hasClass("bt_resume")) $audioEngine.SFX.play("pauseClose");
 	else $audioEngine.SFX.play("confirm");
-});
-
-$("button, a, #screen_howToPlay .panel li").mouseenter(function() {
+}).mouseenter(function() {
 	$audioEngine.SFX.play("hover");
 });
 

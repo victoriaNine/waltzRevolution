@@ -463,8 +463,14 @@ Game.prototype.updateHP = function() {
 	var percentage = this.HP * 100 / this.maxHP;
 	var currentValue = parseFloat($("#life .value").html()) || 0;
 
+	if(currentValue > percentage) $("#lifeSphere").addClass("drop");
+
 	scrollToValue($("#life .value"), currentValue, percentage, true, false, "%", true);
-	TweenMax.to($("#lifeSphere .bar"), .4, {height: percentage+"%", ease:Power3.easeInOut});
+	TweenMax.to($("#lifeSphere .bar"), .4, { height: percentage+"%", ease:Power3.easeInOut,
+		onComplete:function() {
+			if($("#lifeSphere").hasClass("drop")) $("#lifeSphere").removeClass("drop");
+		}
+	});
 
 	if(percentage <= 25) $("#lifeSphere").addClass("critical");
 	else if($("#lifeSphere").hasClass("critical")) $("#lifeSphere").removeClass("critical");
