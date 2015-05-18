@@ -456,6 +456,10 @@ button {
   text-align: left;
   margin: 2.5vw 0 0;
   position: relative;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
   transition: letter-spacing .2s ease-out; }
 
 button:hover {
