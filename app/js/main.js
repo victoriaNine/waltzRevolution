@@ -57,6 +57,20 @@ $(document).ready(function() {
 //===============================
 // GAME SEQUENCES
 //===============================
+function loadingScreen() {
+	var percentBGM = ($audioEngine.loadBGM * 100 / $audioEngine.loadBGMTotal);
+	var percentSFX = ($audioEngine.loadSFX * 100 / $audioEngine.loadSFXTotal);
+
+	if(isNaN(percentBGM) || !isFinite(percentBGM)) percentBGM = 0;
+	if(isNaN(percentSFX) || !isFinite(percentSFX)) percentSFX = 0;
+
+	var totalPercent = (percentBGM + percentSFX) / 2;
+	var currentValue = parseFloat($("#screen_loading .percent").html());
+	scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, true, "%", true);
+
+	if(totalPercent == 100) $(document).off("loadingBGM loadingSFX", loadingScreen);
+}
+
 function toMainMenu() {
 	var bgmURL = "audio/bgm/junction";
 
@@ -65,6 +79,7 @@ function toMainMenu() {
 		$("#screen_loading").addClass("active");
 
 		TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
+		$(document).on("loadingBGM loadingSFX", loadingScreen);
 	}
 
 	$audioEngine.BGM.setFile("junction");
@@ -88,18 +103,6 @@ function toMainMenu() {
 			}
 			else showMainMenu();
 		});
-	});
-
-	$(document).on("loadingBGM loadingSFX", function(e) {
-		var percentBGM = ($audioEngine.loadBGM * 100 / $audioEngine.loadBGMTotal);
-		var percentSFX = ($audioEngine.loadSFX * 100 / $audioEngine.loadSFXTotal);
-
-		if(isNaN(percentBGM) || !isFinite(percentBGM)) percentBGM = 0;
-		if(isNaN(percentSFX) || !isFinite(percentSFX)) percentSFX = 0;
-
-		var totalPercent = (percentBGM + percentSFX) / 2;
-		var currentValue = parseFloat($("#screen_loading .percent").html());
-		scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, true, "%", true);
 	});
 }
 
@@ -157,24 +160,22 @@ function newGame() {
 //===============================
 // GUI INTERACTION
 //===============================
-$(".bt_play").on(eventtype, function() {
-	toGameScreen();
-});
-
-$(".bt_highScores").on(eventtype, function() {
-	showHighScores();
-});
+$(".bt_play").on(eventtype, toGameScreen);
+$(".bt_highScores").on(eventtype, showHighScores);
 
 $(".bt_howToPlay").on(eventtype, function() {
 	$("#screen_howToPlay").addClass("active");
 	toggleTitle(true);
 
 	$(window).on("keydown", howToPlay_onKeydown).on("keyup", howToPlay_onKeyup);
+	$("#screen_howToPlay li").on('touchstart touchend', howToPlay_onTouchevent);
 });
 
 var howToPlay_onKeydown = function(e) {
 	e.preventDefault();
-	$audioEngine.SFX.play("noteInput");
+
+	var gamePad = [38, 39, 37, 40, 32, 80];
+	if(gamePad.indexOf(e.which) != -1) $audioEngine.SFX.play("noteInput");
 
 	if(e.which == 38) $("#screen_howToPlay .keyUp").addClass("pressed");
 	if(e.which == 39) $("#screen_howToPlay .keyRight").addClass("pressed");
@@ -193,6 +194,26 @@ var howToPlay_onKeyup = function(e) {
 	if(e.which == 40) $("#screen_howToPlay .keyDown").removeClass("pressed");
 	if(e.which == 32) $("#screen_howToPlay .keySpace").removeClass("pressed");
 	if(e.which == 80) $("#screen_howToPlay .keyPause").removeClass("pressed");
+}
+
+var howToPlay_onTouchevent = function(e) {
+	e.preventDefault();
+
+	var type;
+	if(e.type == 'touchstart') type = 'keydown';
+	if(e.type == 'touchend') type = 'keyup';
+
+	var code;
+	if(this.className == "keyUp") code = 38;
+	if(this.className == "keyRight") code = 39;
+	if(this.className == "keyLeft") code = 37;
+	if(this.className == "keyDown") code = 40;
+	if(this.className == "keySpace") code = 32;
+	if(this.className == "keyPause") code = 80;
+
+	var _e = $.Event(type);
+	_e.which = _e.keyCode = code;
+	$(window).trigger(_e);
 }
 
 $(".bt_credits").on(eventtype, function() {
@@ -222,16 +243,21 @@ $(".bt_mainMenu").on(eventtype, function() {
 	}
 });
 
+$(".pauseSwitch").on(eventtype, function() {
+	if($game && $game.ready) $game.togglePause();
+});
+
 $(".bt_back").on(eventtype, function() {
 	if($("#screen_howToPlay").hasClass("active")) {
 		$(window).off("keydown", howToPlay_onKeydown).off("keyup", howToPlay_onKeyup);
+		$("#screen_howToPlay li").off('touchstart touchend', howToPlay_onTouchevent);
 	}
 
 	toggleTitle(false);
 	$(".overlay.active").removeClass("active");
 });
 
-$("button, a, #screen_howToPlay .panel li").on(eventtype, function() {
+$("button, a, #screen_howToPlay li").on(eventtype, function() {
 	if($(this).hasClass("bt_play")) $audioEngine.SFX.play("play");
 	else if($(this).hasClass("bt_back")) $audioEngine.SFX.play("back");
 	else if($(this).hasClass("bt_resume")) $audioEngine.SFX.play("pauseClose");

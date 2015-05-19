@@ -56,6 +56,7 @@ Game.prototype.loadSong = function() {
 		$("#screen_loading").addClass("active");
 
 		TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
+		$(document).on("loadingBGM loadingSFX", loadingScreen);
 	}
 
 	this.song = Song.getInstance(this.songFile, function() {
@@ -104,15 +105,13 @@ Game.prototype.start = function() {
 	this.ready = true;
 
 	$("#screen_play").addClass("ready");
-
-	if(!mobileCheck()) this.song.start();
+	this.song.start();
 }
 
 Game.prototype.launch = function() {
 	var startSong = function() {
 		$game.start();
 		$("body").off(eventtype, startSong);
-
 
 		$audioEngine.BGM.drawAudioVisualizer();
 		toggleAudioVisualizer(true);
@@ -123,11 +122,8 @@ Game.prototype.launch = function() {
 		clearProps($game.intro);
 
 		checkFocus(function() {
-			setTimeout(function() {
-				mobileCheck() ? function() {
-					$("body").on(eventtype, startSong);
-				} : startSong();
-			}, 1000);
+			if(mobileCheck()) $("body").on(eventtype, startSong);
+			else setTimeout(startSong, 1000);
 		});
 	}
 
@@ -172,7 +168,7 @@ Game.prototype.resume = function() {
   }
 }
 
-Game.prototype.triggerPause = function() {
+Game.prototype.togglePause = function() {
   $game.paused ? $game.resume() : $game.pause();
 }
 
@@ -267,13 +263,13 @@ Game.prototype.addListeners = function() {
 	}
 
 	$(window).keydown(this.onKeydown).keyup(this.onKeyup).blur(this.onBlur);
-	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").on('touchstart touchend', this.onTouchevent);
+	$("#keys li").on('touchstart touchend', this.onTouchevent);
 }
 
 
 Game.prototype.removeListeners = function() {
 	$(window).off("keydown", this.onKeydown).off("keyup", this.onKeyup).off("blur", this.onBlur);
-	$("#keys .keyUp, #keys .keyRight, #keys .keyLeft, #keys .keyDown, #keys .keySpace").off('touchstart touchend', this.onTouchevent);
+	$("#keys li").off('touchstart touchend', this.onTouchevent);
 }
 
 
@@ -286,7 +282,7 @@ Game.prototype.detectInputAccuracy = function(key) {
 	var gamePad = key.gamePad;
 	var inputDelay = (new Date().getTime() - key.when) / 1000;
 
-	if(keyName == "P") $game.triggerPause();
+	if(keyName == "P") $game.togglePause();
 	if($game.paused || !gamePad) return;
 
 	$("#keys .key"+keyNameFirstLetterUppercase).addClass("pressed");

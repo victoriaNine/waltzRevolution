@@ -179,6 +179,15 @@ a:hover {
   font-size: 1.875vw;
   color: #706F6E; }
 
+#songInfo .pauseSwitch {
+  position: absolute;
+  right: 2.5vw;
+  top: 2.5vw;
+  font-size: 1.25vw; }
+
+html:not(.isMobile) #songInfo .pauseSwitch {
+  display: none; }
+
 /*******/
 #hud {
   width: 100%;
@@ -196,6 +205,10 @@ a:hover {
   position: absolute;
   overflow: hidden;
   bottom: 2.5vw;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
   transform: scale(1); }
 
 #lifeSphere:before {
@@ -208,6 +221,10 @@ a:hover {
   bottom: 0;
   left: 0;
   box-sizing: border-box;
+  -webkit-transition: -webkit-border-color .2s ease-out;
+  -moz-transition: -moz-border-color .2s ease-out;
+  -ms-transition: -ms-border-color .2s ease-out;
+  -o-transition: -o-border-color .2s ease-out;
   transition: border-color .2s ease-out; }
 
 #lifeSphere.drop:before {
@@ -219,6 +236,10 @@ a:hover {
   position: absolute;
   bottom: 0;
   background: #363535;
+  -webkit-transition: -webkit-background .2s ease-out;
+  -moz-transition: -moz-background .2s ease-out;
+  -ms-transition: -ms-background .2s ease-out;
+  -o-transition: -o-background .2s ease-out;
   transition: background .2s ease-out; }
 
 #lifeSphere.drop .bar {
@@ -295,6 +316,10 @@ a:hover {
   width: calc(100% - 14.375vw);
   bottom: 2.5vw;
   color: #363535;
+  -webkit-transition: -webkit-color .4s ease-out;
+  -moz-transition: -moz-color .4s ease-out;
+  -ms-transition: -ms-color .4s ease-out;
+  -o-transition: -o-color .4s ease-out;
   transition: color .4s ease-out; }
 
 #screen_play.ready #gameInfo {
@@ -353,6 +378,10 @@ a:hover {
   width: 2px;
   background: #706F6E;
   z-index: 2;
+  -webkit-transition: -webkit-background .2s ease-out;
+  -moz-transition: -moz-background .2s ease-out;
+  -ms-transition: -ms-background .2s ease-out;
+  -o-transition: -o-background .2s ease-out;
   transition: background .2s ease-out; }
 
 #progressBar .marker.passed {
@@ -388,7 +417,7 @@ a:hover {
   z-index: 3;
   position: absolute; }
 
-#keys li, .note {
+#keys li, .icon {
   width: 36px;
   height: 36px;
   background: #333;
@@ -396,38 +425,42 @@ a:hover {
   margin-bottom: 4px;
   border-radius: 50%;
   text-align: center;
-  font-size: 16px; }
+  font-size: 16px;
+  cursor: pointer; }
 
-.note {
-  width: 2.25vw;
-  height: 2.25vw;
-  margin-bottom: 0.25vw;
-  font-size: inherit; }
+.icon {
+  width: 2vw;
+  height: 2vw;
+  font-size: 1.25vw; }
 
-#keys li.pressed, li.pressed .note, li:hover .note {
+#keys li.pressed, li.pressed .icon {
   background: #D55320;
   color: #F8F4F0; }
 
-#keys i, .note i {
+#keys i {
   line-height: 1.5em;
   font-size: 1.5em; }
 
+.icon i {
+  line-height: 1.25em;
+  font-size: 1.25em; }
+
 #accuracy {
-  left: 3vw;
-  top: -1.25vw; }
+  left: 48px;
+  top: -20px; }
 
 #accuracy li {
   font-weight: 400;
   color: #D55320;
   font-family: "Press Start 2P", cursive;
-  font-size: 0.625vw;
+  font-size: 10px;
   background: #363535;
-  padding: 0.5vw;
+  padding: 8px;
   box-sizing: border-box;
-  border-radius: 0.625vw;
-  margin-bottom: 0.5vw;
-  line-height: 1vw;
-  height: 2vw;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  line-height: 16px;
+  height: 32px;
   display: table;
   opacity: 0; }
 
@@ -439,7 +472,7 @@ a:hover {
   float: right;
   display: inline-block;
   text-align: right;
-  margin-left: 0.625vw; }
+  margin-left: 10px; }
 
 #notes {
   width: calc(100% - 16px);
@@ -469,6 +502,10 @@ button {
   font-size: inherit;
   font-weight: inherit;
   text-transform: inherit;
+  -webkit-transition: -webkit-letter-spacing .2s ease-out;
+  -moz-transition: -moz-letter-spacing .2s ease-out;
+  -ms-transition: -ms-letter-spacing .2s ease-out;
+  -o-transition: -o-letter-spacing .2s ease-out;
   transition: letter-spacing .2s ease-out; }
 
 button:hover {
@@ -483,21 +520,45 @@ button:hover {
   z-index: 1;
   pointer-events: none;
   opacity: 0;
+  -webkit-transition: -webkit-opacity .2s .4s ease-out;
+  -moz-transition: -moz-opacity .2s .4s ease-out;
+  -ms-transition: -ms-opacity .2s .4s ease-out;
+  -o-transition: -o-opacity .2s .4s ease-out;
   transition: opacity .2s .4s ease-out; }
 
 .screen.active {
   pointer-events: auto;
   opacity: 1;
+  -webkit-transition: -webkit-opacity .2s ease-out;
+  -moz-transition: -moz-opacity .2s ease-out;
+  -ms-transition: -ms-opacity .2s ease-out;
+  -o-transition: -o-opacity .2s ease-out;
   transition: opacity .2s ease-out; }
 
 .overlay {
   z-index: 9999;
   background: rgba(0, 0, 0, 0.95);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
   transform: scale(1.2);
+  -webkit-transition: -webkit-all .2s .4s ease-out;
+  -moz-transition: -moz-all .2s .4s ease-out;
+  -ms-transition: -ms-all .2s .4s ease-out;
+  -o-transition: -o-all .2s .4s ease-out;
   transition: all .2s .4s ease-out; }
 
 .overlay.active {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
   transform: scale(1);
+  -webkit-transition: -webkit-all .2s ease-out;
+  -moz-transition: -moz-all .2s ease-out;
+  -ms-transition: -ms-all .2s ease-out;
+  -o-transition: -o-all .2s ease-out;
   transition: all .2s ease-out; }
 
 .screen .container {
@@ -515,6 +576,10 @@ button:hover {
   margin-bottom: 1em;
   font-family: 'Oswald-RegularItalic';
   position: relative;
+  -webkit-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
   transform-origin: 0 0; }
 
 #screen_results h1 {
@@ -601,17 +666,15 @@ button:hover {
 #screen_howToPlay li:nth-child(1), #screen_howToPlay li:nth-child(2), #screen_howToPlay li:nth-child(3) {
   margin-bottom: 1vw; }
 
-#screen_howToPlay .note, #screen_howToPlay .label {
+#screen_howToPlay .icon, #screen_howToPlay .label {
   display: inline-block; }
 
-#screen_howToPlay .note {
-  width: 2vw;
-  height: 2vw;
+#screen_howToPlay .icon {
   margin-right: 1vw; }
 
-#screen_howToPlay .note i {
-  line-height: 1.25em;
-  font-size: 1.25em; }
+#screen_howToPlay li:hover .icon {
+  background: #D55320;
+  color: #F8F4F0; }
 
 #screen_howToPlay .label {
   color: #E1D7CE;
@@ -634,15 +697,27 @@ button:hover {
   font-family: "Press Start 2P", cursive;
   color: #D55320;
   font-size: 0.4375vw;
-  transform: translateY(0.625vw);
   opacity: 0;
   position: absolute;
   top: -2.5vw;
   left: 0;
   white-space: nowrap;
-  transition: all 0.2s ease-out; }
+  -webkit-transform: translateY(0.625vw);
+  -moz-transform: translateY(0.625vw);
+  -ms-transform: translateY(0.625vw);
+  -o-transform: translateY(0.625vw);
+  transform: translateY(0.625vw);
+  -webkit-transition: -webkit-all.2s ease-out;
+  -moz-transition: -moz-all.2s ease-out;
+  -ms-transition: -ms-all.2s ease-out;
+  -o-transition: -o-all.2s ease-out;
+  transition: all.2s ease-out; }
 
 #screen_credits button:hover:after {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
   transform: translateY(0);
   opacity: 1; }
 
@@ -673,6 +748,10 @@ button:hover {
   font-size: 1.125vw;
   left: 3vw;
   opacity: 0;
+  -webkit-transition: -webkit-none;
+  -moz-transition: -moz-none;
+  -ms-transition: -ms-none;
+  -o-transition: -o-none;
   transition: none; }
 
 .screen .newRecord:before {
@@ -692,6 +771,10 @@ button:hover {
 .screen .newRecord.visible {
   left: 2vw;
   opacity: 1;
+  -webkit-transition: -webkit-all .5s ease-out;
+  -moz-transition: -moz-all .5s ease-out;
+  -ms-transition: -ms-all .5s ease-out;
+  -o-transition: -o-all .5s ease-out;
   transition: all .5s ease-out; }
 
 #screen_results nav {
