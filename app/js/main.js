@@ -152,9 +152,7 @@ function showHighScores() {
 	toggleTitle(true);
 }
 
-function newGame() {
-	$game = Game.getInstance("js/waltz.json");
-}
+function newGame() {　$game = Game.getInstance("js/waltz.json");　}
 
 
 //===============================
@@ -367,10 +365,10 @@ function toEm(pixels, context) {
   return newValue.toFixed(3);
 }
 
-function toVw(em, context) {
+function toVw(pixels, context) {
   context = context || 1;
-  var newValue = em / context;
-  var percentage = $(window).width() * em / 100;
+  var newValue = pixels / context;
+  var percentage = newValue / $(window).width() * newValue;
 
   return percentage.toFixed(3);
 }
@@ -439,8 +437,8 @@ function tabletCheck() {
 
 //===============================
 // GOOGLE ANALYTICS
-//===============================
 (function(b,o,i,l,e,r){
+//===============================
 	b.GoogleAnalyticsObject=l;b[l]||(b[l]=function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
 	e=o.createElement(i);r=o.getElementsByTagName(i)[0];
 	e.src='//www.google-analytics.com/analytics.js';

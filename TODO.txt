@@ -70,6 +70,7 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 - audio loop fix
 - audio visualizer fix
 - fix arrows visibility
+- fix gameover-on-resize bug
 ~ responsive (add on-screen pause button)
 ! favicon
 ! clean code

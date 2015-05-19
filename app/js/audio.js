@@ -386,7 +386,7 @@ function BGM() {
 	    var bandWidth = Math.ceil($(window).width() / nbEQband);
 	    
 	    var zoom = 1;
-	    var maxHeight = toVwPixelValue(255) * zoom;
+	    var maxHeight = toVw(255) * zoom;
 	    var top = $(window).height() + 1;
 
 	    audioVisualizerCtx.save();
@@ -412,14 +412,14 @@ function BGM() {
 	    var bandWidth = Math.ceil($(window).width() / nbEQband);
 
 	    var zoom = 1;
-	    var maxHeight = toVwPixelValue(255) * zoom;
-	    var top = ($(window).height() + 1) - maxHeight / 4;
+	    var maxHeight = toVw(255) * zoom;
+	    var top = ($(window).height() + 1) - maxHeight;
 
 	    audioVisualizerCtx.save();
 		audioVisualizerCtx.fillStyle = "#D55320";
 
 	    for (var i = 0; i <= nbEQband; i++)
-	    	audioVisualizerCtx.fillRect(i * bandWidth, top - dataArray[i], 2, 2);
+	    	audioVisualizerCtx.fillRect(i * bandWidth, top - dataArray[i] * zoom, 2, 2);
 
 	    audioVisualizerCtx.restore();
 	}
