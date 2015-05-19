@@ -375,7 +375,7 @@ function toVw(em, context) {
   return percentage.toFixed(3);
 }
 
-function toVwPixelValue(pixels, contextEm, contextVw) {
+function toEmToVw(pixels, contextEm, contextVw) {
 	return Math.round(toVw(toEm(pixels, contextEm), contextVw));
 }
 

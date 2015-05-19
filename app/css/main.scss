@@ -1,3 +1,6 @@
+/*=======================*/
+/* VARIABLES, FUNCTIONS
+/*=======================*/
 $browserContext:16px;
 
 @function em($pixels, $context: $browserContext) {
@@ -18,11 +21,9 @@ $orange: #D55320;
 $beige: #E1D7CE;
 $offWhite: #F8F4F0;
 $red: #C32B44;
-
 $lightGrey: #706F6E;
 $midGrey: #363535;
 $darkGrey: #161515;
-
 $borderRadius: vw(10px);
 
 $fontSize7px:  vw(em(7), 1em);
@@ -37,6 +38,7 @@ $fontSize36px: vw(em(36), 1em);
 $fontSize48px: vw(em(48), 1em);
 $fontSize60px: vw(em(60), 1em);
 $fontSize80px: vw(em(80), 1em);
+
 
 /*=======================*/
 /* MIXINS
@@ -83,6 +85,7 @@ $fontSize80px: vw(em(80), 1em);
   transition: #{$str};
 }
 
+
 /*=======================*/
 /* FONT FACES
 /*=======================*/
@@ -100,7 +103,7 @@ $fontSize80px: vw(em(80), 1em);
 
 
 /*=======================*/
-/* 12 columns Responsive Grid
+/* 12 COLUMNS RESPONSIVE GRID
 /*=======================*/
 .row { zoom: 1; }
 .row:before,
@@ -143,10 +146,36 @@ html, body {
   color:$midGrey;
 }
 
-hr { border: none; background: $midGrey; height: 1px; }
+button {
+  width:vw(160px);
+  height:vw(50px);
+  background:$darkGrey;
+  color:$beige;
+  border:none;
+  outline: none;
+  border-radius:$borderRadius;
+  padding-left:vw(16px);
+  line-height:vw(50px);
+  box-sizing:border-box;
+  display:inline-block;
+  cursor:pointer;
+  text-align:left;
+  margin:vw(40px) 0 0;
+  position:relative;
+
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+
+  @include transition("letter-spacing .2s ease-out");
+}
+
+button:hover { background:$midGrey; letter-spacing: 1px; }
 
 a { color: inherit; text-decoration: none; }
 a:hover { color:$orange; }
+hr { border: none; background: $midGrey; height: 1px; }
 
 ::-moz-selection {
   background:  $orange;
@@ -160,6 +189,10 @@ a:hover { color:$orange; }
   text-shadow: none;
 }
 
+
+/*=======================*/
+/* TOOLBOX
+/*=======================*/
 .left { float:left; }
 .right { float:right; }
 
@@ -173,17 +206,10 @@ a:hover { color:$orange; }
 .orange { color:$orange; }
 .midGrey { color:$midGrey; }
 
-#bg {
-  width:100%;
-  height:100%;
-  position:absolute;
-  background:$offWhite url("../img/bg.jpg") no-repeat;
-  background-size:cover;
-  z-index: 0;
-}
 
-#audioVisualizer { position:absolute; width:100%; height:100%; top:0; left:0; }
-
+/*=======================*/
+/* ROOT CONTAINERS
+/*=======================*/
 #wrapper {
   width:100%;
   height:100%;
@@ -202,15 +228,117 @@ a:hover { color:$orange; }
   flex-direction: column;
 }
 
+#bg {
+  width:100%;
+  height:100%;
+  position:absolute;
+  background:$offWhite url("../img/bg.jpg") no-repeat;
+  background-size:cover;
+  z-index: 0;
+}
 
-/*******/
-#screen_play {
+#audioVisualizer { position:absolute; width:100%; height:100%; top:0; left:0; }
+
+
+/*=======================*/
+/* SCREENS
+/*=======================*/
+.screen {
   position: absolute;
   width: 100%;
   height: 100%;
+  font-size:$fontSize20px;
+  z-index: 1;
+
+  pointer-events:none;
+  opacity:0;
+
+  @include transition("opacity .2s .4s ease-out");
 }
 
-/*******/
+.screen.active {
+  pointer-events:auto;
+  opacity:1;
+
+  @include transition("opacity .2s ease-out");
+}
+
+.overlay {
+  z-index: 9999;
+  background: rgba(0,0,0,.95);
+
+  @include transform("scale(1.2)");
+  @include transition("all .2s .4s ease-out");
+}
+
+.overlay.active {
+  @include transform("scale(1)");
+  @include transition("all .2s ease-out");
+}
+
+.screen .container {
+  width:vw(1200px);
+  height:vw(550px);
+  position:absolute;
+  left:calc(50% - #{vw(1200px)} / 2);
+  top:calc(50% - #{vw(550px)} /2);
+  padding:0 vw(40px);
+  box-sizing:border-box;
+}
+
+.screen h1 {
+  color: $orange;
+  font-size: $fontSize80px;
+  margin-bottom:1em;
+  font-family: 'Oswald-RegularItalic';
+  position:relative;
+
+  -webkit-transform-origin:0 0;
+  -moz-transform-origin:0 0;
+  -ms-transform-origin:0 0;
+  -o-transform-origin:0 0;
+  transform-origin:0 0;
+}
+
+.screen p { line-height: 1.25em; }
+
+.screen nav button { margin: 0 vw(50px) 0 0; }
+.screen nav button:last-child { margin-right:0; }
+
+.screen .left, .screen .right { height: calc(100% - #{vw(130px)}); width:calc(50% - #{vw(40px)}); }
+.screen .right { text-align:right; }
+
+.screen .panel {
+  background: $darkGrey;
+  border-radius:$borderRadius;
+  padding: vw(10px);
+  box-sizing: border-box;
+  font-size: $fontSize19px;
+}
+
+.screen .panel h2 {
+  font-family: "Press Start 2P", cursive;
+  text-transform: none;
+  text-align: center;
+  margin: vw(15px) 0 vw(25px);
+  color:$beige;
+}
+
+.screen .row { line-height: 1.25em; position:relative; }
+.screen .row span { display:inline-block; position:relative; }
+.screen .nb, .screen .points, .screen .percent { text-align: right; }
+
+.screen .title, .screen .artist { text-transform:none; font-size:$fontSize32px; position:relative; }
+.screen .title { color:$orange; margin-bottom:vw(10px); }
+.screen .artist { color:$beige; }
+.screen .stars { color:$midGrey; position:relative; }
+.screen .stars i.on { color:$orange; }
+
+
+/*=======================*/
+/* PLAY SCREEN
+/*=======================*/
+/* TOP SECTION --------------*/
 #songInfo {
   width:100%;
   height:150px;
@@ -238,7 +366,7 @@ a:hover { color:$orange; }
 
 html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 
-/*******/
+/* BOTTOM SECTION --------------*/
 #hud {
   width:100%;
   height:vw(180px);
@@ -316,8 +444,8 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 #gameInfo > div { position:relative; }
 
 #life, #progress { height:vw(30px); margin-top:vw(15px); }
-#progress { display: inline-block; }
-#score { display: inline-block; margin-top: vw(-6px); }
+#progress, #score { display: inline-block; }
+#score { margin-top: vw(-6px); }
 
 #gameInfo .value {
   color:$orange;
@@ -370,7 +498,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 #progressBar .marker.p90 { left: 90%; }
 
 
-/*******/
+/* STAFF --------------*/
 #staff {
   width:calc(100% - #{vw(40px)});
   height:195px;
@@ -392,7 +520,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   z-index:2;
 }
 
-#keys, #accuracy { z-index:3; position:absolute;; }
+#keys { z-index:3; position:absolute; }
 
 #keys li, .icon {
   width:36px;
@@ -407,11 +535,12 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 }
 
 .icon { width:vw(32px); height:vw(32px); font-size: $fontSize20px; }
+
 #keys li.pressed, li.pressed .icon { background:$orange; color:$offWhite; }
 #keys i { line-height: 1.5em; font-size:1.5em; }
 .icon i { line-height: 1.25em; font-size: 1.25em; }
 
-#accuracy { left:48px; top: -20px; }
+#accuracy { @extend #keys; left:48px; top: -20px; }
 
 #accuracy li {
   font-weight: 400;
@@ -442,122 +571,13 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 #notes { width: calc(100% - 16px); height: 100%; position:absolute; z-index:2; left: 16px; }
 
 
-/*******/
-button {
-  width:vw(160px);
-  height:vw(50px);
-  background:$darkGrey;
-  color:$beige;
-  border:none;
-  outline: none;
-  border-radius:$borderRadius;
-  padding-left:vw(16px);
-  line-height:vw(50px);
-  box-sizing:border-box;
-  display:inline-block;
-  cursor:pointer;
-  text-align:left;
-  margin:vw(40px) 0 0;
-  position:relative;
-
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  text-transform: inherit;
-
-  @include transition("letter-spacing .2s ease-out");
-}
-
-button:hover { background:$midGrey; letter-spacing: 1px; }
-
-.screen {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  font-size:$fontSize20px;
-  z-index: 1;
-
-  pointer-events:none;
-  opacity:0;
-
-  @include transition("opacity .2s .4s ease-out");
-}
-
-.screen.active {
-  pointer-events:auto;
-  opacity:1;
-
-  @include transition("opacity .2s ease-out");
-}
-
-.overlay {
-  z-index: 9999;
-  background: rgba(0,0,0,.95);
-
-  @include transform("scale(1.2)");
-  @include transition("all .2s .4s ease-out");
-}
-
-.overlay.active {
-  @include transform("scale(1)");
-  @include transition("all .2s ease-out");
-}
-
-.screen .container {
-  width:vw(1200px);
-  height:vw(550px);
-  position:absolute;
-  left:calc(50% - #{vw(1200px)} / 2);
-  top:calc(50% - #{vw(550px)} /2);
-  padding:0 vw(40px);
-  box-sizing:border-box;
-}
-
-.screen h1 {
-  color: $orange;
-  font-size: $fontSize80px;
-  margin-bottom:1em;
-  font-family: 'Oswald-RegularItalic';
-  position:relative;
-
-  -webkit-transform-origin:0 0;
-  -moz-transform-origin:0 0;
-  -ms-transform-origin:0 0;
-  -o-transform-origin:0 0;
-  transform-origin:0 0;
-}
-
-#screen_results h1 { margin-bottom:vw(50px); }
-.screen p { line-height: 1.25em; }
-
-.screen nav button { margin: 0 vw(50px) 0 0; }
-.screen nav button:last-child { margin-right:0; }
-
-.screen .left, .screen .right { height: calc(100% - #{vw(130px)}); width:calc(50% - #{vw(40px)}); }
-.screen .right { text-align:right; }
-
-.screen .panel {
-  background: $darkGrey;
-  border-radius:$borderRadius;
-  padding: vw(10px);
-  box-sizing: border-box;
-  font-size: $fontSize19px;
-}
-
-.screen .panel h2 {
-  font-family: "Press Start 2P", cursive;
-  text-transform: none;
-  text-align: center;
-  margin: vw(15px) 0 vw(25px);
-  color:$beige;
-}
-
-.screen .row { line-height: 1.25em; position:relative; }
-.screen .row span { display:inline-block; position:relative; }
-.screen .nb, .screen .points, .screen .percent { text-align: right; }
-
+/*=======================*/
+/* OTHER SCREENS
+/*=======================*/
+/* LOADING SCREEN --------------*/
 #screen_loading .percent { width:vw(300px); display:inline-block; }
 
+/* HIGH SCORES SCREEN --------------*/
 #screen_highScores .label { width: vw(75px); }
 #screen_highScores .date { width: vw(200px); }
 #screen_highScores .points { width: vw(125px); }
@@ -565,6 +585,7 @@ button:hover { background:$midGrey; letter-spacing: 1px; }
 #screen_highScores .rank { margin-left: vw(16px); }
 #screen_highScores .stars { display:inline-block; width: vw(150px); text-align: right; }
 
+/* HOW TO PLAY SCREEN --------------*/
 #screen_howToPlay p { font-size: $fontSize20px; margin-bottom:vw(32px); }
 #screen_howToPlay ul { display: flex; flex-wrap: wrap; }
 #screen_howToPlay li { display: inline-table; width: 33.3333%; cursor:pointer; }
@@ -589,6 +610,7 @@ button:hover { background:$midGrey; letter-spacing: 1px; }
   font-weight: 600;
 }
 
+/* CREDITS SCREEN --------------*/
 #screen_credits button:after {
   content:"- Thanks for playing!";
   font-family: "Press Start 2P", cursive;
@@ -606,13 +628,15 @@ button:hover { background:$midGrey; letter-spacing: 1px; }
 
 #screen_credits button:hover:after { @include transform("translateY(0)"); opacity:1; }
 
+/* RESULTS SCREEN --------------*/
+#screen_results h1 { margin-bottom:vw(50px); }
 #screen_results .label { width:40%; }
 #screen_results .nb { width: 10%; }
 #screen_results .points { width: 25%; }
 #screen_results .percent { width: 20%; }
 #screen_results #results_totalCompletion { margin-top:vw(14px); }
 
-.screen .newRecord {
+#screen_results .newRecord {
   width: vw(28px);
   height: vw(28px);
   position: absolute;
@@ -628,7 +652,7 @@ button:hover { background:$midGrey; letter-spacing: 1px; }
   @include transition("none");
 }
 
-.screen .newRecord:before {
+#screen_results .newRecord:before {
   content:"new record!";
   position:absolute;
   background: $midGrey;
@@ -643,16 +667,8 @@ button:hover { background:$midGrey; letter-spacing: 1px; }
   top: vw(4px);
 }
 
-.screen .newRecord.visible { left:vw(32px); opacity:1; @include transition("all .5s ease-out"); }
-
+#screen_results .newRecord.visible { left:vw(32px); opacity:1; @include transition("all .5s ease-out"); }
 #screen_results nav { position:absolute; right:vw(40px); bottom:0; }
-.screen .title, .screen .artist { text-transform:none; font-size:$fontSize32px; position:relative; }
-.screen .title { color:$orange; margin-bottom:vw(10px); }
-.screen .artist { color:$beige; }
-
 #screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:$fontSize60px; color:$beige; margin:vw(150px) 0 vw(10px); position:relative; }
-.screen .stars { color:$midGrey; position:relative; }
-.screen .stars i.on { color:$orange; }
-
 #screen_results .stars { font-size:$fontSize32px; }
 #screen_results .stars i:not(:last-child) { margin-right:vw(4px); }

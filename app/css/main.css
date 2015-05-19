@@ -1,4 +1,7 @@
 /*=======================*/
+/* VARIABLES, FUNCTIONS
+/*=======================*/
+/*=======================*/
 /* MIXINS
 /*=======================*/
 /*=======================*/
@@ -11,7 +14,7 @@
   font-weight: normal;
   font-style: normal; }
 /*=======================*/
-/* 12 columns Responsive Grid
+/* 12 COLUMNS RESPONSIVE GRID
 /*=======================*/
 .row {
   zoom: 1; }
@@ -81,10 +84,35 @@ html, body {
   text-transform: uppercase;
   color: #363535; }
 
-hr {
+button {
+  width: 10vw;
+  height: 3.125vw;
+  background: #161515;
+  color: #E1D7CE;
   border: none;
+  outline: none;
+  border-radius: 0.625vw;
+  padding-left: 1vw;
+  line-height: 3.125vw;
+  box-sizing: border-box;
+  display: inline-block;
+  cursor: pointer;
+  text-align: left;
+  margin: 2.5vw 0 0;
+  position: relative;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: inherit;
+  -webkit-transition: -webkit-letter-spacing .2s ease-out;
+  -moz-transition: -moz-letter-spacing .2s ease-out;
+  -ms-transition: -ms-letter-spacing .2s ease-out;
+  -o-transition: -o-letter-spacing .2s ease-out;
+  transition: letter-spacing .2s ease-out; }
+
+button:hover {
   background: #363535;
-  height: 1px; }
+  letter-spacing: 1px; }
 
 a {
   color: inherit;
@@ -92,6 +120,11 @@ a {
 
 a:hover {
   color: #D55320; }
+
+hr {
+  border: none;
+  background: #363535;
+  height: 1px; }
 
 ::-moz-selection {
   background: #D55320;
@@ -103,6 +136,9 @@ a:hover {
   color: #FFF;
   text-shadow: none; }
 
+/*=======================*/
+/* TOOLBOX
+/*=======================*/
 .left {
   float: left; }
 
@@ -123,21 +159,9 @@ a:hover {
 .midGrey {
   color: #363535; }
 
-#bg {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background: #F8F4F0 url("../img/bg.jpg") no-repeat;
-  background-size: cover;
-  z-index: 0; }
-
-#audioVisualizer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0; }
-
+/*=======================*/
+/* ROOT CONTAINERS
+/*=======================*/
 #wrapper {
   width: 100%;
   height: 100%;
@@ -154,13 +178,158 @@ a:hover {
   -o-flex-direction: column;
   flex-direction: column; }
 
-/*******/
-#screen_play {
+#bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #F8F4F0 url("../img/bg.jpg") no-repeat;
+  background-size: cover;
+  z-index: 0; }
+
+#audioVisualizer {
   position: absolute;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  top: 0;
+  left: 0; }
 
-/*******/
+/*=======================*/
+/* SCREENS
+/*=======================*/
+.screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-size: 1.25vw;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-transition: -webkit-opacity .2s .4s ease-out;
+  -moz-transition: -moz-opacity .2s .4s ease-out;
+  -ms-transition: -ms-opacity .2s .4s ease-out;
+  -o-transition: -o-opacity .2s .4s ease-out;
+  transition: opacity .2s .4s ease-out; }
+
+.screen.active {
+  pointer-events: auto;
+  opacity: 1;
+  -webkit-transition: -webkit-opacity .2s ease-out;
+  -moz-transition: -moz-opacity .2s ease-out;
+  -ms-transition: -ms-opacity .2s ease-out;
+  -o-transition: -o-opacity .2s ease-out;
+  transition: opacity .2s ease-out; }
+
+.overlay {
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.95);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+  -webkit-transition: -webkit-all .2s .4s ease-out;
+  -moz-transition: -moz-all .2s .4s ease-out;
+  -ms-transition: -ms-all .2s .4s ease-out;
+  -o-transition: -o-all .2s .4s ease-out;
+  transition: all .2s .4s ease-out; }
+
+.overlay.active {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: -webkit-all .2s ease-out;
+  -moz-transition: -moz-all .2s ease-out;
+  -ms-transition: -ms-all .2s ease-out;
+  -o-transition: -o-all .2s ease-out;
+  transition: all .2s ease-out; }
+
+.screen .container {
+  width: 75vw;
+  height: 34.375vw;
+  position: absolute;
+  left: calc(50% - 75vw / 2);
+  top: calc(50% - 34.375vw /2);
+  padding: 0 2.5vw;
+  box-sizing: border-box; }
+
+.screen h1 {
+  color: #D55320;
+  font-size: 5vw;
+  margin-bottom: 1em;
+  font-family: 'Oswald-RegularItalic';
+  position: relative;
+  -webkit-transform-origin: 0 0;
+  -moz-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  -o-transform-origin: 0 0;
+  transform-origin: 0 0; }
+
+.screen p {
+  line-height: 1.25em; }
+
+.screen nav button {
+  margin: 0 3.125vw 0 0; }
+
+.screen nav button:last-child {
+  margin-right: 0; }
+
+.screen .left, .screen .right {
+  height: calc(100% - 8.125vw);
+  width: calc(50% - 2.5vw); }
+
+.screen .right {
+  text-align: right; }
+
+.screen .panel {
+  background: #161515;
+  border-radius: 0.625vw;
+  padding: 0.625vw;
+  box-sizing: border-box;
+  font-size: 1.1875vw; }
+
+.screen .panel h2 {
+  font-family: "Press Start 2P", cursive;
+  text-transform: none;
+  text-align: center;
+  margin: 0.9375vw 0 1.5625vw;
+  color: #E1D7CE; }
+
+.screen .row {
+  line-height: 1.25em;
+  position: relative; }
+
+.screen .row span {
+  display: inline-block;
+  position: relative; }
+
+.screen .nb, .screen .points, .screen .percent {
+  text-align: right; }
+
+.screen .title, .screen .artist {
+  text-transform: none;
+  font-size: 2vw;
+  position: relative; }
+
+.screen .title {
+  color: #D55320;
+  margin-bottom: 0.625vw; }
+
+.screen .artist {
+  color: #E1D7CE; }
+
+.screen .stars {
+  color: #363535;
+  position: relative; }
+
+.screen .stars i.on {
+  color: #D55320; }
+
+/*=======================*/
+/* PLAY SCREEN
+/*=======================*/
+/* TOP SECTION --------------*/
 #songInfo {
   width: 100%;
   height: 150px;
@@ -188,7 +357,7 @@ a:hover {
 html:not(.isMobile) #songInfo .pauseSwitch {
   display: none; }
 
-/*******/
+/* BOTTOM SECTION --------------*/
 #hud {
   width: 100%;
   height: 11.25vw;
@@ -332,11 +501,10 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   height: 1.875vw;
   margin-top: 0.9375vw; }
 
-#progress {
+#progress, #score {
   display: inline-block; }
 
 #score {
-  display: inline-block;
   margin-top: -0.375vw; }
 
 #gameInfo .value {
@@ -396,7 +564,7 @@ html:not(.isMobile) #songInfo .pauseSwitch {
 #progressBar .marker.p90 {
   left: 90%; }
 
-/*******/
+/* STAFF --------------*/
 #staff {
   width: calc(100% - 2.5vw);
   height: 195px;
@@ -417,7 +585,7 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   z-index: 3;
   position: absolute; }
 
-#keys li, .icon {
+#keys li, #accuracy li, .icon {
   width: 36px;
   height: 36px;
   background: #333;
@@ -433,11 +601,11 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   height: 2vw;
   font-size: 1.25vw; }
 
-#keys li.pressed, li.pressed .icon {
+#keys li.pressed, #accuracy li.pressed, li.pressed .icon {
   background: #D55320;
   color: #F8F4F0; }
 
-#keys i {
+#keys i, #accuracy i {
   line-height: 1.5em;
   font-size: 1.5em; }
 
@@ -481,155 +649,15 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   z-index: 2;
   left: 16px; }
 
-/*******/
-button {
-  width: 10vw;
-  height: 3.125vw;
-  background: #161515;
-  color: #E1D7CE;
-  border: none;
-  outline: none;
-  border-radius: 0.625vw;
-  padding-left: 1vw;
-  line-height: 3.125vw;
-  box-sizing: border-box;
-  display: inline-block;
-  cursor: pointer;
-  text-align: left;
-  margin: 2.5vw 0 0;
-  position: relative;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  text-transform: inherit;
-  -webkit-transition: -webkit-letter-spacing .2s ease-out;
-  -moz-transition: -moz-letter-spacing .2s ease-out;
-  -ms-transition: -ms-letter-spacing .2s ease-out;
-  -o-transition: -o-letter-spacing .2s ease-out;
-  transition: letter-spacing .2s ease-out; }
-
-button:hover {
-  background: #363535;
-  letter-spacing: 1px; }
-
-.screen {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  font-size: 1.25vw;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-  -webkit-transition: -webkit-opacity .2s .4s ease-out;
-  -moz-transition: -moz-opacity .2s .4s ease-out;
-  -ms-transition: -ms-opacity .2s .4s ease-out;
-  -o-transition: -o-opacity .2s .4s ease-out;
-  transition: opacity .2s .4s ease-out; }
-
-.screen.active {
-  pointer-events: auto;
-  opacity: 1;
-  -webkit-transition: -webkit-opacity .2s ease-out;
-  -moz-transition: -moz-opacity .2s ease-out;
-  -ms-transition: -ms-opacity .2s ease-out;
-  -o-transition: -o-opacity .2s ease-out;
-  transition: opacity .2s ease-out; }
-
-.overlay {
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.95);
-  -webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-  -o-transform: scale(1.2);
-  transform: scale(1.2);
-  -webkit-transition: -webkit-all .2s .4s ease-out;
-  -moz-transition: -moz-all .2s .4s ease-out;
-  -ms-transition: -ms-all .2s .4s ease-out;
-  -o-transition: -o-all .2s .4s ease-out;
-  transition: all .2s .4s ease-out; }
-
-.overlay.active {
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -o-transform: scale(1);
-  transform: scale(1);
-  -webkit-transition: -webkit-all .2s ease-out;
-  -moz-transition: -moz-all .2s ease-out;
-  -ms-transition: -ms-all .2s ease-out;
-  -o-transition: -o-all .2s ease-out;
-  transition: all .2s ease-out; }
-
-.screen .container {
-  width: 75vw;
-  height: 34.375vw;
-  position: absolute;
-  left: calc(50% - 75vw / 2);
-  top: calc(50% - 34.375vw /2);
-  padding: 0 2.5vw;
-  box-sizing: border-box; }
-
-.screen h1 {
-  color: #D55320;
-  font-size: 5vw;
-  margin-bottom: 1em;
-  font-family: 'Oswald-RegularItalic';
-  position: relative;
-  -webkit-transform-origin: 0 0;
-  -moz-transform-origin: 0 0;
-  -ms-transform-origin: 0 0;
-  -o-transform-origin: 0 0;
-  transform-origin: 0 0; }
-
-#screen_results h1 {
-  margin-bottom: 3.125vw; }
-
-.screen p {
-  line-height: 1.25em; }
-
-.screen nav button {
-  margin: 0 3.125vw 0 0; }
-
-.screen nav button:last-child {
-  margin-right: 0; }
-
-.screen .left, .screen .right {
-  height: calc(100% - 8.125vw);
-  width: calc(50% - 2.5vw); }
-
-.screen .right {
-  text-align: right; }
-
-.screen .panel {
-  background: #161515;
-  border-radius: 0.625vw;
-  padding: 0.625vw;
-  box-sizing: border-box;
-  font-size: 1.1875vw; }
-
-.screen .panel h2 {
-  font-family: "Press Start 2P", cursive;
-  text-transform: none;
-  text-align: center;
-  margin: 0.9375vw 0 1.5625vw;
-  color: #E1D7CE; }
-
-.screen .row {
-  line-height: 1.25em;
-  position: relative; }
-
-.screen .row span {
-  display: inline-block;
-  position: relative; }
-
-.screen .nb, .screen .points, .screen .percent {
-  text-align: right; }
-
+/*=======================*/
+/* OTHER SCREENS
+/*=======================*/
+/* LOADING SCREEN --------------*/
 #screen_loading .percent {
   width: 18.75vw;
   display: inline-block; }
 
+/* HIGH SCORES SCREEN --------------*/
 #screen_highScores .label {
   width: 4.6875vw; }
 
@@ -650,6 +678,7 @@ button:hover {
   width: 9.375vw;
   text-align: right; }
 
+/* HOW TO PLAY SCREEN --------------*/
 #screen_howToPlay p {
   font-size: 1.25vw;
   margin-bottom: 2vw; }
@@ -692,6 +721,7 @@ button:hover {
   font-family: Oswald;
   font-weight: 600; }
 
+/* CREDITS SCREEN --------------*/
 #screen_credits button:after {
   content: "- Thanks for playing!";
   font-family: "Press Start 2P", cursive;
@@ -721,6 +751,10 @@ button:hover {
   transform: translateY(0);
   opacity: 1; }
 
+/* RESULTS SCREEN --------------*/
+#screen_results h1 {
+  margin-bottom: 3.125vw; }
+
 #screen_results .label {
   width: 40%; }
 
@@ -736,7 +770,7 @@ button:hover {
 #screen_results #results_totalCompletion {
   margin-top: 0.875vw; }
 
-.screen .newRecord {
+#screen_results .newRecord {
   width: 1.75vw;
   height: 1.75vw;
   position: absolute;
@@ -754,7 +788,7 @@ button:hover {
   -o-transition: -o-none;
   transition: none; }
 
-.screen .newRecord:before {
+#screen_results .newRecord:before {
   content: "new record!";
   position: absolute;
   background: #363535;
@@ -768,7 +802,7 @@ button:hover {
   line-height: 1.25vw;
   top: 0.25vw; }
 
-.screen .newRecord.visible {
+#screen_results .newRecord.visible {
   left: 2vw;
   opacity: 1;
   -webkit-transition: -webkit-all .5s ease-out;
@@ -782,31 +816,12 @@ button:hover {
   right: 2.5vw;
   bottom: 0; }
 
-.screen .title, .screen .artist {
-  text-transform: none;
-  font-size: 2vw;
-  position: relative; }
-
-.screen .title {
-  color: #D55320;
-  margin-bottom: 0.625vw; }
-
-.screen .artist {
-  color: #E1D7CE; }
-
 #screen_results .rank {
   font-family: 'Oswald-RegularItalic';
   font-size: 3.75vw;
   color: #E1D7CE;
   margin: 9.375vw 0 0.625vw;
   position: relative; }
-
-.screen .stars {
-  color: #363535;
-  position: relative; }
-
-.screen .stars i.on {
-  color: #D55320; }
 
 #screen_results .stars {
   font-size: 2vw; }
