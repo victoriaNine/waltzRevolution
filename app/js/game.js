@@ -97,6 +97,7 @@ Game.prototype.initValues = function() {
 	this.updateProgress();
 
 	this.intro.play();
+	$("#screen_play").addClass("active");
 }
 
 Game.prototype.start = function() {
@@ -625,7 +626,7 @@ Game.prototype.showResults = function() {
 			if($game.stars < 2) $audioEngine.SFX.play("stageFailed");
 			else newRecord ? $audioEngine.SFX.play("stageCompleteRecord") : $audioEngine.SFX.play("stageComplete");
 		}
-	});
+	}, "+=.2");
 
 	timeline.add(toggleNav(true), "-=.5");
 
