@@ -361,7 +361,7 @@ hr { border: none; background: $midGrey; height: 1px; }
   position:absolute;
   right:vw(40px);
   top:vw(40px);
-  font-size:$fontSize20px;
+  line-height:36px;
 }
 
 html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
@@ -522,7 +522,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 
 #keys, #accuracy { z-index:3; position:absolute; }
 
-#keys li, .icon {
+#keys li, .icon, .pauseSwitch {
   width:36px;
   height:36px;
   background:#333;

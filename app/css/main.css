@@ -352,7 +352,7 @@ hr {
   position: absolute;
   right: 2.5vw;
   top: 2.5vw;
-  font-size: 1.25vw; }
+  line-height: 36px; }
 
 html:not(.isMobile) #songInfo .pauseSwitch {
   display: none; }
@@ -585,7 +585,7 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   z-index: 3;
   position: absolute; }
 
-#keys li, .icon {
+#keys li, .icon, .pauseSwitch {
   width: 36px;
   height: 36px;
   background: #333;
