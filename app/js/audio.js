@@ -66,10 +66,13 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
   	var notReady = false;
 
   	for(var i = 0; i < loader.requestArray.length; i++) {
+  		if(!loader.requestArray[i] || loader.requestArray[i].total == 0) {
+  			notReady = true;
+  			break;
+  		}
+
   		loaded += loader.requestArray[i].loaded;
   		total += loader.requestArray[i].total;
-
-  		if(loader.requestArray[i].total == 0) notReady = true;
   	}
 
   	if(notReady) return;
