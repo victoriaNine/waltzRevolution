@@ -71,6 +71,7 @@ X crossbrowser audio (FF bug)
 - audio visualizer fix
 - fix arrows visibility
 ! fix gameover-on-resize bug
+! fix loading screen showing up for no particular reason at all when really we don't need it anymore
 ~ responsive (add on-screen pause button)
 ! favicon
 ! clean code

@@ -51,15 +51,15 @@ function Game(songFile) {
 Game.prototype.loadSong = function() {
 	var game = this;
 
-	if(!$audioEngine.BGM.hasBeenLoaded(this.fileURL)) {
-		$("#screen_loading .percent").html(0);
-		$("#screen_loading").addClass("active");
-
-		TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
-		$(document).on("loadingBGM loadingSFX", loadingScreen);
-	}
-
 	this.song = Song.getInstance(this.songFile, function() {
+		if(!$audioEngine.BGM.hasBeenLoaded(this.fileURL)) {
+			$("#screen_loading .percent").html(0);
+			$("#screen_loading").addClass("active");
+
+			TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
+			$(document).on("loadingBGM loadingSFX", loadingScreen);
+		}
+		
 		var fileName = this.url.slice(this.url.lastIndexOf("/")+1, this.url.lastIndexOf("."));
 		$audioEngine.BGM.setFile(fileName);
 		$audioEngine.BGM.addSource(this.fileURL, function() {
@@ -187,11 +187,7 @@ Game.prototype.stop = function(callback) {
 				$game.removeListeners();
 			}
 
-			Song.instance = null;
-			$game.song = null;
-			Game.instance = null;
-			$game = null;
-
+			Song.instance = $game.song = Game.instance = $game = null;
 			callback();
 		}
 	}, 0);
