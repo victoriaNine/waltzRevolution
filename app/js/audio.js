@@ -21,7 +21,7 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
 
   // Load buffer asynchronously
   var request = new XMLHttpRequest();
-  request.open("GET", url, true);
+  request.open("GET", url+"?"+new Date().getTime(), true);
   request.responseType = "arraybuffer";
 
   var loader = this;
@@ -43,6 +43,7 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
           loader.onload(loader.bufferList);
       },
       function(error) { 
+      	console.log(request);
       	if(url.match(".wav")) {
       		console.error('decodeAudioData error', error);
       		return;
@@ -55,10 +56,6 @@ BufferLoader.prototype.loadBuffer = function(url, index) {
       	loader.loadBuffer(newURL, index);
       }
     );
-  }
-
-  request.onloadstart = function(e) { 
-  	loader.requestArray[index] = e;
   }
 
   request.onprogress = function(e) {
@@ -212,8 +209,7 @@ function BGM() {
 
 		// If the BGM buffer has already been loaded before, reuse its source
 		if(this.hasBeenLoaded(url)) {
-			var source = this.createSource(this.sourceArray[this.currentFile].buffer, this.sourceArray[this.currentFile].index);
-			this.sourceArray[this.currentFile] = source;
+			this.duplicateCurrentSource();
 
 			if(this.callback) this.callback();
 			return;
@@ -255,7 +251,16 @@ function BGM() {
 	    gainNode.connect(this.analyserNode);
 	    gainNode.gain.value = this.muted ? 0 : .75;
 
-	    if(buffer.name == "junction") source.loop = true;
+	    if(buffer.name == "junction") {
+	    	//source.loop = true;
+	    	var bgm = this;
+	    	source.onended = function() {
+	    		if(!bgm.paused) {
+		    		bgm.duplicateCurrentSource();
+					bgm.play();
+				}
+	    	}
+	    }
 
 	    return {
 	      source: source,
@@ -264,6 +269,11 @@ function BGM() {
 	      name: (function() { return buffer.name; })(),
 	      index: (function() { return index; })()
 	    };
+	}
+
+	this.duplicateCurrentSource = function() {
+		var source = this.createSource(this.sourceArray[this.currentFile].buffer, this.sourceArray[this.currentFile].index);
+		this.sourceArray[this.currentFile] = source;
 	}
 
 	this.hasBeenLoaded = function(url) {
@@ -358,8 +368,7 @@ function BGM() {
 			this.pausedAt += new Date().getTime() - this.startedAt;
 		}
 		else {
-			var source = this.createSource(this.sourceArray[this.currentFile].buffer, this.sourceArray[this.currentFile].index);
-			this.sourceArray[this.currentFile] = source;
+			this.duplicateCurrentSource();
 
 			this.sourceArray[this.currentFile].source.start(0, this.pausedAt / 1000);
 			this.startedAt = new Date().getTime();

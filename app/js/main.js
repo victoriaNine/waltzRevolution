@@ -43,7 +43,7 @@ $(document).ready(function() {
 
 	$(window).resize(function() {
 		if($audioEngine.BGM) requestAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
-		if($game) requestAnimationFrame($game.song.draw);
+		if($game && $game.ready) requestAnimationFrame($game.song.draw);
 
 		$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
@@ -220,11 +220,11 @@ $(".bt_credits").on(eventtype, function() {
 });
 
 $(".bt_resume").on(eventtype, function() {
-	if($game) $game.resume();
+	if($game && $game.ready) $game.resume();
 });
 
 $(".bt_retry").on(eventtype, function() {
-	if($game) {
+	if($game && $game.ready) {
 		leaveMenu();
 		$(".overlay.active").removeClass("active");
 
@@ -233,7 +233,7 @@ $(".bt_retry").on(eventtype, function() {
 });
 
 $(".bt_mainMenu").on(eventtype, function() {
-	if($game) {
+	if($game && $game.ready) {
 		leaveMenu();
 		$(".overlay.active").removeClass("active");
 
@@ -368,13 +368,9 @@ function toEm(pixels, context) {
 function toVw(pixels, context) {
   context = context || 1;
   var newValue = pixels / context;
-  var percentage = newValue / $(window).width() * newValue;
+  var percentage = Math.pow(newValue, 2) / $(window).width();
 
   return percentage.toFixed(3);
-}
-
-function toEmToVw(pixels, contextEm, contextVw) {
-	return Math.round(toVw(toEm(pixels, contextEm), contextVw));
 }
 
 function getCSSstyle(selector, property, valueOnly) {

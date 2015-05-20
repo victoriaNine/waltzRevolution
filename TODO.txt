@@ -65,12 +65,12 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 
 => 05/17/2015 - 05/18/2015
 ! crossbrowser check
-~ crossbrowser audio (FF issues)
+X crossbrowser audio (FF bug)
 ! loading screen
-- audio loop fix
+! audio loop fix
 - audio visualizer fix
 - fix arrows visibility
-- fix gameover-on-resize bug
+! fix gameover-on-resize bug
 ~ responsive (add on-screen pause button)
 ! favicon
 ! clean code

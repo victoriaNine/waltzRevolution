@@ -97,7 +97,6 @@ Game.prototype.initValues = function() {
 	this.updateProgress();
 
 	this.intro.play();
-	$("#screen_play").addClass("active");
 }
 
 Game.prototype.start = function() {
@@ -636,8 +635,8 @@ Game.prototype.showResults = function() {
 
 //===============================
 // SINGLETON
+Game.getInstance = function(songFile) {
 //===============================
-Game.getInstance = function(songFile) {  
   if(this.instance == null) 
   	this.instance = new Game(songFile);
   return this.instance;  

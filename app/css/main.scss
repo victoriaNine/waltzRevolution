@@ -520,7 +520,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   z-index:2;
 }
 
-#keys { z-index:3; position:absolute; }
+#keys, #accuracy { z-index:3; position:absolute; }
 
 #keys li, .icon {
   width:36px;
@@ -540,7 +540,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 #keys i { line-height: 1.5em; font-size:1.5em; }
 .icon i { line-height: 1.25em; font-size: 1.25em; }
 
-#accuracy { @extend #keys; left:48px; top: -20px; }
+#accuracy { left:48px; top: -20px; }
 
 #accuracy li {
   font-weight: 400;

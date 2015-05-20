@@ -116,7 +116,7 @@ Song.prototype.draw = function() {
 
   for(var i = startIndex; i < $game.song.score.length; i++) {
     $game.song.notes[i].draw();
-    if(!$game.isGameOver) $game.song.notes[i].checkInput();
+    if(!$game.isGameOver || !$game.ready) $game.song.notes[i].checkInput();
   }
 }
 
