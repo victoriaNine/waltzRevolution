@@ -362,6 +362,7 @@ hr { border: none; background: $midGrey; height: 1px; }
   right:vw(40px);
   top:vw(40px);
   line-height:36px;
+  z-index: 10;
 }
 
 html:not(.isMobile) #songInfo .pauseSwitch { display:none; }

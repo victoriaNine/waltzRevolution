@@ -286,6 +286,7 @@ function BGM() {
 	this.play = function() {
 		this.sourceArray[this.currentFile].source.start(0);
 		this.startedAt = new Date().getTime();
+		this.pausedAt = 0;
 	}
 
 	this.setFile = function(file) {
@@ -334,11 +335,11 @@ function BGM() {
 	}
 
 	this.triggerMute = function(state) {
-		if(state == true || state == false) {
+		if(state == "toggle") this.muted = !this.muted;
+		else if(state == true || state == false) {
 			if(state == this.muted) return;
 			this.muted = state;
 		}
-		else if(state == "toggle") this.muted = !this.muted;
 
 		if(this.muted) {
 			if(!this.crossfading) {
@@ -562,11 +563,11 @@ function SFX() {
 	}
 
 	this.triggerMute = function(state) {
-		if(state == true || state == false) {
+		if(state == "toggle") this.muted = !this.muted;
+		else if(state == true || state == false) {
 			if(state == this.muted) return;
 			this.muted = state;
-		}
-		else if(state == "toggle") this.muted = !this.muted;
+		} 
 	}
 
 	this.mute = function() { $audioEngine.SFX.triggerMute(true) }
