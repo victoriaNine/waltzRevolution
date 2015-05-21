@@ -1,5 +1,10 @@
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+window.requestAnimationFrame = (function() {
+	return window.requestAnimationFrame ||
+    	   window.webkitRequestAnimationFrame ||
+    	   window.mozRequestAnimationFrame ||
+    	   window.msRequestAnimationFrame ||
+    	   function(callback) { window.setTimeout(callback, 1000 / 60); };
+})();
 
 var support = {animations : Modernizr.cssanimations},
   animEndEventNames = {'WebkitAnimation' : 'webkitAnimationEnd', 'OAnimation' : 'oAnimationEnd', 'msAnimation' : 'MSAnimationEnd', 'animation' : 'animationend'},

@@ -23,7 +23,7 @@ function Song(url, callback) {
   this.baseNoteLength;
   this.barLength;
 
-  this.noteWidth = 32; // Width of a note in the staff, in pixels
+  this.noteWidth = 32; // Width of a note in the staff, in pixels. 32px by default
   this.currentStaffPosition = 0;
   this.staffLength;
   this.staffScroll;
