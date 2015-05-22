@@ -199,7 +199,7 @@ Game.prototype.quit = function() { $game.stop(toMainMenu); }
 
 //===============================
 // EVENT LISTENERS
-// Keyboard input, touch events, window resize
+// - Keyboard input, touch events, window resize
 Game.prototype.addListeners = function() {
 //===============================
 	var game = this;

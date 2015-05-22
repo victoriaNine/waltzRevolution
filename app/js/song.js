@@ -1,6 +1,7 @@
 var canvas = document.getElementById("notes");
 var ctx = canvas.getContext("2d"); 
 
+
 //===============================
 // SONG CLASS
 // - Paint the staff in sync with the music
