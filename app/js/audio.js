@@ -166,6 +166,7 @@ function BGM() {
 //===============================
 	this.audioCtx;
 	this.analyserNode;
+	this.rAF = 0;
 	
 	this.fileURL;
 	this.currentFile;
@@ -199,7 +200,6 @@ function BGM() {
 	    // Fix up for prefixing
 	    window.AudioContext = window.AudioContext||window.webkitAudioContext;
 	    this.audioCtx = new AudioContext();
-	    this.analyserNode = this.audioCtx.createAnalyser();
 	  }
 	  catch(e) {
 	    alert('Web Audio API is not supported in this browser');
@@ -242,17 +242,21 @@ function BGM() {
 
 	this.createSource = function(buffer, index) {
 		var index = index;
-		var source = this.audioCtx.createBufferSource();
 		var buffer = buffer;
-		var gainNode = this.audioCtx.createGain ? this.audioCtx.createGain() : this.audioCtx.createGainNode();
-	    source.buffer = buffer;
 
+		var source = this.audioCtx.createBufferSource();
+		var gainNode = this.audioCtx.createGain ? this.audioCtx.createGain() : this.audioCtx.createGainNode();
+		var analyserNode = this.audioCtx.createAnalyser();
+
+	    source.buffer = buffer;
 	    this.songLength = source.buffer.duration;
 
 		source.connect(gainNode);
-	    gainNode.connect(this.audioCtx.destination);
-	    gainNode.connect(this.analyserNode);
+	    gainNode.connect(analyserNode);
 	    gainNode.gain.value = this.muted ? 0 : .75;
+
+	    analyserNode.connect(this.audioCtx.destination);
+	    this.analyserNode = analyserNode;
 
 	    if(buffer.name == "junction") {
 	    	//source.loop = true;
@@ -268,6 +272,7 @@ function BGM() {
 	    return {
 	      source: source,
 	      gainNode: gainNode,
+	      analyserNode: analyserNode,
 	      buffer: (function() { return buffer; })(),
 	      name: (function() { return buffer.name; })(),
 	      index: (function() { return index; })()
@@ -283,13 +288,9 @@ function BGM() {
 		return this.loadingArray.indexOf(url) != -1
 	}
 
-	this.play = function() {
-		this.sourceArray[this.currentFile].source.start(0);
-		this.startedAt = new Date().getTime();
-		this.pausedAt = 0;
-	}
-
 	this.setFile = function(file) {
+		$audioEngine.BGM.stopRAF();
+
 		this.currentFile = file;
 
 		this.paused = false;
@@ -298,6 +299,17 @@ function BGM() {
 		this.startedAt = 0;
 		this.pausedAt = 0;
 		this.songLength = 0;
+	}
+
+	this.play = function() {
+		this.sourceArray[this.currentFile].source.start(0);
+		this.startedAt = new Date().getTime();
+		this.pausedAt = 0;
+	}
+
+	this.stop = function(memorizePosition) {
+		this.sourceArray[this.currentFile].source.stop();
+		if(memorizePosition) this.pausedAt += new Date().getTime() - this.startedAt;
 	}
 
 	this.setCrossfade = function(gain, callback) {
@@ -367,10 +379,7 @@ function BGM() {
 		}
 		else if(state == "toggle") this.paused = !this.paused;
 
-		if(this.paused) {
-			this.sourceArray[this.currentFile].source.stop();
-			this.pausedAt += new Date().getTime() - this.startedAt;
-		}
+		if(this.paused) this.stop(true);
 		else {
 			this.duplicateCurrentSource();
 
@@ -384,7 +393,7 @@ function BGM() {
 	this.togglePause = function() { $audioEngine.BGM.triggerPause("toggle") };
 
 	this.drawAudioVisualizer = function() {
-		requestAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
+		$audioEngine.BGM.rAF = requestAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
 
 	    audioVisualizerCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 	    var dataArray = new Uint8Array($audioEngine.BGM.analyserNode.frequencyBinCount);
@@ -393,6 +402,8 @@ function BGM() {
 	    $audioEngine.BGM.waveform(dataArray);
 	    $audioEngine.BGM.oscilloscope(dataArray);
 	}
+
+	this.stopRAF = function() { cancelAnimationFrame($audioEngine.BGM.rAF); }
 
 	this.oscilloscope = function(dataArray) {
 	    var nbEQband = 75;

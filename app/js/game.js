@@ -179,10 +179,11 @@ Game.prototype.stop = function(callback) {
 	timeline.add(toggleAudioVisualizer(false));
 	timeline.to("#notes", 1, { opacity:0, clearProps:"all", ease: RoughEase.ease.config({ template: Power0.easeNone, strength: 1, points: 20, taper: "none", randomize: true, clamp: true }),
 		onComplete:function() {
-			cancelAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
+			$audioEngine.BGM.stopRAF();
 			$game.song.stopRAF();
 
 			if(!$game.isCompleted || !$game.isGameOver) {
+				$audioEngine.BGM.stop();
 				$audioEngine.BGM.hasEnded = true;
 				$game.removeListeners();
 			}

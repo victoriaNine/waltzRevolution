@@ -68,7 +68,7 @@ http://stackoverflow.com/questions/5203407/javascript-multiple-keys-pressed-at-o
 X crossbrowser audio (FF bug)
 ! loading screen
 ! audio loop fix
-- audio visualizer fix
+! audio visualizer fix
 - fix arrows visibility
 ! fix gameover-on-resize bug
 ! fix loading screen showing up for no particular reason at all when really we don't need it anymore
