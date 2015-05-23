@@ -128,12 +128,12 @@ hr {
 
 ::-moz-selection {
   background: #D55320;
-  color: #FFF;
+  color: #E1D7CE;
   text-shadow: none; }
 
 ::selection {
   background: #D55320;
-  color: #FFF;
+  color: #E1D7CE;
   text-shadow: none; }
 
 /*=======================*/
@@ -781,7 +781,7 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   text-align: center;
   line-height: 1.75vw;
   font-size: 1.125vw;
-  left: 3vw;
+  margin-left: 3vw;
   opacity: 0;
   -webkit-transition: -webkit-none;
   -moz-transition: -moz-none;
@@ -804,7 +804,7 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   top: 0.25vw; }
 
 #screen_results .newRecord.visible {
-  left: 2vw;
+  margin-left: 2vw;
   opacity: 1;
   -webkit-transition: -webkit-all .5s ease-out;
   -moz-transition: -moz-all .5s ease-out;

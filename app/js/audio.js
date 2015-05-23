@@ -200,6 +200,7 @@ function BGM() {
 	    // Fix up for prefixing
 	    window.AudioContext = window.AudioContext||window.webkitAudioContext;
 	    this.audioCtx = new AudioContext();
+	    this.analyserNode = this.audioCtx.createAnalyser();
 	  }
 	  catch(e) {
 	    alert('Web Audio API is not supported in this browser');
@@ -230,7 +231,7 @@ function BGM() {
 		var bgm = $audioEngine.BGM;
 
 		for(var i = 0; i < bufferList.length; i++) {
-			var source = bgm.createSource(bufferList[i], i);
+			var source = bgm.createSource(bufferList[i]);
 			bgm.sourceArray[source.name] = source;
 		}
 
@@ -240,47 +241,41 @@ function BGM() {
 		if(bgm.callback && typeof bgm.callback === "function") bgm.callback();
 	}
 
-	this.createSource = function(buffer, index) {
-		var index = index;
+	this.createSource = function(buffer) {
 		var buffer = buffer;
-
 		var source = this.audioCtx.createBufferSource();
 		var gainNode = this.audioCtx.createGain ? this.audioCtx.createGain() : this.audioCtx.createGainNode();
-		var analyserNode = this.audioCtx.createAnalyser();
 
 	    source.buffer = buffer;
 	    this.songLength = source.buffer.duration;
-
-		source.connect(gainNode);
-	    gainNode.connect(analyserNode);
 	    gainNode.gain.value = this.muted ? 0 : .75;
 
-	    analyserNode.connect(this.audioCtx.destination);
-	    this.analyserNode = analyserNode;
+	    source.connect(gainNode);
+	    gainNode.connect(this.analyserNode);
+	    this.analyserNode.connect(this.audioCtx.destination);
 
-	    if(buffer.name == "junction") {
-	    	//source.loop = true;
-	    	var bgm = this;
-	    	source.onended = function() {
-	    		if(!bgm.paused) {
+		if(buffer.name == "junction") {
+			var bgm = this;
+
+			// Manual loop (the API doesn't provide any "onloop" callback yet)
+			source.onended = function() {
+				if(!bgm.paused) {
 		    		bgm.duplicateCurrentSource();
-					bgm.play();
+					bgm.play()
 				}
-	    	}
-	    }
+			}
+		}
 
 	    return {
 	      source: source,
 	      gainNode: gainNode,
-	      analyserNode: analyserNode,
-	      buffer: (function() { return buffer; })(),
-	      name: (function() { return buffer.name; })(),
-	      index: (function() { return index; })()
+	      buffer: buffer,
+	      name: (function() { return buffer.name; })()
 	    };
 	}
 
 	this.duplicateCurrentSource = function() {
-		var source = this.createSource(this.sourceArray[this.currentFile].buffer, this.sourceArray[this.currentFile].index);
+		var source = this.createSource(this.sourceArray[this.currentFile].buffer);
 		this.sourceArray[this.currentFile] = source;
 	}
 
@@ -289,6 +284,7 @@ function BGM() {
 	}
 
 	this.setFile = function(file) {
+		if(this.currentFile) this.stop();
 		$audioEngine.BGM.stopRAF();
 
 		this.currentFile = file;

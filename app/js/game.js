@@ -183,7 +183,6 @@ Game.prototype.stop = function(callback) {
 			$game.song.stopRAF();
 
 			if(!$game.isCompleted || !$game.isGameOver) {
-				$audioEngine.BGM.stop();
 				$audioEngine.BGM.hasEnded = true;
 				$game.removeListeners();
 			}
@@ -474,13 +473,15 @@ Game.prototype.updateHP = function() {
 // PROGRESS
 //===============================
 Game.prototype.updateProgress = function() {
-	var progress = (this.accuracy[0] + this.accuracy[1]) * 100 / this.totalNotes;
-	var currentValue = parseFloat($("#progress .value").html()) || 0;
+	var percentGreat = (this.accuracy[0] * 100 / this.totalNotes).toFixed(1);
+	var percentCool = (this.accuracy[1] * 100 / this.totalNotes).toFixed(1);
+	var progress = parseFloat(percentGreat) + parseFloat(percentCool);
 
+	var currentValue = parseFloat($("#progress .value").html()) || 0;
 	scrollToValue($("#progress .value"), currentValue, progress, true, false, "%", true);
 	TweenMax.to($("#progressBar .bar"), .4, {width: progress+"%", ease:Power3.easeInOut});
 
-	this.progress = progress.toFixed(1);
+	this.progress = progress;
 	if(this.progress >= 60 && !$("#progressBar .p60").hasClass("passed")) $("#progressBar .p60").addClass("passed");
 	if(this.progress >= 75 && !$("#progressBar .p75").hasClass("passed")) $("#progressBar .p75").addClass("passed");
 	if(this.progress >= 90 && !$("#progressBar .p90").hasClass("passed")) $("#progressBar .p90").addClass("passed");

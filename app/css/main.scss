@@ -179,13 +179,13 @@ hr { border: none; background: $midGrey; height: 1px; }
 
 ::-moz-selection {
   background:  $orange;
-  color:       #FFF;
+  color:       $beige;
   text-shadow: none;
 }
 
 ::selection {
   background:  $orange;
-  color:       #FFF;
+  color:       $beige;
   text-shadow: none;
 }
 
@@ -647,7 +647,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   text-align: center;
   line-height: vw(28px);
   font-size: $fontSize18px;
-  left: vw(48px);
+  margin-left: vw(48px);
   opacity: 0;
 
   @include transition("none");
@@ -668,7 +668,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   top: vw(4px);
 }
 
-#screen_results .newRecord.visible { left:vw(32px); opacity:1; @include transition("all .5s ease-out"); }
+#screen_results .newRecord.visible { margin-left:vw(32px); opacity:1; @include transition("all .5s ease-out"); }
 #screen_results nav { position:absolute; right:vw(40px); bottom:0; }
 #screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:$fontSize60px; color:$beige; margin:vw(150px) 0 vw(10px); position:relative; }
 #screen_results .stars { font-size:$fontSize32px; }
