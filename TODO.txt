@@ -69,7 +69,7 @@ X crossbrowser audio (FF bug)
 ! loading screen
 ! audio loop fix
 ! audio visualizer fix
-- fix arrows visibility
+! fix arrows visibility (TweenMax limitations)
 ! fix gameover-on-resize bug
 ! fix loading screen showing up for no particular reason at all when really we don't need it anymore
 ~ responsive (add on-screen pause button)

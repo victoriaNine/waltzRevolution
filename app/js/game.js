@@ -521,7 +521,7 @@ Game.prototype.showResults = function() {
 		$game.rank = "perfect"; // S
 		$game.stars = 5;
 	}
-	else if($game.progress >= 90 && $game.progress <= 99) {
+	else if($game.progress >= 90 && $game.progress <= 99.9) {
 		$game.rank = "great"; // A
 		$game.stars = 4;
 	}

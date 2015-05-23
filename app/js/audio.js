@@ -259,9 +259,9 @@ function BGM() {
 
 			// Manual loop (the API doesn't provide any "onloop" callback yet)
 			source.onended = function() {
-				if(!bgm.paused) {
+				if(bgm.currentFile == buffer.name && !bgm.paused) {
 		    		bgm.duplicateCurrentSource();
-					bgm.play()
+					bgm.play();
 				}
 			}
 		}

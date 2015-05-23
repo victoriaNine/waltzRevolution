@@ -31,6 +31,7 @@ function Song(url, callback) {
   this.staffScrollDuration;
 
   this.currentNoteIndex = 0;
+  this.rAF = 0;
 
   this.load(url);
 }
@@ -87,17 +88,15 @@ Song.prototype.load = function(url) {
 
 Song.prototype.start = function() {
   $audioEngine.BGM.play();
-
   this.draw();
-  TweenMax.ticker.addEventListener("tick", this.rAF);
 
   var song = this;
 
-  this.staffScroll = TweenMax.to($("<div>").css("left","0px"), this.staffScrollDuration, {left:this.staffLength+"px", ease:Power0.easeNone,
-      onUpdate:function(tween, prop) {
-        song.currentStaffPosition = parseFloat($(tween.target).css(prop));
+  this.staffScroll = TweenMax.to($({someValue: 0}), this.staffScrollDuration, {someValue:this.staffLength, ease:Power0.easeNone,
+      onUpdate:function(tween) {
+        song.currentStaffPosition = tween.target[0].someValue;
       },
-      onUpdateParams:["{self}", 'left'],
+      onUpdateParams:["{self}"],
       onComplete: function() {
         song.stopRAF();
         $game.gameComplete();
@@ -113,6 +112,7 @@ Song.prototype.draw = function() {
   ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
   if(!$game) return;
 
+  $game.song.rAF = requestAnimationFrame($game.song.draw);
   var startIndex = $game.song.currentNoteIndex;
 
   for(var i = startIndex; i < $game.song.score.length; i++) {
@@ -121,8 +121,7 @@ Song.prototype.draw = function() {
   }
 }
 
-Song.prototype.rAF = function() { requestAnimationFrame($game.song.draw); }
-Song.prototype.stopRAF = function() { TweenMax.ticker.removeEventListener("tick", this.rAF); cancelAnimationFrame(this.draw); }
+Song.prototype.stopRAF = function() { cancelAnimationFrame(this.rAF); ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height()); }
 
 
 //===============================
