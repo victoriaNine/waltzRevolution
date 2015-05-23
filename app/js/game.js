@@ -9,7 +9,6 @@ function Game(songFile) {
 	this.maxHP = 1000;
 	this.HP = this.maxHP / 2;
 	
-
 	this.score = 0;
 	this.progress = 0;
 	this.rank;
@@ -89,6 +88,10 @@ Game.prototype.initValues = function() {
 	$("#songInfo .title").html(this.song.title);
 	$("#songInfo .artist").html(this.song.artist);
 	$("#progressBar .marker").removeClass("passed");
+
+	$("#life .value").html((0).toFixed(1));
+	$("#progress .value").html(this.progress.toFixed(1));
+	$("#score .value").html(this.score);
 
 	this.totalNotes = this.song.notes.length;
 
