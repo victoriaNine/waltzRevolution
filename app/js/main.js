@@ -264,6 +264,7 @@ $("button, a, #screen_howToPlay li").on(eventtype, function() {
 	if($(this).hasClass("bt_play")) $audioEngine.SFX.play("play");
 	else if($(this).hasClass("bt_back")) $audioEngine.SFX.play("back");
 	else if($(this).hasClass("bt_resume")) $audioEngine.SFX.play("pauseClose");
+	else if($(this).parents("#screen_howToPlay").length > 0) $audioEngine.SFX.play("noteInput");
 	else $audioEngine.SFX.play("confirm");
 }).mouseenter(function() {
 	$audioEngine.SFX.play("hover");
