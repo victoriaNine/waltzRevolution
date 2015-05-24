@@ -207,12 +207,12 @@ var howToPlay_onTouchevent = function(e) {
 	if(e.type == 'touchend') type = 'keyup';
 
 	var code;
-	if(this.className == "keyUp") code = 38;
-	if(this.className == "keyRight") code = 39;
-	if(this.className == "keyLeft") code = 37;
-	if(this.className == "keyDown") code = 40;
-	if(this.className == "keySpace") code = 32;
-	if(this.className == "keyPause") code = 80;
+	if(this.className.match("keyUp")) code = 38;
+	if(this.className.match("keyRight")) code = 39;
+	if(this.className.match("keyLeft")) code = 37;
+	if(this.className.match("keyDown")) code = 40;
+	if(this.className.match("keySpace")) code = 32;
+	if(this.className.match("keyPause")) code = 80;
 
 	var _e = $.Event(type);
 	_e.which = _e.keyCode = code;
