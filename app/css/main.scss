@@ -578,6 +578,12 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 /* LOADING SCREEN --------------*/
 #screen_loading .percent { width:vw(300px); display:inline-block; }
 
+html:not(.isPhone) #screen_loading .mobile { display:none }
+html.isPhone #screen_loading .container:not(.mobile) { display:none }
+
+#screen_loading .mobile p { font-size:$fontSize36px; }
+#screen_loading .mobile p span { font-family: "Press Start 2P", cursive; color:$orange; font-size:$fontSize22px; }
+
 /* HIGH SCORES SCREEN --------------*/
 #screen_highScores .label { width: vw(75px); }
 #screen_highScores .date { width: vw(200px); }

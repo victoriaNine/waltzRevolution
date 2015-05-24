@@ -43,6 +43,13 @@ $(document).ready(function() {
         }
     };
 
+    if(phoneCheck()) {
+    	// IF USING A MOBILE PHONE
+    	$("#screen_loading").addClass("active");
+    	toggleTitle(true);
+    	return;
+    }
+
 	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
 
