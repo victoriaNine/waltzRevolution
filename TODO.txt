@@ -84,7 +84,7 @@ Checklist :
 ! Semantics (Markup)
 ! Web Technologies
 - Accessibility
-- SEO
-- Performance
+! SEO
+! Performance
 ! Animations
 - Responsive Design
