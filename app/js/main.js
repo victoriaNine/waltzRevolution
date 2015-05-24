@@ -47,9 +47,6 @@ $(document).ready(function() {
 	$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
 
 	$(window).resize(function() {
-		if($audioEngine.BGM) requestAnimationFrame($audioEngine.BGM.drawAudioVisualizer);
-		if($game && $game.ready) requestAnimationFrame($game.song.draw);
-
 		$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
 		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
 	});
