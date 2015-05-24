@@ -80,11 +80,11 @@ X crossbrowser audio (FF bug)
 ----------
 
 Checklist :
-- Clean Code (organization, cohesion)
+! Clean Code (organization, cohesion)
 ! Semantics (Markup)
 ! Web Technologies
-- Accessibility
+! Accessibility
 ! SEO
 ! Performance
 ! Animations
-- Responsive Design
+~ Responsive Design

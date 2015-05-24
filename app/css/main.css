@@ -658,16 +658,16 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   width: 18.75vw;
   display: inline-block; }
 
-html:not(.isPhone) #screen_loading .mobile {
+html:not(.isPhone) #screen_loading .phone {
   display: none; }
 
-html.isPhone #screen_loading .container:not(.mobile) {
+html.isPhone #screen_loading .container:not(.phone) {
   display: none; }
 
-#screen_loading .mobile p {
+#screen_loading .phone p {
   font-size: 2.25vw; }
 
-#screen_loading .mobile p span {
+#screen_loading .phone p span {
   font-family: "Press Start 2P", cursive;
   color: #D55320;
   font-size: 1.375vw; }
