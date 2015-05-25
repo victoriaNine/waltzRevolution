@@ -304,7 +304,7 @@ function BGM() {
 	}
 
 	this.stop = function(memorizePosition) {
-		this.sourceArray[this.currentFile].source.stop();
+		this.sourceArray[this.currentFile].source.stop(0);
 		if(memorizePosition) this.pausedAt += new Date().getTime() - this.startedAt;
 	}
 
