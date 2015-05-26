@@ -80,7 +80,10 @@ function loadingScreen() {
 	if(isNaN(currentValue) || !isFinite(currentValue)) currentValue = 0;
 	scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, fadeIn, "%", true);
 
-	if(totalPercent == 100) $(document).off("loadingBGM loadingSFX", loadingScreen);
+	if(totalPercent == 100) {
+		$(document).off("loadingBGM loadingSFX", loadingScreen);
+		// if(mobileCheck())
+	}
 }
 
 function toMainMenu() {
