@@ -64,18 +64,26 @@ Game.prototype.loadSong = function() {
 		$audioEngine.BGM.addSource(this.fileURL, function() {
 			TweenMax.from($("#screen_loading .label"), .75, {opacity:1, clearProps:"all"});
 
-			if($("#screen_loading").hasClass("active")) {
-				$("#screen_loading").removeClass("active");
+			checkFocus(function() {
+				var waitForFadeOut = function() {
+					$(window).off(eventtype, waitForFadeOut);
+					$("#screen_loading").removeClass("active");
 
-				setTimeout(function() {
+					setTimeout(function() {
+						game.initValues();
+						game.launch();
+					}, 600);
+				}
+
+				if($("#screen_loading").hasClass("active")) {
+					if(mobileCheck()) $(window).on(eventtype, waitForFadeOut);
+					else waitForFadeOut();
+				}
+				else {
 					game.initValues();
 					game.launch();
-				}, 600);
-			}
-			else {
-				game.initValues();
-				game.launch();
-			}
+				}
+			});
 		});
 	});
 }
@@ -114,7 +122,6 @@ Game.prototype.start = function() {
 Game.prototype.launch = function() {
 	var startSong = function() {
 		$game.start();
-		$("body").off(eventtype, startSong);
 
 		$audioEngine.BGM.drawAudioVisualizer();
 		toggleAudioVisualizer(true);
@@ -124,10 +131,7 @@ Game.prototype.launch = function() {
 		$(document).off("introComplete");
 		clearProps($game.intro);
 
-		checkFocus(function() {
-			if(mobileCheck()) $("body").on(eventtype, startSong);
-			else setTimeout(startSong, 1000);
-		});
+		checkFocus(function() { setTimeout(startSong, 1000); });
 	}
 
 	if($game.intro.progress() == 1) launch();

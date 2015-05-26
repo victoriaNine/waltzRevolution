@@ -75,7 +75,10 @@ function loadingScreen() {
 
 	var totalPercent = (percentBGM + percentSFX) / 2;
 	var currentValue = parseFloat($("#screen_loading .percent").html());
-	scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, true, "%", true);
+
+	var fadeIn = isNaN(currentValue) ? true : false;
+	if(isNaN(currentValue) || !isFinite(currentValue)) currentValue = 0;
+	scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, fadeIn, "%", true);
 
 	if(totalPercent == 100) $(document).off("loadingBGM loadingSFX", loadingScreen);
 }
@@ -106,9 +109,16 @@ function toMainMenu() {
 				enterMenu().add(toggleAudioVisualizer(true), .4);
 			}
 
-			if($("#screen_loading").hasClass("active")) {
+			var waitForFadeOut = function() {
+				$(window).off(eventtype, waitForFadeOut);
 				$("#screen_loading").removeClass("active");
+
 				setTimeout(showMainMenu, 600);
+			}
+
+			if($("#screen_loading").hasClass("active")) {	
+				if(mobileCheck()) $(window).on(eventtype, waitForFadeOut);
+				else waitForFadeOut();
 			}
 			else showMainMenu();
 		});
