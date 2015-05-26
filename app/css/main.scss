@@ -286,6 +286,19 @@ hr { border: none; background: $midGrey; height: 1px; }
   box-sizing:border-box;
 }
 
+/* iOS 7 calc() fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  .screen .container {
+    left: #{abs(vw(1024px) / 2 - vw(1200px) / 2)};
+    top: #{vw(768px) / 2 - vw(550px) / 2};
+  }
+}
+
 .screen h1 {
   color: $orange;
   font-size: $fontSize80px;
@@ -305,8 +318,21 @@ hr { border: none; background: $midGrey; height: 1px; }
 .screen nav button { margin: 0 vw(50px) 0 0; }
 .screen nav button:last-child { margin-right:0; }
 
-.screen .left, .screen .right { height: calc(100% - #{vw(130px)}); width:calc(50% - #{vw(40px)}); }
-.screen .right { text-align:right; }
+.screen .leftSide, .screen .rightSide { height: calc(100% - #{vw(130px)}); width:calc(50% - #{vw(40px)}); }
+.screen .rightSide { text-align:right; }
+
+/* iOS 7 calc() fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  .screen .leftSide, .screen .rightSide {
+    height: #{vw(768px) - vw(130px)};
+    width: #{vw(1024px / 2) - vw(40px)};
+  }
+}
 
 .screen .panel {
   background: $darkGrey;
@@ -440,9 +466,19 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   @include transition("color .4s ease-out");
 }
 
+/* iOS 7 calc() fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  #gameInfo { width: #{100vw - vw(230px)}; }
+}
+
 #screen_play.ready #gameInfo { color:$beige; }
 
-#gameInfo > div { position:relative; }
+#gameInfo > div { position:relative; white-space: nowrap; }
 
 #life, #progress { height:vw(30px); margin-top:vw(15px); }
 #progress, #score { display: inline-block; }
@@ -456,6 +492,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   text-align: right;
   display:inline-block;
   width:vw(90px);
+  white-space:nowrap;
 }
 
 #score .value { font-size:$fontSize48px; width: vw(120px); }
@@ -508,6 +545,19 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   top:calc(50% - (195px / 2) - (#{vw(195px)} / 3));
 }
 
+/* iOS 7 calc() fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  #staff {
+    width: #{100vw - vw(40px)};
+    top: #{vw(768px) / 2 - vw(195px) / 2 - vw(195px) / 3};
+  }
+}
+
 #lines {
   width:100%;
   height:1px;
@@ -537,7 +587,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 
 .icon { width:vw(32px); height:vw(32px); font-size: $fontSize20px; }
 
-#keys li.pressed, li.pressed .icon { background:$orange; color:$offWhite; }
+#keys li.pressed, li.pressed .icon, .pauseSwitch:hover { background:$orange; color:$offWhite; }
 #keys i { line-height: 1.5em; font-size:1.5em; }
 .icon i { line-height: 1.25em; font-size: 1.25em; }
 
@@ -570,6 +620,18 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 }
 
 #notes { width: calc(100% - 16px); height: 100%; position:absolute; z-index:2; left: 16px; }
+
+/* iOS 7 calc() fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  #notes {
+    width: #{1024px - 16px};
+  }
+}
 
 
 /*=======================*/

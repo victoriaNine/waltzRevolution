@@ -60,6 +60,7 @@ $(document).ready(function() {
 
     $audioEngine = AudioEngine.getInstance();
     toMainMenu();
+    alert(getCSSstyle(".screen .container"));
 });
 
 

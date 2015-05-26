@@ -254,6 +254,11 @@ hr {
   padding: 0 2.5vw;
   box-sizing: border-box; }
 
+/* iOS 7 calc() fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .screen .container {
+    left: 5.5vw;
+    top: 6.8125vw; } }
 .screen h1 {
   color: #D55320;
   font-size: 5vw;
@@ -275,13 +280,18 @@ hr {
 .screen nav button:last-child {
   margin-right: 0; }
 
-.screen .left, .screen .right {
+.screen .leftSide, .screen .rightSide {
   height: calc(100% - 8.125vw);
   width: calc(50% - 2.5vw); }
 
-.screen .right {
+.screen .rightSide {
   text-align: right; }
 
+/* iOS 7 calc() fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .screen .leftSide, .screen .rightSide {
+    height: 39.875vw;
+    width: 29.5vw; } }
 .screen .panel {
   background: #161515;
   border-radius: 0.625vw;
@@ -492,11 +502,16 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   -o-transition: -o-color .4s ease-out;
   transition: color .4s ease-out; }
 
+/* iOS 7 calc() fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  #gameInfo {
+    width: 85.625vw; } }
 #screen_play.ready #gameInfo {
   color: #E1D7CE; }
 
 #gameInfo > div {
-  position: relative; }
+  position: relative;
+  white-space: nowrap; }
 
 #life, #progress {
   height: 1.875vw;
@@ -515,7 +530,8 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   margin-left: 1.25vw;
   text-align: right;
   display: inline-block;
-  width: 5.625vw; }
+  width: 5.625vw;
+  white-space: nowrap; }
 
 #score .value {
   font-size: 3vw;
@@ -573,6 +589,11 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   right: 0;
   top: calc(50% - (195px / 2) - (12.1875vw / 3)); }
 
+/* iOS 7 calc() fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  #staff {
+    width: 97.5vw;
+    top: 13.84375vw; } }
 #lines {
   width: 100%;
   height: 1px;
@@ -602,7 +623,7 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   height: 2vw;
   font-size: 1.25vw; }
 
-#keys li.pressed, li.pressed .icon {
+#keys li.pressed, li.pressed .icon, .pauseSwitch:hover {
   background: #D55320;
   color: #F8F4F0; }
 
@@ -650,6 +671,10 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   z-index: 2;
   left: 16px; }
 
+/* iOS 7 calc() fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  #notes {
+    width: 1008px; } }
 /*=======================*/
 /* OTHER SCREENS
 /*=======================*/
