@@ -60,6 +60,7 @@ $(document).ready(function() {
 
     $audioEngine = AudioEngine.getInstance();
     toMainMenu();
+    alert($("#screen_results nav").css("right"));
 });
 
 
