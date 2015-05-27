@@ -2,19 +2,29 @@
 /* VARIABLES, FUNCTIONS
 /*=======================*/
 $browserContext:16px;
+$iPadInnerWidth:1024px;
+$iPadInnerHeight:672px;
 
-@function em($pixels, $context: $browserContext) {
+@function toEm($pixels, $context: $browserContext) {
   @if (unitless($pixels)) { $pixels: $pixels * 1px; }
   @if (unitless($context)) { $context: $context * 1px; }
 
   @return $pixels / $context * 1em;
 }
 
-@function vw($pixels, $context: $browserContext) {
+@function toVw($pixels, $width: $iPadInnerWidth) {
   @if (unitless($pixels)) { $pixels: $pixels * 1px; }
-  @if (unitless($context)) { $context: $context * 1px; }
+  @if (unitless($width)) { $context: $width * 1px; }
+  $newValue : $pixels / $width * 100;
 
-  @return $pixels / $context * 1vw;
+  @return $newValue * 1vw;
+}
+
+@function vwForEm($pixels) {
+  @if (unitless($pixels)) { $pixels: $pixels * 1px; }
+  $newValue : toEm($pixels) / 1em;
+
+  @return $newValue * 1vw;
 }
 
 $orange: #D55320;
@@ -24,20 +34,20 @@ $red: #C32B44;
 $lightGrey: #706F6E;
 $midGrey: #363535;
 $darkGrey: #161515;
-$borderRadius: vw(10px);
+$borderRadius: vwForEm(10px);
 
-$fontSize7px:  vw(em(7), 1em);
-$fontSize10px: vw(em(10), 1em);
-$fontSize18px: vw(em(18), 1em);
-$fontSize19px: vw(em(19), 1em);
-$fontSize20px: vw(em(20), 1em);
-$fontSize22px: vw(em(22), 1em);
-$fontSize30px: vw(em(30), 1em);
-$fontSize32px: vw(em(32), 1em);
-$fontSize36px: vw(em(36), 1em);
-$fontSize48px: vw(em(48), 1em);
-$fontSize60px: vw(em(60), 1em);
-$fontSize80px: vw(em(80), 1em);
+$fontSize7px:  vwForEm(7);
+$fontSize10px: vwForEm(10);
+$fontSize18px: vwForEm(18);
+$fontSize19px: vwForEm(19);
+$fontSize20px: vwForEm(20);
+$fontSize22px: vwForEm(22);
+$fontSize30px: vwForEm(30);
+$fontSize32px: vwForEm(32);
+$fontSize36px: vwForEm(36);
+$fontSize48px: vwForEm(48);
+$fontSize60px: vwForEm(60);
+$fontSize80px: vwForEm(80);
 
 
 /*=======================*/
@@ -147,20 +157,20 @@ html, body {
 }
 
 button {
-  width:vw(160px);
-  height:vw(50px);
+  width:vwForEm(160px);
+  height:vwForEm(50px);
   background:$darkGrey;
   color:$beige;
   border:none;
   outline: none;
   border-radius:$borderRadius;
-  padding-left:vw(16px);
-  line-height:vw(50px);
+  padding-left:vwForEm(16px);
+  line-height:vwForEm(50px);
   box-sizing:border-box;
   display:inline-block;
   cursor:pointer;
   text-align:left;
-  margin:vw(40px) 0 0;
+  margin:vwForEm(40px) 0 0;
   position:relative;
 
   font-family: inherit;
@@ -277,12 +287,12 @@ hr { border: none; background: $midGrey; height: 1px; }
 }
 
 .screen .container {
-  width:vw(1200px);
-  height:vw(550px);
+  width:vwForEm(1200px);
+  height:vwForEm(550px);
   position:absolute;
-  left:calc(50% - #{vw(1200px)} / 2);
-  top:calc(50% - #{vw(550px)} /2);
-  padding:0 vw(40px);
+  left:calc(50% - #{vwForEm(1200px)} / 2);
+  top:calc(50% - #{vwForEm(550px)} /2);
+  padding:0 vwForEm(40px);
   box-sizing:border-box;
 }
 
@@ -294,8 +304,8 @@ hr { border: none; background: $midGrey; height: 1px; }
   and (-webkit-min-device-pixel-ratio: 2) {
 
   .screen .container {
-    left: #{abs(vw(1024px) / 2 - vw(1200px) / 2)};
-    top: #{vw(768px) / 2 - vw(550px) / 2};
+    left: #{toVw(1024 / 2) - vwForEm(1200px) / 2};
+    top: #{toVw($iPadInnerHeight / 2) - vwForEm(550px) / 2};
   }
 }
 
@@ -315,10 +325,10 @@ hr { border: none; background: $midGrey; height: 1px; }
 
 .screen p { line-height: 1.25em; }
 
-.screen nav button { margin: 0 vw(50px) 0 0; }
+.screen nav button { margin: 0 vwForEm(50px) 0 0; }
 .screen nav button:last-child { margin-right:0; }
 
-.screen .leftSide, .screen .rightSide { height: calc(100% - #{vw(130px)}); width:calc(50% - #{vw(40px)}); }
+.screen .leftSide, .screen .rightSide { width:calc(50% - #{vwForEm(40px)}); height: calc(100% - #{vwForEm(130px)}); position: relative; }
 .screen .rightSide { text-align:right; }
 
 /* iOS 7 calc() fix */
@@ -329,15 +339,15 @@ hr { border: none; background: $midGrey; height: 1px; }
   and (-webkit-min-device-pixel-ratio: 2) {
 
   .screen .leftSide, .screen .rightSide {
-    height: #{vw(768px) - vw(130px)};
-    width: #{vw(1024px / 2) - vw(40px)};
+    width: #{vwForEm(1200px) / 2 - vwForEm(40px)};
+    height: #{vwForEm(550px) - vwForEm(130px)};
   }
 }
 
 .screen .panel {
   background: $darkGrey;
   border-radius:$borderRadius;
-  padding: vw(10px);
+  padding: vwForEm(10px);
   box-sizing: border-box;
   font-size: $fontSize19px;
 }
@@ -346,7 +356,7 @@ hr { border: none; background: $midGrey; height: 1px; }
   font-family: "Press Start 2P", cursive;
   text-transform: none;
   text-align: center;
-  margin: vw(15px) 0 vw(25px);
+  margin: vwForEm(15px) 0 vwForEm(25px);
   color:$beige;
 }
 
@@ -355,7 +365,7 @@ hr { border: none; background: $midGrey; height: 1px; }
 .screen .nb, .screen .points, .screen .percent { text-align: right; }
 
 .screen .title, .screen .artist { text-transform:none; font-size:$fontSize32px; position:relative; }
-.screen .title { color:$orange; margin-bottom:vw(10px); }
+.screen .title { color:$orange; margin-bottom:vwForEm(10px); }
 .screen .artist { color:$beige; }
 .screen .stars { color:$midGrey; position:relative; }
 .screen .stars i.on { color:$orange; }
@@ -369,7 +379,7 @@ hr { border: none; background: $midGrey; height: 1px; }
   width:100%;
   height:150px;
   position:absolute;
-  padding:vw(40px);
+  padding:vwForEm(40px);
   box-sizing:border-box;
   font-size:$fontSize30px;
   text-transform:none;
@@ -385,8 +395,8 @@ hr { border: none; background: $midGrey; height: 1px; }
 
 #songInfo .pauseSwitch {
   position:absolute;
-  right:vw(40px);
-  top:vw(40px);
+  right:vwForEm(40px);
+  top:vwForEm(40px);
   line-height:36px;
   z-index: 10;
 }
@@ -396,21 +406,21 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 /* BOTTOM SECTION --------------*/
 #hud {
   width:100%;
-  height:vw(180px);
+  height:vwForEm(180px);
   position:absolute;
   bottom:0;
-  padding:0 vw(40px) vw(40px);
+  padding:0 vwForEm(40px) vwForEm(40px);
   box-sizing:border-box;
   font-size:$fontSize22px;
 }
 
 #lifeSphere {
-  width: vw(120px);
-  height: vw(120px);
+  width: vwForEm(120px);
+  height: vwForEm(120px);
   border-radius: 50%;
   position: absolute;
   overflow:hidden;
-  bottom: vw(40px);
+  bottom: vwForEm(40px);
 
   @include transform("scale(1)");
 }
@@ -420,7 +430,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   position: absolute;
   width: 100%;
   height: 100%;
-  border: $midGrey vw(6px) solid;
+  border: $midGrey vwForEm(6px) solid;
   border-radius: 50%;
   bottom: 0;
   left: 0;
@@ -456,11 +466,11 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 }
 
 #gameInfo {
-  margin-left: vw(150px);
-  height: vw(120px);
+  margin-left: vwForEm(150px);
+  height: vwForEm(120px);
   position: absolute;
-  width: calc(100% - #{vw(230px)});
-  bottom: vw(40px);
+  width: calc(100% - #{vwForEm(230px)});
+  bottom: vwForEm(40px);
   color:$midGrey;
 
   @include transition("color .4s ease-out");
@@ -473,34 +483,34 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   and (orientation: landscape) 
   and (-webkit-min-device-pixel-ratio: 2) {
 
-  #gameInfo { width: #{100vw - vw(230px)}; }
+  #gameInfo { width: #{100vw - vwForEm(230px)}; }
 }
 
 #screen_play.ready #gameInfo { color:$beige; }
 
 #gameInfo > div { position:relative; white-space: nowrap; }
 
-#life, #progress { height:vw(30px); margin-top:vw(15px); }
+#life, #progress { height:vwForEm(30px); margin-top:vwForEm(15px); }
 #progress, #score { display: inline-block; }
-#score { margin-top: vw(-6px); }
+#score { margin-top: vwForEm(-6px); }
 
 #gameInfo .value {
   color:$orange;
   font-weight:500;
   font-size:$fontSize30px;
-  margin-left: vw(20px);
+  margin-left: vwForEm(20px);
   text-align: right;
   display:inline-block;
-  width:vw(90px);
+  width:vwForEm(90px);
   white-space:nowrap;
 }
 
-#score .value { font-size:$fontSize48px; width: vw(120px); }
+#score .value { font-size:$fontSize48px; width: vwForEm(120px); }
 
 #progressBar {
   width:100%;
-  height:vw(15px);
-  margin-top:vw(15px);
+  height:vwForEm(15px);
+  margin-top:vwForEm(15px);
   border-radius:$borderRadius;
   overflow:hidden;
 }
@@ -538,11 +548,11 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 
 /* STAFF --------------*/
 #staff {
-  width:calc(100% - #{vw(40px)});
+  width:calc(100% - #{vwForEm(40px)});
   height:195px;
   position:absolute;
   right:0;
-  top:calc(50% - (195px / 2) - (#{vw(195px)} / 3));
+  top:calc(50% - (195px / 2) - (#{vwForEm(195px)} / 3));
 }
 
 /* iOS 7 calc() fix */
@@ -553,8 +563,8 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   and (-webkit-min-device-pixel-ratio: 2) {
 
   #staff {
-    width: #{100vw - vw(40px)};
-    top: #{vw(768px) / 2 - vw(195px) / 2 - vw(195px) / 3};
+    width: #{100vw - vwForEm(40px)};
+    top: #{toVw($iPadInnerHeight / 2) - vwForEm(195px) / 2 - vwForEm(195px) / 3};
   }
 }
 
@@ -585,7 +595,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   cursor:pointer;
 }
 
-.icon { width:vw(32px); height:vw(32px); font-size: $fontSize20px; }
+.icon { width:vwForEm(32px); height:vwForEm(32px); font-size: $fontSize20px; }
 
 #keys li.pressed, li.pressed .icon, .pauseSwitch:hover { background:$orange; color:$offWhite; }
 #keys i { line-height: 1.5em; font-size:1.5em; }
@@ -638,7 +648,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 /* OTHER SCREENS
 /*=======================*/
 /* LOADING SCREEN --------------*/
-#screen_loading .percent { width:vw(300px); display:inline-block; }
+#screen_loading .percent { width:vwForEm(300px); display:inline-block; }
 
 html:not(.isPhone) #screen_loading .phone { display:none }
 html.isPhone #screen_loading .container:not(.phone) { display:none }
@@ -647,20 +657,20 @@ html.isPhone #screen_loading .container:not(.phone) { display:none }
 #screen_loading .phone p span { font-family: "Press Start 2P", cursive; color:$orange; font-size:$fontSize22px; }
 
 /* HIGH SCORES SCREEN --------------*/
-#screen_highScores .label { width: vw(75px); }
-#screen_highScores .date { width: vw(200px); }
-#screen_highScores .points { width: vw(125px); }
-#screen_highScores .percent { width: vw(95px); }
-#screen_highScores .rank { margin-left: vw(16px); }
-#screen_highScores .stars { display:inline-block; width: vw(150px); text-align: right; }
+#screen_highScores .label { width: vwForEm(75px); }
+#screen_highScores .date { width: vwForEm(200px); }
+#screen_highScores .points { width: vwForEm(125px); }
+#screen_highScores .percent { width: vwForEm(95px); }
+#screen_highScores .rank { margin-left: vwForEm(16px); }
+#screen_highScores .stars { display:inline-block; width: vwForEm(150px); text-align: right; }
 
 /* HOW TO PLAY SCREEN --------------*/
-#screen_howToPlay p { font-size: $fontSize20px; margin-bottom:vw(32px); }
+#screen_howToPlay p { font-size: $fontSize20px; margin-bottom:vwForEm(32px); }
 #screen_howToPlay ul { display: flex; flex-wrap: wrap; }
 #screen_howToPlay li { display: inline-table; width: 33.3333%; cursor:pointer; }
-#screen_howToPlay li:nth-child(1), #screen_howToPlay li:nth-child(2), #screen_howToPlay li:nth-child(3) { margin-bottom:vw(16px); }
+#screen_howToPlay li:nth-child(1), #screen_howToPlay li:nth-child(2), #screen_howToPlay li:nth-child(3) { margin-bottom:vwForEm(16px); }
 #screen_howToPlay .icon, #screen_howToPlay .label { display: inline-block; }
-#screen_howToPlay .icon { margin-right:vw(16px); }
+#screen_howToPlay .icon { margin-right:vwForEm(16px); }
 #screen_howToPlay li:hover .icon { background:$orange; color:$offWhite; }
 #screen_howToPlay .label {
   color:$beige;
@@ -668,7 +678,7 @@ html.isPhone #screen_loading .container:not(.phone) { display:none }
   font-family: "Press Start 2P", cursive;
   vertical-align: middle;
   height: 100%;
-  line-height: vw(32px);
+  line-height: vwForEm(32px);
 }
 
 #screen_howToPlay li.pressed .label, #screen_howToPlay li:hover .label { color:$orange; }
@@ -687,35 +697,35 @@ html.isPhone #screen_loading .container:not(.phone) { display:none }
   font-size:$fontSize7px;
   opacity:0;
   position:absolute;
-  top: vw(-40px);
+  top: vwForEm(-40px);
   left: 0;
   white-space: nowrap;
 
-  @include transform("translateY(#{vw(10px)})");
+  @include transform("translateY(#{vwForEm(10px)})");
   @include transition("all.2s ease-out");
 }
 
 #screen_credits button:hover:after { @include transform("translateY(0)"); opacity:1; }
 
 /* RESULTS SCREEN --------------*/
-#screen_results h1 { margin-bottom:vw(50px); }
+#screen_results h1 { margin-bottom:vwForEm(50px); }
 #screen_results .label { width:40%; }
 #screen_results .nb { width: 10%; }
 #screen_results .points { width: 25%; }
 #screen_results .percent { width: 20%; }
-#screen_results #results_totalCompletion { margin-top:vw(14px); }
+#screen_results #results_totalCompletion { margin-top:vwForEm(14px); }
 
 #screen_results .newRecord {
-  width: vw(28px);
-  height: vw(28px);
+  width: vwForEm(28px);
+  height: vwForEm(28px);
   position: absolute;
   border-radius: 50%;
   background: $midGrey;
   color: $orange;
   text-align: center;
-  line-height: vw(28px);
+  line-height: vwForEm(28px);
   font-size: $fontSize18px;
-  margin-left: vw(48px);
+  margin-left: vwForEm(48px);
   opacity: 0;
 
   @include transition("none");
@@ -728,16 +738,16 @@ html.isPhone #screen_loading .container:not(.phone) { display:none }
   font-family: "Press Start 2P", cursive;
   color:$beige;
   font-size: $fontSize7px;
-  width: vw(90px);
-  border-radius: vw(20px);
-  padding-left: vw(18px);
-  height: vw(20px);
-  line-height: vw(20px);
-  top: vw(4px);
+  width: vwForEm(90px);
+  border-radius: vwForEm(20px);
+  padding-left: vwForEm(18px);
+  height: vwForEm(20px);
+  line-height: vwForEm(20px);
+  top: vwForEm(4px);
 }
 
-#screen_results .newRecord.visible { margin-left:vw(32px); opacity:1; @include transition("all .5s ease-out"); }
-#screen_results nav { position:absolute; right:vw(40px); bottom:0; }
-#screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:$fontSize60px; color:$beige; margin:vw(150px) 0 vw(10px); position:relative; }
+#screen_results .newRecord.visible { margin-left:vwForEm(32px); opacity:1; @include transition("all .5s ease-out"); }
+#screen_results nav { position:absolute; right:0; bottom:0; white-space: nowrap; }
+#screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:$fontSize60px; color:$beige; margin:vwForEm(150px) 0 vwForEm(10px); position:relative; }
 #screen_results .stars { font-size:$fontSize32px; }
-#screen_results .stars i:not(:last-child) { margin-right:vw(4px); }
+#screen_results .stars i:not(:last-child) { margin-right:vwForEm(4px); }

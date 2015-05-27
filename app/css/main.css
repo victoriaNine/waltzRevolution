@@ -257,8 +257,8 @@ hr {
 /* iOS 7 calc() fix */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
   .screen .container {
-    left: 5.5vw;
-    top: 6.8125vw; } }
+    left: 12.5vw;
+    top: 15.625vw; } }
 .screen h1 {
   color: #D55320;
   font-size: 5vw;
@@ -281,8 +281,9 @@ hr {
   margin-right: 0; }
 
 .screen .leftSide, .screen .rightSide {
+  width: calc(50% - 2.5vw);
   height: calc(100% - 8.125vw);
-  width: calc(50% - 2.5vw); }
+  position: relative; }
 
 .screen .rightSide {
   text-align: right; }
@@ -290,8 +291,8 @@ hr {
 /* iOS 7 calc() fix */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
   .screen .leftSide, .screen .rightSide {
-    height: 39.875vw;
-    width: 29.5vw; } }
+    width: 35vw;
+    height: 26.25vw; } }
 .screen .panel {
   background: #161515;
   border-radius: 0.625vw;
@@ -593,7 +594,7 @@ html:not(.isMobile) #songInfo .pauseSwitch {
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
   #staff {
     width: 97.5vw;
-    top: 13.84375vw; } }
+    top: 22.65625vw; } }
 #lines {
   width: 100%;
   height: 1px;
@@ -853,8 +854,9 @@ html.isPhone #screen_loading .container:not(.phone) {
 
 #screen_results nav {
   position: absolute;
-  right: 2.5vw;
-  bottom: 0; }
+  right: 0;
+  bottom: 0;
+  white-space: nowrap; }
 
 #screen_results .rank {
   font-family: 'Oswald-RegularItalic';
