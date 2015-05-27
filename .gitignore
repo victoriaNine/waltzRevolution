@@ -3,7 +3,6 @@ dist
 .tmp
 .sass-cache
 bower_components
-waltzRevolution.sublime-workspace
-waltzRevolution.sublime-workspace
 Junction
 ignore
+*.sublime-workspace
