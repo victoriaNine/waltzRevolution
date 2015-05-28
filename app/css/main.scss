@@ -172,6 +172,7 @@ button {
   text-align:left;
   margin:vwForEm(40px) 0 0;
   position:relative;
+  letter-spacing: 0;
 
   font-family: inherit;
   font-size: inherit;
@@ -305,7 +306,7 @@ hr { border: none; background: $midGrey; height: 1px; }
 
   .screen .container {
     left: #{50vw - vwForEm(1200px) / 2};
-    top: #{toVw(672px / 2) - vwForEm(550px) / 2};
+    top: #{toVw($iPadInnerHeight / 2) - vwForEm(550px) / 2};
   }
 }
 
@@ -318,7 +319,7 @@ hr { border: none; background: $midGrey; height: 1px; }
 
   .screen .container {
     left: #{50vw - vwForEm(1200px) / 2};
-    top: #{toVw(928px / 2, $iPadInnerHeight) - vwForEm(550px) / 2};
+    top: #{toVw($iPadInnerHeight / 2, $iPadInnerHeight) - vwForEm(550px) / 2};
   }
 }
 
@@ -503,7 +504,16 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 
 #life, #progress { height:vwForEm(30px); margin-top:vwForEm(15px); }
 #progress, #score { display: inline-block; }
-#score { margin-top: vwForEm(-6px); width:125px; }
+#score { margin-top: vwForEm(-6px); }
+
+/* iOS 7 calc() + vw fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  #score { width: vwForEm(195px); }
+}
 
 #gameInfo .value {
   color:$orange;
@@ -563,7 +573,31 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   height:195px;
   position:absolute;
   right:0;
-  top:calc(50% - 195px);
+  top:calc(50% - #{vwForEm(195px)});
+}
+
+/* iOS 7 calc() + vw fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  #staff {
+    top: #{toVw($iPadInnerHeight / 2) - vwForEm(195px) * 1.5};
+  }
+}
+
+/* iOS 7 calc() + vw fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  #staff {
+    top: #{toVw($iPadInnerWidth / 2, $iPadInnerHeight) - vwForEm(195px) * 2.5};
+  }
 }
 
 #lines {
