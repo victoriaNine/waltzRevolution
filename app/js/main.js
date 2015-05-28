@@ -43,6 +43,22 @@ $(document).ready(function() {
         }
     };
 
+    // iOS7 Safari bug fix
+    if(navigator.userAgent.match(/iPad;.*CPU.*OS 7_\d/i)
+       && window.innerHeight != document.documentElement.clientHeight) {
+    	var fixViewportHeight = function() {
+        	document.documentElement.style.height = window.innerHeight + "px";
+	        if (document.body.scrollTop !== 0) {
+	            window.scrollTo(0, 0);
+	        }
+	    };
+
+	    $(window).on("scroll orientationchange", fixViewportHeight);
+	    fixViewportHeight();
+
+	    document.body.style.webkitTransform = "translate3d(0,0,0)";
+	}
+
     if(phoneCheck()) {
     	// IF USING A MOBILE PHONE
     	$("#screen_loading").addClass("active");
@@ -50,17 +66,16 @@ $(document).ready(function() {
     	return;
     }
 
-	$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
+	$("#notes").attr("width", window.innerWidth - 16).attr("height", 195);
 	$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
 
-	$(window).resize(function() {
+	$(window).on("resize orientationchange", function() {
 		$("#audioVisualizer").attr("width", window.innerWidth).attr("height", window.innerHeight);
-		$("#notes").attr("width", parseFloat($("#notes").css("width"))).attr("height", parseFloat($("#notes").css("height")));
+		$("#notes").attr("width", window.innerWidth - 16).attr("height", 195);
 	});
 
     $audioEngine = AudioEngine.getInstance();
     toMainMenu();
-    alert($("#screen_results nav").css("right"));
 });
 
 
@@ -149,7 +164,7 @@ function showHighScores() {
 
 		var label = $("#screen_highScores .row").eq(i).find(".label");
 		var points = $("<span class=\"points orange\">").html(highScores[i][0]+"pts");
-		var percent = $("<span class=\"percent orange\">").html(highScores[i][1]+"%");
+		var percent = $("<span class=\"percent orange\">").html(highScores[i][1].toFixed(1)+"%");
 		var rank = $("<span class=\"rank\">").html(highScores[i][2]);
 
 		var date_data = new Date(highScores[i][4]);
@@ -232,6 +247,8 @@ var howToPlay_onTouchevent = function(e) {
 	if(this.className.match("keySpace")) code = 32;
 	if(this.className.match("keyPause")) code = 80;
 
+	if(!code) return;
+	
 	var _e = $.Event(type);
 	_e.which = _e.keyCode = code;
 	$(window).trigger(_e);

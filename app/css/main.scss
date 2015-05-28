@@ -2,7 +2,7 @@
 /* VARIABLES, FUNCTIONS
 /*=======================*/
 $browserContext:16px;
-$iPadInnerWidth:1024px;
+$iPadInnerWidth:928px;
 $iPadInnerHeight:672px;
 
 @function toEm($pixels, $context: $browserContext) {
@@ -296,7 +296,7 @@ hr { border: none; background: $midGrey; height: 1px; }
   box-sizing:border-box;
 }
 
-/* iOS 7 calc() fix */
+/* iOS 7 calc() + vw fix */
 @media only screen 
   and (min-device-width: 768px) 
   and (max-device-width: 1024px) 
@@ -304,8 +304,21 @@ hr { border: none; background: $midGrey; height: 1px; }
   and (-webkit-min-device-pixel-ratio: 2) {
 
   .screen .container {
-    left: #{toVw(1024 / 2) - vwForEm(1200px) / 2};
-    top: #{toVw($iPadInnerHeight / 2) - vwForEm(550px) / 2};
+    left: #{50vw - vwForEm(1200px) / 2};
+    top: #{toVw(672px / 2) - vwForEm(550px) / 2};
+  }
+}
+
+/* iOS 7 calc() + vw fix */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (orientation: portrait) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+
+  .screen .container {
+    left: #{50vw - vwForEm(1200px) / 2};
+    top: #{toVw(928px / 2, $iPadInnerHeight) - vwForEm(550px) / 2};
   }
 }
 
@@ -331,11 +344,10 @@ hr { border: none; background: $midGrey; height: 1px; }
 .screen .leftSide, .screen .rightSide { width:calc(50% - #{vwForEm(40px)}); height: calc(100% - #{vwForEm(130px)}); position: relative; }
 .screen .rightSide { text-align:right; }
 
-/* iOS 7 calc() fix */
+/* iOS 7 calc() + vw fix */
 @media only screen 
   and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
-  and (orientation: landscape) 
+  and (max-device-width: 1024px)
   and (-webkit-min-device-pixel-ratio: 2) {
 
   .screen .leftSide, .screen .rightSide {
@@ -476,11 +488,10 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
   @include transition("color .4s ease-out");
 }
 
-/* iOS 7 calc() fix */
+/* iOS 7 calc() + vw fix */
 @media only screen 
   and (min-device-width: 768px) 
   and (max-device-width: 1024px) 
-  and (orientation: landscape) 
   and (-webkit-min-device-pixel-ratio: 2) {
 
   #gameInfo { width: #{100vw - vwForEm(230px)}; }
@@ -492,7 +503,7 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 
 #life, #progress { height:vwForEm(30px); margin-top:vwForEm(15px); }
 #progress, #score { display: inline-block; }
-#score { margin-top: vwForEm(-6px); }
+#score { margin-top: vwForEm(-6px); width:125px; }
 
 #gameInfo .value {
   color:$orange;
@@ -548,24 +559,11 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 
 /* STAFF --------------*/
 #staff {
-  width:calc(100% - #{vwForEm(40px)});
+  width:calc(100% - 40px);
   height:195px;
   position:absolute;
   right:0;
-  top:calc(50% - (195px / 2) - (#{vwForEm(195px)} / 3));
-}
-
-/* iOS 7 calc() fix */
-@media only screen 
-  and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
-  and (orientation: landscape) 
-  and (-webkit-min-device-pixel-ratio: 2) {
-
-  #staff {
-    width: #{100vw - vwForEm(40px)};
-    top: #{toVw($iPadInnerHeight / 2) - vwForEm(195px) / 2 - vwForEm(195px) / 3};
-  }
+  top:calc(50% - 195px);
 }
 
 #lines {
@@ -630,18 +628,6 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 }
 
 #notes { width: calc(100% - 16px); height: 100%; position:absolute; z-index:2; left: 16px; }
-
-/* iOS 7 calc() fix */
-@media only screen 
-  and (min-device-width: 768px) 
-  and (max-device-width: 1024px) 
-  and (orientation: landscape) 
-  and (-webkit-min-device-pixel-ratio: 2) {
-
-  #notes {
-    width: #{1024px - 16px};
-  }
-}
 
 
 /*=======================*/
@@ -747,7 +733,7 @@ html.isPhone #screen_loading .container:not(.phone) { display:none }
 }
 
 #screen_results .newRecord.visible { margin-left:vwForEm(32px); opacity:1; @include transition("all .5s ease-out"); }
-#screen_results nav { position:absolute; right:0; bottom:0; white-space: nowrap; }
+#screen_results nav { position:absolute; right:0; bottom:0; width:100%; }
 #screen_results .rank { font-family: 'Oswald-RegularItalic'; font-size:$fontSize60px; color:$beige; margin:vwForEm(150px) 0 vwForEm(10px); position:relative; }
 #screen_results .stars { font-size:$fontSize32px; }
 #screen_results .stars i:not(:last-child) { margin-right:vwForEm(4px); }

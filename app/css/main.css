@@ -254,11 +254,16 @@ hr {
   padding: 0 2.5vw;
   box-sizing: border-box; }
 
-/* iOS 7 calc() fix */
+/* iOS 7 calc() + vw fix */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
   .screen .container {
     left: 12.5vw;
-    top: 15.625vw; } }
+    top: 19.0194vw; } }
+/* iOS 7 calc() + vw fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2) {
+  .screen .container {
+    left: 12.5vw;
+    top: 51.86012vw; } }
 .screen h1 {
   color: #D55320;
   font-size: 5vw;
@@ -288,8 +293,8 @@ hr {
 .screen .rightSide {
   text-align: right; }
 
-/* iOS 7 calc() fix */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+/* iOS 7 calc() + vw fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) {
   .screen .leftSide, .screen .rightSide {
     width: 35vw;
     height: 26.25vw; } }
@@ -503,8 +508,8 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   -o-transition: -o-color .4s ease-out;
   transition: color .4s ease-out; }
 
-/* iOS 7 calc() fix */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+/* iOS 7 calc() + vw fix */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) {
   #gameInfo {
     width: 85.625vw; } }
 #screen_play.ready #gameInfo {
@@ -522,7 +527,8 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   display: inline-block; }
 
 #score {
-  margin-top: -0.375vw; }
+  margin-top: -0.375vw;
+  width: 125px; }
 
 #gameInfo .value {
   color: #D55320;
@@ -584,17 +590,12 @@ html:not(.isMobile) #songInfo .pauseSwitch {
 
 /* STAFF --------------*/
 #staff {
-  width: calc(100% - 2.5vw);
+  width: calc(100% - 40px);
   height: 195px;
   position: absolute;
   right: 0;
-  top: calc(50% - (195px / 2) - (12.1875vw / 3)); }
+  top: calc(50% - 195px); }
 
-/* iOS 7 calc() fix */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-  #staff {
-    width: 97.5vw;
-    top: 22.65625vw; } }
 #lines {
   width: 100%;
   height: 1px;
@@ -672,10 +673,6 @@ html:not(.isMobile) #songInfo .pauseSwitch {
   z-index: 2;
   left: 16px; }
 
-/* iOS 7 calc() fix */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-  #notes {
-    width: 1008px; } }
 /*=======================*/
 /* OTHER SCREENS
 /*=======================*/
@@ -856,7 +853,7 @@ html.isPhone #screen_loading .container:not(.phone) {
   position: absolute;
   right: 0;
   bottom: 0;
-  white-space: nowrap; }
+  width: 100%; }
 
 #screen_results .rank {
   font-family: 'Oswald-RegularItalic';

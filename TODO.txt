@@ -75,8 +75,9 @@ X crossbrowser audio (FF bug)
 ~ responsive (add on-screen pause button)
 ! favicon
 ! clean code
-- safari fix
+! safari fix
 - percent fade in (loading)
+X tied notes touch support
 ~ checklist
 
 ----------

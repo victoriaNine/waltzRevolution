@@ -109,7 +109,7 @@ Song.prototype.start = function() {
 // UPDATE CANVAS
 Song.prototype.draw = function() {
 //===============================
-  ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height());
+  ctx.clearRect(0, 0, $(canvas).attr("width"), $(canvas).attr("height"));
   if(!$game) return;
 
   $game.song.rAF = requestAnimationFrame($game.song.draw);
@@ -121,7 +121,7 @@ Song.prototype.draw = function() {
   }
 }
 
-Song.prototype.stopRAF = function() { cancelAnimationFrame(this.rAF); ctx.clearRect(0, 0, $(canvas).width(), $(canvas).height()); }
+Song.prototype.stopRAF = function() { cancelAnimationFrame(this.rAF); ctx.clearRect(0, 0, $(canvas).attr("width"), $(canvas).attr("height")); }
 
 
 //===============================

@@ -304,8 +304,12 @@ function BGM() {
 	}
 
 	this.stop = function(memorizePosition) {
-		this.sourceArray[this.currentFile].source.stop(0);
-		if(memorizePosition) this.pausedAt += new Date().getTime() - this.startedAt;
+		// Try&Catch : Safari fix
+		try {
+			this.sourceArray[this.currentFile].source.stop(0); 
+			if(memorizePosition) this.pausedAt += new Date().getTime() - this.startedAt;
+		}
+		catch(e) { return; }
 	}
 
 	this.setCrossfade = function(gain, callback) {
@@ -403,7 +407,7 @@ function BGM() {
 
 	this.oscilloscope = function(dataArray) {
 	    var nbEQband = 75;
-	    var bandWidth = Math.ceil($(window).width() / nbEQband);
+	    var bandWidth = Math.ceil(window.innerWidth / nbEQband);
 	    
 	    var zoom = 1;
 	    var maxHeight = toVw(255) * zoom;
@@ -419,7 +423,7 @@ function BGM() {
 	    for (var i = 0; i <= nbEQband; i++)
 	    	audioVisualizerCtx.lineTo(i * bandWidth, top - dataArray[i] * zoom);
 
-	    audioVisualizerCtx.lineTo($(window).width(), top);
+	    audioVisualizerCtx.lineTo(window.innerWidth, top);
 	    audioVisualizerCtx.fill();
 	    audioVisualizerCtx.stroke();
 
@@ -429,7 +433,7 @@ function BGM() {
 
 	this.waveform = function(dataArray) {
 	    var nbEQband = 75;
-	    var bandWidth = Math.ceil($(window).width() / nbEQband);
+	    var bandWidth = Math.ceil(window.innerWidth / nbEQband);
 
 	    var zoom = 1;
 	    var maxHeight = toVw(255) * zoom;
@@ -446,7 +450,7 @@ function BGM() {
 
 	this.diagonalLines = function(dataArray) {
 	    var nbEQband = 75;
-	    var bandWidth = Math.round($(window).width() / nbEQband);
+	    var bandWidth = Math.round(window.innerWidth / nbEQband);
 
 	    audioVisualizerCtx.save();
 	    audioVisualizerCtx.lineWidth = 1;

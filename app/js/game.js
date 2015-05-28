@@ -256,6 +256,8 @@ Game.prototype.addListeners = function() {
 		if(this.className.match("keyDown")) code = 40;
 		if(this.className.match("keySpace")) code = 32;
 
+		if(!code) return;
+
 		var _e = $.Event(type);
 		_e.which = _e.keyCode = code;
 		$(window).trigger(_e);
@@ -282,6 +284,7 @@ Game.prototype.detectInputAccuracy = function(key) {
 	var keyNameFirstLetterUppercase = keyName.replace(keyName.charAt(0), keyName.charAt(0).toUpperCase());
 	var gamePad = key.gamePad;
 	var inputDelay = (new Date().getTime() - key.when) / 1000;
+	console.log(key);
 
 	if(keyName == "P") $game.togglePause();
 	if($game.paused || !gamePad) return;
