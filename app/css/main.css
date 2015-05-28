@@ -679,7 +679,12 @@ html:not(.isMobile) #songInfo .pauseSwitch {
 /* LOADING SCREEN --------------*/
 #screen_loading .percent {
   width: 18.75vw;
-  display: inline-block; }
+  display: inline-block;
+  transition: width .3s 1.2s ease-out; }
+
+#screen_loading.complete .percent {
+  width: 25.625vw;
+  transition: width .3s ease-out; }
 
 html:not(.isPhone) #screen_loading .phone {
   display: none; }

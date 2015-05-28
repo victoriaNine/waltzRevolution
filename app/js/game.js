@@ -52,22 +52,21 @@ Game.prototype.loadSong = function() {
 
 	this.song = Song.getInstance(this.songFile, function() {
 		if(!$audioEngine.BGM.hasBeenLoaded(this.fileURL)) {
-			$("#screen_loading .percent").html(0);
+			$("#screen_loading .label").html("Loading");
+			$("#screen_loading .percent").empty();
 			$("#screen_loading").addClass("active");
 
-			TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
+			TweenMax.from($("#screen_loading .label"), .75, { opacity:0, repeat:-1, yoyo:true });
 			$(document).on("loadingBGM loadingSFX", loadingScreen);
 		}
 		
 		var fileName = this.url.slice(this.url.lastIndexOf("/")+1, this.url.lastIndexOf("."));
 		$audioEngine.BGM.setFile(fileName);
 		$audioEngine.BGM.addSource(this.fileURL, function() {
-			TweenMax.from($("#screen_loading .label"), .75, {opacity:1, clearProps:"all"});
-
 			checkFocus(function() {
 				var waitForFadeOut = function() {
 					$(window).off(eventtype, waitForFadeOut);
-					$("#screen_loading").removeClass("active");
+					$("#screen_loading").removeClass("active complete");
 
 					setTimeout(function() {
 						game.initValues();

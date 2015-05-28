@@ -634,7 +634,8 @@ html:not(.isMobile) #songInfo .pauseSwitch { display:none; }
 /* OTHER SCREENS
 /*=======================*/
 /* LOADING SCREEN --------------*/
-#screen_loading .percent { width:vwForEm(300px); display:inline-block; }
+#screen_loading .percent { width:vwForEm(300px); display:inline-block; transition:width .3s 1.2s ease-out; }
+#screen_loading.complete .percent { width:vwForEm(410px); transition:width .3s ease-out; }
 
 html:not(.isPhone) #screen_loading .phone { display:none }
 html.isPhone #screen_loading .container:not(.phone) { display:none }

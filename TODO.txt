@@ -76,7 +76,7 @@ X crossbrowser audio (FF bug)
 ! favicon
 ! clean code
 ! safari fix
-- percent fade in (loading)
+! percent fade in (loading)
 X tied notes touch support
 ~ checklist
 

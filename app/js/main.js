@@ -94,29 +94,43 @@ function loadingScreen() {
 
 	var fadeIn = isNaN(currentValue) ? true : false;
 	if(isNaN(currentValue) || !isFinite(currentValue)) currentValue = 0;
-	scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, fadeIn, "%", true);
+	scrollToValue($("#screen_loading .percent"), currentValue, totalPercent.toFixed(1), true, fadeIn, "%", true).eventCallback("onComplete",
+		function() {
+			if(totalPercent == 100) {
+				$(document).off("loadingBGM loadingSFX", loadingScreen);
+				TweenMax.from($("#screen_loading .label"), .75, { opacity:1, clearProps:"all" });
+				
+				if(mobileCheck()) {
+					$("#screen_loading").addClass("complete");
 
-	if(totalPercent == 100) {
-		$(document).off("loadingBGM loadingSFX", loadingScreen);
-		// if(mobileCheck())
-	}
+					TweenMax.to($("#screen_loading h1"), .3, { opacity:0,
+						onComplete: function() {
+							$("#screen_loading .label").html("Tap");
+							$("#screen_loading .percent").html("to continue");
+
+							TweenMax.to($("#screen_loading h1"), .3, { opacity:1, clearProps:"all" });
+						}
+					})
+				}
+			}
+		}
+	);
 }
 
 function toMainMenu() {
 	var bgmURL = "audio/bgm/junction";
 
 	if(!$audioEngine.BGM.hasBeenLoaded(bgmURL)) {
-		$("#screen_loading .percent").html(0);
+		$("#screen_loading .label").html("Loading");
+		$("#screen_loading .percent").empty();
 		$("#screen_loading").addClass("active");
 
-		TweenMax.from($("#screen_loading .label"), .75, {opacity:0, repeat:-1, yoyo:true});
+		TweenMax.from($("#screen_loading .label"), .75, { opacity:0, repeat:-1, yoyo:true });
 		$(document).on("loadingBGM loadingSFX", loadingScreen);
 	}
 
 	$audioEngine.BGM.setFile("junction");
 	$audioEngine.BGM.addSource(bgmURL, function() {
-		TweenMax.from($("#screen_loading .label"), .75, {opacity:1, clearProps:"all"});
-
 		checkFocus(function() {
 			var showMainMenu = function() {
 				$audioEngine.BGM.play();
@@ -130,7 +144,7 @@ function toMainMenu() {
 
 			var waitForFadeOut = function() {
 				$(window).off(eventtype, waitForFadeOut);
-				$("#screen_loading").removeClass("active");
+				$("#screen_loading").removeClass("active complete");
 
 				setTimeout(showMainMenu, 600);
 			}
@@ -248,7 +262,7 @@ var howToPlay_onTouchevent = function(e) {
 	if(this.className.match("keyPause")) code = 80;
 
 	if(!code) return;
-	
+
 	var _e = $.Event(type);
 	_e.which = _e.keyCode = code;
 	$(window).trigger(_e);
