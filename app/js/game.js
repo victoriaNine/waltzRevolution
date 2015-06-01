@@ -283,7 +283,6 @@ Game.prototype.detectInputAccuracy = function(key) {
 	var keyNameFirstLetterUppercase = keyName.replace(keyName.charAt(0), keyName.charAt(0).toUpperCase());
 	var gamePad = key.gamePad;
 	var inputDelay = (new Date().getTime() - key.when) / 1000;
-	console.log(key);
 
 	if(keyName == "P") $game.togglePause();
 	if($game.paused || !gamePad) return;
