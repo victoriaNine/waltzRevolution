@@ -1,6 +1,6 @@
 {
     "title":"Waltz for the Night Creatures",
-    "artist":"Leivvi",
+    "artist":"Victoria Nine",
     "tempo":93,
     "timeSignature":[6,8],
     "noteScale": 8,
@@ -13,7 +13,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":1,
          "beat":2,
@@ -50,7 +50,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":2,
          "beat":2,
@@ -87,7 +87,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":3,
          "beat":2,
@@ -124,7 +124,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":4,
          "beat":2,
@@ -288,7 +288,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":9,
          "beat":2,
@@ -325,7 +325,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":10,
          "beat":2,
@@ -362,7 +362,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":11,
          "beat":2,
@@ -399,7 +399,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":12,
          "beat":2,
@@ -738,7 +738,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":24,
          "beat":2,
@@ -775,7 +775,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":25,
          "beat":2,
@@ -812,7 +812,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":26,
          "beat":2,
@@ -849,7 +849,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":27,
          "beat":2,
@@ -1013,7 +1013,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":32,
          "beat":2,
@@ -1050,7 +1050,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":33,
          "beat":2,
@@ -1087,7 +1087,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":34,
          "beat":2,
@@ -1124,7 +1124,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":35,
          "beat":2,
@@ -1463,7 +1463,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":47,
          "beat":2,
@@ -1500,7 +1500,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":48,
          "beat":2,
@@ -1537,7 +1537,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"right",
          "bar":49,
          "beat":2,
@@ -1574,7 +1574,7 @@
          "beatPosition":1,
          "beatDivision":16,
          "hasTiedNote":false
-        }, 
+        },
         {"key":"up",
          "bar":50,
          "beat":2,
